@@ -87,27 +87,247 @@
     .filter-pill { border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); padding: 10px 16px; border-radius: 999px; cursor: pointer; font-size: 0.92rem; }
     .filter-pill.active { background: var(--accent); color: #fff; border-color: transparent; }
     .card-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
-    .card-list-item { overflow: hidden; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; flex-direction: column; }
-    .card-header { position: relative; }
-    .card-header img { width: 100%; height: 340px; object-fit: cover; display: block; }
-    .card-header .badge-row { position: absolute; top: 16px; right: 16px; display: flex; align-items: center; gap: 6px; }
-    .status-badge { padding: 8px 12px; border-radius: 999px; font-size: 0.85rem; font-weight: 700; color: #fff; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; }
-    .status-badge:hover { transform: scale(1.05); }
-    .status-pending { background: #ff9f2c; }
-    .status-approved { background: #00b388; }
-    .status-rejected { background: #f45b69; }
-    .status-badge .hint-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,0.3); font-size: 0.65rem; font-weight: 700; cursor: pointer; flex-shrink: 0; position: relative; }
-    
+    /* ===== Card Redesign for Drama Management ===== */
+    .card-list-item {
+      overflow: hidden;
+      border-radius: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 25px rgba(27, 45, 71, 0.06);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+    }
+    .card-list-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 45px rgba(27, 45, 71, 0.12);
+      border-color: rgba(0, 179, 136, 0.20);
+    }
+    .card-header {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      background: #eaf4ee;
+    }
+    .card-header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .card-list-item:hover .card-header img {
+      transform: scale(1.06);
+    }
+    .card-header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 60%, rgba(26, 35, 47, 0.06) 100%);
+      pointer-events: none;
+    }
+    .card-header .badge-row {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 2;
+    }
+    .status-badge {
+      padding: 6px 14px 6px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.02em;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    .status-badge:hover {
+      transform: scale(1.06);
+    }
+    .status-pending { background: linear-gradient(135deg, #ff9f2c, #f59e0b); }
+    .status-approved { background: linear-gradient(135deg, #00b388, #00c797); }
+    .status-rejected { background: linear-gradient(135deg, #f45b69, #e74c5a); }
+    .status-badge .status-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.7);
+      flex-shrink: 0;
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+    .status-approved .status-dot,
+    .status-rejected .status-dot {
+      animation: none;
+    }
+    @keyframes statusPulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+    .status-badge .hint-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      font-size: 0.6rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .status-badge .hint-icon:hover {
+      background: rgba(255,255,255,0.45);
+    }
+
     /* Toast notification (replaces tooltip hover) */
     .toast-notification { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 9999; background: rgba(26, 35, 47, 0.95); backdrop-filter: blur(8px); color: #fff; padding: 16px 24px; border-radius: 16px; font-size: 0.92rem; line-height: 1.6; box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 420px; text-align: center; font-weight: 500; }
     .toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
-    .card-body { padding: 22px; display: flex; flex-direction: column; gap: 14px; }
-    .card-body h3 { margin: 0; font-size: 1.15rem; }
-    .props-row { display: flex; flex-wrap: wrap; gap: 10px; }
-    .props-pill { border-radius: 999px; background: #f4faf6; color: var(--accent); padding: 8px 12px; font-size: 0.86rem; border: 1px solid rgba(0, 179, 136, 0.14); }
-    .progress-row { display: grid; gap: 10px; }
-    .progress-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-radius: 18px; background: #f7fbff; border: 1px solid #e6eff7; font-size: 0.9rem; }
+
+    .card-body {
+      padding: 20px 22px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+    .card-body h3 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .card-body .card-sub {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-top: -4px;
+    }
+    .card-body .card-sub .sub-divider {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .props-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .props-pill {
+      border-radius: 999px;
+      background: #f4faf6;
+      color: var(--accent);
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid rgba(0, 179, 136, 0.12);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .props-pill .pill-icon {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #f7fbff;
+      border: 1px solid #eaf1f9;
+    }
+    .info-item .info-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+    .info-item .info-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .info-item .info-value.accent {
+      color: var(--accent);
+    }
+    .info-item.full-width {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+    }
+    .info-item.full-width .info-label {
+      font-size: 0.82rem;
+    }
+    .info-item.full-width .info-value {
+      font-size: 0.95rem;
+    }
+    .card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 2px 0 4px;
+    }
+    .card-action {
+      padding: 16px 22px 18px;
+      border-top: 1px solid var(--border);
+      background: #fafcff;
+      display: flex;
+      gap: 10px;
+    }
+    .card-action .button {
+      flex: 1;
+      padding: 11px 16px;
+      font-size: 0.88rem;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .card-action .button .btn-icon {
+      font-size: 0.95rem;
+    }
+    .card-action .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .card-action .button-danger {
+      background: transparent;
+      color: #f45b69;
+      border: 1px solid rgba(244, 91, 105, 0.25);
+      font-weight: 600;
+    }
+    .card-action .button-danger:hover {
+      background: rgba(244, 91, 105, 0.06);
+      transform: translateY(-1px);
+    }
 
     /* Modal */
     .modal-overlay { display: none; position: fixed; z-index: 1000; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 24px; }
@@ -143,77 +363,529 @@
     .stake-panel-amber { padding: 16px 18px; border-radius: 14px; background: rgba(255,159,44,0.06); border: 1px solid rgba(255,159,44,0.12); margin-bottom: 20px; }
     .stake-panel-amber p { color: #b87a1a; }
 
-    /* NFT Grid (tab2 & tab4) */
+    /* ===== NFT Card Redesign (Tab2 & Tab4) ===== */
     .nft-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
-    .nft-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); overflow: hidden; position: relative; }
-    .nft-card .nft-cover-wrap { position: relative; }
-    .nft-card .nft-cover { width: 100%; height: 340px; object-fit: cover; display: block; }
-    .nft-card .nft-id-badge { position: absolute; top: 14px; left: 14px; background: rgba(26, 35, 47, 0.78); backdrop-filter: blur(4px); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; }
-    .nft-card .nft-stake-status { position: absolute; top: 14px; right: 14px; padding: 6px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 700; color: #fff; letter-spacing: 0.03em; }
-    .nft-card .nft-stake-status.pledged { background: var(--accent); box-shadow: 0 2px 8px rgba(0, 179, 136, 0.30); }
+    .nft-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 8px 25px rgba(27, 45, 71, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+    }
+    .nft-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 45px rgba(27, 45, 71, 0.12);
+      border-color: rgba(0, 179, 136, 0.20);
+    }
+    .nft-card .nft-cover-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      background: #eaf4ee;
+    }
+    .nft-card .nft-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .nft-card:hover .nft-cover {
+      transform: scale(1.06);
+    }
+    .nft-card .nft-cover-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 60%, rgba(26, 35, 47, 0.06) 100%);
+      pointer-events: none;
+    }
+    .nft-card .nft-id-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(26, 35, 47, 0.75);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      z-index: 2;
+    }
+    .nft-card .nft-stake-status {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.03em;
+      backdrop-filter: blur(4px);
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .nft-card .nft-stake-status.pledged {
+      background: linear-gradient(135deg, var(--accent), #00c797);
+      box-shadow: 0 2px 10px rgba(0, 179, 136, 0.30);
+    }
+    .nft-card .nft-stake-status .status-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.8);
+    }
     .nft-card .nft-stake-status.unpledged { background: var(--text-muted); }
-    .nft-card .nft-body { padding: 18px 20px 14px; display: flex; flex-direction: column; gap: 10px; }
-    .nft-card .nft-body h4 { margin: 0; font-size: 1.05rem; color: var(--text); font-weight: 700; }
+    .nft-card .nft-body {
+      padding: 18px 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .nft-card .nft-body h4 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .nft-card .nft-body .nft-sub {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: -4px;
+    }
+    .nft-card .nft-body .nft-sub .sub-divider {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
     .nft-card .nft-body .nft-desc { margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
     .nft-card .nft-meta { display: flex; flex-wrap: wrap; gap: 6px; }
-    .nft-card .nft-meta span { padding: 5px 10px; border-radius: 999px; background: #f4faf6; color: var(--accent); font-size: 0.72rem; border: 1px solid rgba(0,179,136,0.12); font-weight: 500; }
-    .nft-card .nft-info-row { display: flex; gap: 10px; }
-    .nft-card .nft-info-row .nft-info-item { flex: 1; text-align: center; padding: 10px 6px; background: #f9fcfb; border-radius: 12px; border: 1px solid rgba(0, 179, 136, 0.08); }
-    .nft-card .nft-info-row .nft-info-item .info-label { display: block; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 3px; }
-    .nft-card .nft-info-row .nft-info-item .info-value { display: block; font-size: 0.95rem; font-weight: 700; color: var(--accent); }
-    .nft-card .nft-royalty { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; background: #f9fcfb; border-radius: 10px; border: 1px solid rgba(0, 179, 136, 0.06); }
-    .nft-card .nft-royalty .royalty-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 1px; }
-    .nft-card .nft-royalty .royalty-value { font-size: 0.85rem; color: var(--accent); font-weight: 700; }
-    .nft-card .nft-royalty .royalty-divider { width: 1px; height: 22px; background: var(--border); }
-    .nft-card .nft-footer { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; background: #fafcff; }
+    .nft-card .nft-meta span {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f4faf6;
+      color: var(--accent);
+      font-size: 0.72rem;
+      border: 1px solid rgba(0,179,136,0.12);
+      font-weight: 600;
+    }
+    .nft-card .nft-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .nft-card .nft-detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      padding: 9px 10px;
+      border-radius: 12px;
+      background: #f7fbff;
+      border: 1px solid #eaf1f9;
+    }
+    .nft-card .nft-detail-item .detail-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+    .nft-card .nft-detail-item .detail-value {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .nft-card .nft-royalty {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 12px;
+      background: #f9fcfb;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 179, 136, 0.08);
+      margin-top: 2px;
+    }
+    .nft-card .nft-royalty .r-item {
+      flex: 1;
+      text-align: center;
+    }
+    .nft-card .nft-royalty .royalty-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-bottom: 1px;
+      font-weight: 500;
+    }
+    .nft-card .nft-royalty .royalty-value {
+      font-size: 0.88rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .nft-card .nft-royalty .royalty-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .nft-card .nft-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fafcff;
+    }
     .nft-card .nft-footer.centered { justify-content: center; }
-    .nft-card .nft-footer.side { justify-content: space-between; }
-    .nft-card .nft-footer .button { padding: 8px 22px; font-size: 0.85rem; }
-    .nft-card .nft-footer .nft-price { font-weight: 700; font-size: 1.05rem; color: var(--accent); }
-    .nft-card .nft-footer .nft-id { color: var(--text-muted); font-size: 0.85rem; }
+    .nft-card .nft-footer .button {
+      flex: 1;
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .nft-card .nft-footer .button .btn-icon {
+      font-size: 0.9rem;
+    }
+    .nft-card .nft-footer .button-amber {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+    }
+    .nft-card .nft-footer .button-amber:hover {
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.30);
+    }
 
-    /* Actor cards (tab3) */
+    /* ===== Actor Cards Redesign (Tab3) ===== */
     .actor-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
-    .actor-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); overflow: hidden; text-align: center; }
-    .actor-card .actor-avatar-wrap { position: relative; }
-    .actor-card .actor-avatar { width: 100%; height: 200px; object-fit: cover; display: block; background: #eaf4ff; }
-    .actor-card .actor-avatar-wrap .actor-status-corner { position: absolute; top: 12px; right: 12px; cursor: pointer; }
-    .actor-card .actor-body { padding: 20px; }
-    .actor-card .actor-body h4 { margin: 0 0 6px; font-size: 1.1rem; }
-    .actor-card .actor-body .actor-gender { display: inline-block; padding: 4px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.82rem; font-weight: 600; }
-    .actor-card .actor-body p { margin: 12px 0 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
-    .actor-card .actor-body .actor-fields { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
-    .actor-card .actor-body .actor-field { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-radius: 10px; background: #f7fbff; border: 1px solid #e6eff7; font-size: 0.85rem; }
-    .actor-card .actor-body .actor-field .field-label { color: var(--text-muted); }
-    .actor-card .actor-body .actor-field .field-value { font-weight: 700; color: var(--accent); }
-    .actor-card .actor-footer { padding: 14px 20px; border-top: 1px solid var(--border); background: #fafcff; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-    .actor-card .actor-footer span { font-size: 0.85rem; color: var(--text-muted); }
-    .actor-card .actor-footer .button { font-size: 0.85rem; padding: 8px 16px; }
+    .actor-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 8px 25px rgba(27, 45, 71, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+    }
+    .actor-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 45px rgba(27, 45, 71, 0.12);
+      border-color: rgba(0, 179, 136, 0.20);
+    }
+    .actor-card .actor-avatar-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background: #eaf4ee;
+    }
+    .actor-card .actor-avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #eaf4ff;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .actor-card:hover .actor-avatar {
+      transform: scale(1.06);
+    }
+    .actor-card .actor-avatar-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(26, 35, 47, 0.08) 100%);
+      pointer-events: none;
+    }
+    .actor-card .actor-avatar-wrap .actor-status-corner {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      cursor: pointer;
+    }
+    .actor-card .actor-avatar-wrap .actor-status-corner .status-badge {
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    .actor-card .actor-body {
+      padding: 20px 20px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .actor-card .actor-body .actor-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+    .actor-card .actor-body .actor-name-row h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .actor-card .actor-body .actor-gender {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .actor-card .actor-body .actor-desc {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+    .actor-card .actor-body .actor-fields {
+      margin-top: 4px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .actor-card .actor-body .actor-field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #f7fbff;
+      border: 1px solid #eaf1f9;
+    }
+    .actor-card .actor-body .actor-field .field-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+    .actor-card .actor-body .actor-field .field-value {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .actor-card .actor-body .actor-field.full-width {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 8px 14px;
+    }
+    .actor-card .actor-body .actor-field.full-width .field-label {
+      font-size: 0.78rem;
+    }
+    .actor-card .actor-body .actor-field.full-width .field-value {
+      font-size: 0.85rem;
+    }
+    .actor-card .actor-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 2px 0 4px;
+    }
+    .actor-card .actor-footer {
+      padding: 14px 20px 16px;
+      border-top: 1px solid var(--border);
+      background: #fafcff;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .actor-card .actor-footer .button {
+      flex: 1;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .actor-card .actor-footer .button .btn-icon {
+      font-size: 0.9rem;
+    }
+    .actor-card .actor-footer .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .actor-card .actor-footer .button-danger {
+      background: transparent;
+      color: #f45b69;
+      border: 1px solid rgba(244, 91, 105, 0.25);
+      font-weight: 600;
+    }
+    .actor-card .actor-footer .button-danger:hover {
+      background: rgba(244, 91, 105, 0.06);
+      transform: translateY(-1px);
+    }
 
     /* Tab content containers */
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Actor NFT card styles (tab4) */
-    .actor-nft-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0; }
-    .actor-nft-stat { text-align: center; padding: 10px 4px; background: #f9fcfb; border-radius: 12px; border: 1px solid rgba(0, 179, 136, 0.08); }
-    .actor-nft-stat .stat-label { display: block; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; }
-    .actor-nft-stat .stat-value { display: block; font-size: 0.95rem; font-weight: 700; color: var(--accent); }
-    .actor-nft-progress { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
-    .progress-bar-bg { flex: 1; height: 8px; background: #eaf4ee; border-radius: 999px; overflow: hidden; }
-    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #00d9a3); border-radius: 999px; transition: width 0.6s ease; }
-    .progress-text { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; font-weight: 500; }
-    .actor-nft-staked { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(0, 179, 136, 0.06); border: 1px solid rgba(0, 179, 136, 0.12); border-radius: 12px; margin-top: 4px; }
-    .actor-nft-staked .staked-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
-    .actor-nft-staked .staked-value { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+    /* ===== Actor NFT Cards Redesign (Tab4) ===== */
+    .actor-nft-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin: 6px 0 4px;
+    }
+    .actor-nft-stat {
+      text-align: center;
+      padding: 10px 4px 8px;
+      background: #f7fbff;
+      border-radius: 12px;
+      border: 1px solid #eaf1f9;
+      transition: all 0.2s ease;
+    }
+    .actor-nft-stat .stat-label {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .actor-nft-stat .stat-value {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .actor-nft-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 2px 0 6px;
+    }
+    .progress-bar-bg {
+      flex: 1;
+      height: 7px;
+      background: #eaf4ee;
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #00d9a3);
+      border-radius: 999px;
+      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+    .progress-bar-fill::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25));
+      border-radius: 999px;
+    }
+    .progress-text {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      font-weight: 600;
+      min-width: 72px;
+      text-align: right;
+    }
+    .actor-nft-holdings {
+      display: flex;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .actor-nft-holdings .hold-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 8px 6px;
+      border-radius: 10px;
+      background: #f9fcfb;
+      border: 1px solid rgba(0, 179, 136, 0.08);
+    }
+    .actor-nft-holdings .hold-item .hold-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .actor-nft-holdings .hold-item .hold-value {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .actor-nft-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0 6px;
+    }
 
     /* Actor drama field (参演短剧) */
-    .actor-drama-field { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #f7fbff; border: 1px solid #e6eff7; border-radius: 12px; margin-top: 6px; cursor: pointer; transition: all 0.2s ease; }
-    .actor-drama-field:hover { border-color: var(--accent); background: rgba(0, 179, 136, 0.04); }
-    .actor-drama-field .field-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
-    .actor-drama-field .field-value.clickable { font-size: 0.95rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 4px; }
-    .actor-drama-field .arrow-icon { font-size: 1.1rem; transition: transform 0.2s ease; }
-    .actor-drama-field:hover .arrow-icon { transform: translateX(3px); }
+    .actor-drama-field {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: #f7fbff;
+      border: 1px solid #e6eff7;
+      border-radius: 12px;
+      margin-top: 6px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .actor-drama-field:hover {
+      border-color: var(--accent);
+      background: rgba(0, 179, 136, 0.04);
+    }
+    .actor-drama-field .field-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .actor-drama-field .field-label .field-emoji {
+      font-size: 0.9rem;
+    }
+    .actor-drama-field .field-value.clickable {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .actor-drama-field .arrow-icon {
+      font-size: 1.1rem;
+      transition: transform 0.25s ease;
+      display: inline-block;
+    }
+    .actor-drama-field:hover .arrow-icon {
+      transform: translateX(4px);
+    }
 
     /* Actor drama list modal */
     .actor-drama-list { display: flex; flex-direction: column; gap: 12px; }
@@ -231,7 +903,16 @@
 
     @media (max-width: 1280px) { .card-grid, .nft-grid, .actor-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (max-width: 1080px) { .dashboard-summary, .summary-grid { grid-template-columns: 1fr; } .card-grid, .nft-grid, .actor-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 680px) { .card-grid, .nft-grid, .actor-grid { grid-template-columns: 1fr; } .card-header img { height: 240px; } .nft-card .nft-cover { height: 240px; } }
+    @media (max-width: 680px) {
+      .card-grid, .nft-grid, .actor-grid { grid-template-columns: 1fr; }
+      .card-grid { gap: 16px; }
+      .card-body { padding: 16px 18px 14px; }
+      .card-action { padding: 12px 18px 14px; flex-direction: column; }
+      .card-action .button { width: 100%; }
+      .nft-card .nft-cover { height: 240px; }
+      .info-grid { gap: 6px; }
+      .info-item { padding: 8px 10px; }
+    }
   </style>
 </head>
 <body>
@@ -289,11 +970,14 @@
       <!-- Tab 1: 短剧管理 -->
       <div class="tab-content active" id="tab1">
         <div class="card-grid" id="dramaGrid">
+
+          <!-- 卡片 1: 审核中 -->
           <article class="card-list-item" data-status="pending">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="长安如梦" />
               <div class="badge-row">
                 <span class="status-badge status-pending">
+                  <span class="status-dot"></span>
                   审核中
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('审核通过后可铸造短剧NFT并上架短剧')">?</span>
                 </span>
@@ -301,20 +985,44 @@
             </div>
             <div class="card-body">
               <h3>长安如梦</h3>
-              <div class="props-row"><span class="props-pill">集数 30</span><span class="props-pill">角色 0</span></div>
-              <div class="progress-row">
-                <div class="progress-item"><span>单价 USDC</span><strong>9.8</strong></div>
-                <div class="progress-item"><span>批量折扣</span><strong>10%</strong></div>
+              <div class="card-sub">
+                <span>30 集</span>
+                <span class="sub-divider"></span>
+                <span>0 个角色</span>
               </div>
-              <div class="progress-item"><span>创作者分润</span><strong>70%</strong></div>
-              <button class="button" disabled style="opacity: 0.6; cursor: not-allowed;">等待审核</button>
+              <div class="props-row">
+                <span class="props-pill"><span class="pill-icon">📺</span> 古装 · 爱情</span>
+              </div>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">单价 USDC</span>
+                  <span class="info-value accent">9.8</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">批量折扣</span>
+                  <span class="info-value">10%</span>
+                </div>
+                <div class="info-item full-width">
+                  <span class="info-label">创作者分润</span>
+                  <span class="info-value accent">70%</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-action">
+              <button class="button" disabled>
+                <span class="btn-icon">⏳</span> 等待审核
+              </button>
             </div>
           </article>
+
+          <!-- 卡片 2: 已通过 -->
           <article class="card-list-item" data-status="approved">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80" alt="江南烟雨" />
               <div class="badge-row">
                 <span class="status-badge status-approved">
+                  <span class="status-dot"></span>
                   已通过
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('铸造NFT后自动上架短剧')">?</span>
                 </span>
@@ -322,20 +1030,44 @@
             </div>
             <div class="card-body">
               <h3>江南烟雨</h3>
-              <div class="props-row"><span class="props-pill">集数 24</span><span class="props-pill">角色 4</span></div>
-              <div class="progress-row">
-                <div class="progress-item"><span>单价 USDC</span><strong>12.5</strong></div>
-                <div class="progress-item"><span>批量折扣</span><strong>15%</strong></div>
+              <div class="card-sub">
+                <span>24 集</span>
+                <span class="sub-divider"></span>
+                <span>4 个角色</span>
               </div>
-              <div class="progress-item"><span>创作者分润</span><strong>70%</strong></div>
-              <button class="button">铸造短剧NFT</button>
+              <div class="props-row">
+                <span class="props-pill"><span class="pill-icon">🎭</span> 古装 · 剧情</span>
+              </div>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">单价 USDC</span>
+                  <span class="info-value accent">12.5</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">批量折扣</span>
+                  <span class="info-value">15%</span>
+                </div>
+                <div class="info-item full-width">
+                  <span class="info-label">创作者分润</span>
+                  <span class="info-value accent">70%</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-action">
+              <button class="button">
+                <span class="btn-icon">🔨</span> 铸造短剧NFT
+              </button>
             </div>
           </article>
+
+          <!-- 卡片 3: 已通过 -->
           <article class="card-list-item" data-status="approved">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=80" alt="星际迷航" />
               <div class="badge-row">
                 <span class="status-badge status-approved">
+                  <span class="status-dot"></span>
                   已通过
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('铸造NFT后自动上架短剧')">?</span>
                 </span>
@@ -343,20 +1075,44 @@
             </div>
             <div class="card-body">
               <h3>星际迷航</h3>
-              <div class="props-row"><span class="props-pill">集数 16</span><span class="props-pill">角色 6</span></div>
-              <div class="progress-row">
-                <div class="progress-item"><span>单价 USDC</span><strong>8.0</strong></div>
-                <div class="progress-item"><span>批量折扣</span><strong>10%</strong></div>
+              <div class="card-sub">
+                <span>16 集</span>
+                <span class="sub-divider"></span>
+                <span>6 个角色</span>
               </div>
-              <div class="progress-item"><span>创作者分润</span><strong>70%</strong></div>
-              <button class="button">铸造短剧NFT</button>
+              <div class="props-row">
+                <span class="props-pill"><span class="pill-icon">🚀</span> 科幻 · 冒险</span>
+              </div>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">单价 USDC</span>
+                  <span class="info-value accent">8.0</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">批量折扣</span>
+                  <span class="info-value">10%</span>
+                </div>
+                <div class="info-item full-width">
+                  <span class="info-label">创作者分润</span>
+                  <span class="info-value accent">70%</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-action">
+              <button class="button">
+                <span class="btn-icon">🔨</span> 铸造短剧NFT
+              </button>
             </div>
           </article>
+
+          <!-- 卡片 4: 未通过 -->
           <article class="card-list-item" data-status="rejected">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80" alt="迷雾之城" />
               <div class="badge-row">
                 <span class="status-badge status-rejected">
+                  <span class="status-dot"></span>
                   未通过
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('内容存在敏感词汇，无法通过审核')">?</span>
                 </span>
@@ -364,15 +1120,37 @@
             </div>
             <div class="card-body">
               <h3>迷雾之城</h3>
-              <div class="props-row"><span class="props-pill">集数 12</span><span class="props-pill">角色 2</span></div>
-              <div class="progress-row">
-                <div class="progress-item"><span>单价 USDC</span><strong>6.5</strong></div>
-                <div class="progress-item"><span>推荐折扣</span><strong>5%</strong></div>
+              <div class="card-sub">
+                <span>12 集</span>
+                <span class="sub-divider"></span>
+                <span>2 个角色</span>
               </div>
-              <div class="progress-item"><span>创作者分润</span><strong>70%</strong></div>
-              <button class="button button-secondary" style="color:#f45b69; border-color:#f45b69;" onclick="confirmDelete('迷雾之城')">删除短剧</button>
+              <div class="props-row">
+                <span class="props-pill"><span class="pill-icon">🔍</span> 悬疑 · 推理</span>
+              </div>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">单价 USDC</span>
+                  <span class="info-value accent">6.5</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">批量折扣</span>
+                  <span class="info-value">5%</span>
+                </div>
+                <div class="info-item full-width">
+                  <span class="info-label">创作者分润</span>
+                  <span class="info-value accent">70%</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-action">
+              <button class="button button-danger" onclick="confirmDelete('迷雾之城')">
+                <span class="btn-icon">🗑️</span> 删除短剧
+              </button>
             </div>
           </article>
+
         </div>
       </div>
 
@@ -384,6 +1162,8 @@
           <button class="filter-pill" onclick="filterNFTs('unstaked',this)">未质押</button>
         </div>
         <div class="nft-grid">
+
+          <!-- NFT-001: 未质押 -->
           <div class="nft-card" data-staked="false">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80" alt="江南烟雨 NFT" />
@@ -391,117 +1171,155 @@
             </div>
             <div class="nft-body">
               <h4>江南烟雨</h4>
-              <div class="nft-meta">
-                <span>集数 24</span>
-                <span>角色 4</span>
-                <span>演员NFT 4</span>
+              <div class="nft-sub">
+                <span>24 集</span>
+                <span class="sub-divider"></span>
+                <span>4 个角色</span>
+                <span class="sub-divider"></span>
+                <span>4 个演员NFT</span>
               </div>
-              <div class="nft-info-row">
-                <div class="nft-info-item">
-                  <span class="info-label">单价</span>
-                  <span class="info-value">12.5 USDC</span>
+              <div class="nft-meta">
+                <span>🏆 热度 85%</span>
+                <span>📅 2025春</span>
+              </div>
+              <div class="nft-detail-grid">
+                <div class="nft-detail-item">
+                  <span class="detail-label">单价</span>
+                  <span class="detail-value">12.5 USDC</span>
                 </div>
-                <div class="nft-info-item">
-                  <span class="info-label">批量折扣</span>
-                  <span class="info-value">15%</span>
+                <div class="nft-detail-item">
+                  <span class="detail-label">批量折扣</span>
+                  <span class="detail-value">15%</span>
                 </div>
               </div>
               <div class="nft-royalty">
-                <div>
+                <div class="r-item">
                   <div class="royalty-label">创作者分润</div>
                   <div class="royalty-value">70%</div>
                 </div>
                 <div class="royalty-divider"></div>
-                <div>
+                <div class="r-item">
                   <div class="royalty-label">演员NFT分润</div>
                   <div class="royalty-value">20%</div>
                 </div>
               </div>
             </div>
             <div class="nft-footer centered">
-              <button class="button">质押NFT</button>
+              <button class="button">
+                <span class="btn-icon">🔒</span> 质押NFT
+              </button>
             </div>
           </div>
+
+          <!-- NFT-002: 已质押 -->
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=80" alt="星际迷航 NFT" />
               <span class="nft-id-badge">#NFT-002</span>
-              <span class="nft-stake-status pledged">已质押</span>
+              <span class="nft-stake-status pledged">
+                <span class="status-dot"></span> 已质押
+              </span>
             </div>
             <div class="nft-body">
               <h4>星际迷航</h4>
-              <div class="nft-meta">
-                <span>集数 16</span>
-                <span>角色 6</span>
-                <span>演员NFT 6</span>
+              <div class="nft-sub">
+                <span>16 集</span>
+                <span class="sub-divider"></span>
+                <span>6 个角色</span>
+                <span class="sub-divider"></span>
+                <span>6 个演员NFT</span>
               </div>
-              <div class="nft-info-row">
-                <div class="nft-info-item">
-                  <span class="info-label">单价</span>
-                  <span class="info-value">8.0 USDC</span>
+              <div class="nft-meta">
+                <span>🏆 热度 92%</span>
+                <span>📅 2024冬</span>
+              </div>
+              <div class="nft-detail-grid">
+                <div class="nft-detail-item">
+                  <span class="detail-label">单价</span>
+                  <span class="detail-value">8.0 USDC</span>
                 </div>
-                <div class="nft-info-item">
-                  <span class="info-label">批量折扣</span>
-                  <span class="info-value">10%</span>
+                <div class="nft-detail-item">
+                  <span class="detail-label">批量折扣</span>
+                  <span class="detail-value">10%</span>
                 </div>
               </div>
               <div class="nft-royalty">
-                <div>
+                <div class="r-item">
                   <div class="royalty-label">创作者分润</div>
                   <div class="royalty-value">70%</div>
                 </div>
                 <div class="royalty-divider"></div>
-                <div>
+                <div class="r-item">
                   <div class="royalty-label">演员NFT分润</div>
                   <div class="royalty-value">20%</div>
                 </div>
               </div>
             </div>
-            <div class="nft-footer centered" style="gap:8px;">
-              <button class="button" style="background:#f59e0b;flex:1;">解质押</button>
-              <button class="button" style="background:var(--accent);flex:1;" onclick="handleBindActorClick(this)">绑定演员</button>
+            <div class="nft-footer">
+              <button class="button button-amber">
+                <span class="btn-icon">🔓</span> 解质押
+              </button>
+              <button class="button" onclick="handleBindActorClick(this)">
+                <span class="btn-icon">🎬</span> 绑定演员
+              </button>
             </div>
           </div>
+
+          <!-- NFT-003: 已质押 -->
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="长安如梦 NFT" />
               <span class="nft-id-badge">#NFT-003</span>
-              <span class="nft-stake-status pledged">已质押</span>
+              <span class="nft-stake-status pledged">
+                <span class="status-dot"></span> 已质押
+              </span>
             </div>
             <div class="nft-body">
               <h4>长安如梦</h4>
-              <div class="nft-meta">
-                <span>集数 30</span>
-                <span>角色 0</span>
-                <span>演员NFT 0</span>
+              <div class="nft-sub">
+                <span>30 集</span>
+                <span class="sub-divider"></span>
+                <span>0 个角色</span>
+                <span class="sub-divider"></span>
+                <span>0 个演员NFT</span>
               </div>
-              <div class="nft-info-row">
-                <div class="nft-info-item">
-                  <span class="info-label">单价</span>
-                  <span class="info-value">9.8 USDC</span>
+              <div class="nft-meta">
+                <span>🏆 热度 78%</span>
+                <span>📅 2025夏</span>
+              </div>
+              <div class="nft-detail-grid">
+                <div class="nft-detail-item">
+                  <span class="detail-label">单价</span>
+                  <span class="detail-value">9.8 USDC</span>
                 </div>
-                <div class="nft-info-item">
-                  <span class="info-label">批量折扣</span>
-                  <span class="info-value">10%</span>
+                <div class="nft-detail-item">
+                  <span class="detail-label">批量折扣</span>
+                  <span class="detail-value">10%</span>
                 </div>
               </div>
               <div class="nft-royalty">
-                <div>
+                <div class="r-item">
                   <div class="royalty-label">创作者分润</div>
                   <div class="royalty-value">70%</div>
                 </div>
                 <div class="royalty-divider"></div>
-                <div>
+                <div class="r-item">
                   <div class="royalty-label">演员NFT分润</div>
                   <div class="royalty-value">20%</div>
                 </div>
               </div>
             </div>
-            <div class="nft-footer centered" style="gap:8px;">
-              <button class="button" style="background:#f59e0b;flex:1;">解质押</button>
-              <button class="button" style="background:var(--accent);flex:1;" onclick="handleBindActorClick(this)">绑定演员</button>
+            <div class="nft-footer">
+              <button class="button button-amber">
+                <span class="btn-icon">🔓</span> 解质押
+              </button>
+              <button class="button" onclick="handleBindActorClick(this)">
+                <span class="btn-icon">🎬</span> 绑定演员
+              </button>
             </div>
           </div>
+
+          <!-- NFT-005: 未质押 -->
           <div class="nft-card" data-staked="false">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80" alt="迷雾之城 NFT" />
@@ -509,119 +1327,202 @@
             </div>
             <div class="nft-body">
               <h4>迷雾之城</h4>
-              <div class="nft-meta">
-                <span>集数 12</span>
-                <span>角色 2</span>
-                <span>演员NFT 2</span>
+              <div class="nft-sub">
+                <span>12 集</span>
+                <span class="sub-divider"></span>
+                <span>2 个角色</span>
+                <span class="sub-divider"></span>
+                <span>2 个演员NFT</span>
               </div>
-              <div class="nft-info-row">
-                <div class="nft-info-item">
-                  <span class="info-label">单价</span>
-                  <span class="info-value">6.5 USDC</span>
+              <div class="nft-meta">
+                <span>🏆 热度 62%</span>
+                <span>📅 2025秋</span>
+              </div>
+              <div class="nft-detail-grid">
+                <div class="nft-detail-item">
+                  <span class="detail-label">单价</span>
+                  <span class="detail-value">6.5 USDC</span>
                 </div>
-                <div class="nft-info-item">
-                  <span class="info-label">批量折扣</span>
-                  <span class="info-value">5%</span>
+                <div class="nft-detail-item">
+                  <span class="detail-label">批量折扣</span>
+                  <span class="detail-value">5%</span>
                 </div>
               </div>
               <div class="nft-royalty">
-                <div>
+                <div class="r-item">
                   <div class="royalty-label">创作者分润</div>
                   <div class="royalty-value">70%</div>
                 </div>
                 <div class="royalty-divider"></div>
-                <div>
+                <div class="r-item">
                   <div class="royalty-label">演员NFT分润</div>
                   <div class="royalty-value">20%</div>
                 </div>
               </div>
             </div>
             <div class="nft-footer centered">
-              <button class="button">质押NFT</button>
+              <button class="button">
+                <span class="btn-icon">🔒</span> 质押NFT
+              </button>
             </div>
           </div>
+
         </div>
       </div>
 
       <!-- Tab 3: 演员管理 -->
       <div class="tab-content" id="tab3">
         <div class="actor-grid">
+
+          <!-- 演员 1: 已通过 -->
           <div class="actor-card" data-status="approved">
             <div class="actor-avatar-wrap">
               <img class="actor-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80" alt="苏婉清" />
-              <span class="status-badge status-approved actor-status-corner">已通过</span>
+              <span class="status-badge status-approved actor-status-corner">
+                <span class="status-dot"></span> 已通过
+              </span>
             </div>
             <div class="actor-body">
-              <h4>苏婉清</h4>
-              <span class="actor-gender">♀ 女性</span>
-              <p>温婉端庄的江南女子，琴棋书画样样精通</p>
+              <div class="actor-name-row">
+                <h4>苏婉清</h4>
+                <span class="actor-gender">♀ 女性</span>
+              </div>
+              <p class="actor-desc">温婉端庄的江南女子，琴棋书画样样精通</p>
               <div class="actor-fields">
-                <div class="actor-field"><span class="field-label">Mint价格</span><span class="field-value">10 USDC</span></div>
-                <div class="actor-field"><span class="field-label">创作者保留</span><span class="field-value">1,000</span></div>
-                <div class="actor-field"><span class="field-label">可Mint数量</span><span class="field-value">9,000</span></div>
+                <div class="actor-field">
+                  <span class="field-label">Mint价格</span>
+                  <span class="field-value">10 USDC</span>
+                </div>
+                <div class="actor-field">
+                  <span class="field-label">创作者保留</span>
+                  <span class="field-value">1,000</span>
+                </div>
+                <div class="actor-field full-width">
+                  <span class="field-label">可Mint数量</span>
+                  <span class="field-value">9,000</span>
+                </div>
               </div>
             </div>
+            <div class="actor-divider"></div>
             <div class="actor-footer">
-              <button class="button" onclick="openActorMintModal('苏婉清', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1000)">铸造NFT</button>
+              <button class="button" onclick="openActorMintModal('苏婉清', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1000)">
+                <span class="btn-icon">🎭</span> 铸造NFT
+              </button>
             </div>
           </div>
+
+          <!-- 演员 2: 审核中 -->
           <div class="actor-card" data-status="pending">
             <div class="actor-avatar-wrap">
               <img class="actor-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80" alt="李云飞" />
-              <span class="status-badge status-pending actor-status-corner">审核中</span>
+              <span class="status-badge status-pending actor-status-corner">
+                <span class="status-dot"></span> 审核中
+              </span>
             </div>
             <div class="actor-body">
-              <h4>李云飞</h4>
-              <span class="actor-gender">♂ 男性</span>
-              <p>身手矫健的侠客，性格豪爽仗义</p>
+              <div class="actor-name-row">
+                <h4>李云飞</h4>
+                <span class="actor-gender">♂ 男性</span>
+              </div>
+              <p class="actor-desc">身手矫健的侠客，性格豪爽仗义</p>
               <div class="actor-fields">
-                <div class="actor-field"><span class="field-label">Mint价格</span><span class="field-value">8 USDC</span></div>
-                <div class="actor-field"><span class="field-label">创作者保留</span><span class="field-value">500</span></div>
-                <div class="actor-field"><span class="field-label">可Mint数量</span><span class="field-value">7,500</span></div>
+                <div class="actor-field">
+                  <span class="field-label">Mint价格</span>
+                  <span class="field-value">8 USDC</span>
+                </div>
+                <div class="actor-field">
+                  <span class="field-label">创作者保留</span>
+                  <span class="field-value">500</span>
+                </div>
+                <div class="actor-field full-width">
+                  <span class="field-label">可Mint数量</span>
+                  <span class="field-value">7,500</span>
+                </div>
               </div>
             </div>
+            <div class="actor-divider"></div>
             <div class="actor-footer">
-              <button class="button" disabled style="opacity: 0.6; cursor: not-allowed;">铸造NFT</button>
+              <button class="button" disabled>
+                <span class="btn-icon">⏳</span> 等待审核
+              </button>
             </div>
           </div>
+
+          <!-- 演员 3: 已通过 -->
           <div class="actor-card" data-status="approved">
             <div class="actor-avatar-wrap">
               <img class="actor-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80" alt="林梦瑶" />
-              <span class="status-badge status-approved actor-status-corner">已通过</span>
+              <span class="status-badge status-approved actor-status-corner">
+                <span class="status-dot"></span> 已通过
+              </span>
             </div>
             <div class="actor-body">
-              <h4>林梦瑶</h4>
-              <span class="actor-gender">♀ 女性</span>
-              <p>聪慧机敏的现代女性，擅长推理分析</p>
+              <div class="actor-name-row">
+                <h4>林梦瑶</h4>
+                <span class="actor-gender">♀ 女性</span>
+              </div>
+              <p class="actor-desc">聪慧机敏的现代女性，擅长推理分析</p>
               <div class="actor-fields">
-                <div class="actor-field"><span class="field-label">Mint价格</span><span class="field-value">10 USDC</span></div>
-                <div class="actor-field"><span class="field-label">创作者保留</span><span class="field-value">1,000</span></div>
-                <div class="actor-field"><span class="field-label">可Mint数量</span><span class="field-value">9,000</span></div>
+                <div class="actor-field">
+                  <span class="field-label">Mint价格</span>
+                  <span class="field-value">10 USDC</span>
+                </div>
+                <div class="actor-field">
+                  <span class="field-label">创作者保留</span>
+                  <span class="field-value">1,000</span>
+                </div>
+                <div class="actor-field full-width">
+                  <span class="field-label">可Mint数量</span>
+                  <span class="field-value">9,000</span>
+                </div>
               </div>
             </div>
+            <div class="actor-divider"></div>
             <div class="actor-footer">
-              <button class="button" onclick="openActorMintModal('林梦瑶', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1000)">铸造NFT</button>
+              <button class="button" onclick="openActorMintModal('林梦瑶', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1000)">
+                <span class="btn-icon">🎭</span> 铸造NFT
+              </button>
             </div>
           </div>
+
+          <!-- 演员 4: 未通过 -->
           <div class="actor-card" data-status="rejected">
             <div class="actor-avatar-wrap">
               <img class="actor-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=900&q=80" alt="赵无极" />
-              <span class="status-badge status-rejected actor-status-corner" onclick="showRejectReason('赵无极')">未通过 <span class="hint-icon">?</span></span>
+              <span class="status-badge status-rejected actor-status-corner" onclick="event.stopPropagation();showRejectReason('赵无极')">
+                <span class="status-dot"></span> 未通过
+                <span class="hint-icon">?</span>
+              </span>
             </div>
             <div class="actor-body">
-              <h4>赵无极</h4>
-              <span class="actor-gender">♂ 男性</span>
-              <p>深不可测的武林高手，亦正亦邪</p>
+              <div class="actor-name-row">
+                <h4>赵无极</h4>
+                <span class="actor-gender">♂ 男性</span>
+              </div>
+              <p class="actor-desc">深不可测的武林高手，亦正亦邪</p>
               <div class="actor-fields">
-                <div class="actor-field"><span class="field-label">Mint价格</span><span class="field-value">15 USDC</span></div>
-                <div class="actor-field"><span class="field-label">创作者保留</span><span class="field-value">500</span></div>
-                <div class="actor-field"><span class="field-label">可Mint数量</span><span class="field-value">5,500</span></div>
+                <div class="actor-field">
+                  <span class="field-label">Mint价格</span>
+                  <span class="field-value">15 USDC</span>
+                </div>
+                <div class="actor-field">
+                  <span class="field-label">创作者保留</span>
+                  <span class="field-value">500</span>
+                </div>
+                <div class="actor-field full-width">
+                  <span class="field-label">可Mint数量</span>
+                  <span class="field-value">5,500</span>
+                </div>
               </div>
             </div>
+            <div class="actor-divider"></div>
             <div class="actor-footer">
-              <button class="button button-secondary" style="color:#f45b69; border-color:#f45b69;" onclick="confirmDeleteActor('赵无极')">删除演员</button>
+              <button class="button button-danger" onclick="confirmDeleteActor('赵无极')">
+                <span class="btn-icon">🗑️</span> 删除演员
+              </button>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -633,13 +1534,21 @@
           <button class="filter-pill" onclick="filterActorNFTs('unstaked',this)">未质押</button>
         </div>
         <div class="nft-grid">
+
+          <!-- A-001: 苏婉清（已质押） -->
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80" alt="苏婉清 NFT" />
               <span class="nft-id-badge">#A-001</span>
+              <span class="nft-stake-status pledged"><span class="status-dot"></span> 已质押</span>
             </div>
             <div class="nft-body">
               <h4>苏婉清</h4>
+              <div class="nft-sub">
+                <span>ERC-1155</span>
+                <span class="sub-divider"></span>
+                <span>发行中</span>
+              </div>
               <div class="actor-nft-stats">
                 <div class="actor-nft-stat">
                   <span class="stat-label">发行总量</span>
@@ -660,24 +1569,50 @@
                 </div>
                 <span class="progress-text">已铸造 10%</span>
               </div>
-              <div class="actor-nft-staked">
-                <span class="staked-label">我已质押</span>
-                <span class="staked-value">0</span>
+              <div class="actor-nft-divider"></div>
+              <div class="actor-nft-holdings">
+                <div class="hold-item">
+                  <span class="hold-label">我持有</span>
+                  <span class="hold-value">8</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">已质押</span>
+                  <span class="hold-value" style="color:#f59e0b;">3</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">可操作</span>
+                  <span class="hold-value">5</span>
+                </div>
               </div>
-              <!-- 参演短剧字段 -->
               <div class="actor-drama-field" onclick="openActorDramaModal('苏婉清')">
-                <span class="field-label">参演短剧</span>
+                <span class="field-label"><span class="field-emoji">🎬</span> 参演短剧</span>
                 <span class="field-value clickable">3 部 <span class="arrow-icon">›</span></span>
               </div>
             </div>
+            <div class="nft-footer">
+              <button class="button button-amber" style="flex:0.8;" onclick="handleActorStakeClick(this)">
+                <span class="btn-icon">🔓</span> 解质押
+              </button>
+              <button class="button" onclick="handleActorStakeMoreClick(this)">
+                <span class="btn-icon">🔒</span> 追加质押
+              </button>
+            </div>
           </div>
+
+          <!-- A-002: 李云飞（已质押） -->
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80" alt="李云飞 NFT" />
               <span class="nft-id-badge">#A-002</span>
+              <span class="nft-stake-status pledged"><span class="status-dot"></span> 已质押</span>
             </div>
             <div class="nft-body">
               <h4>李云飞</h4>
+              <div class="nft-sub">
+                <span>ERC-1155</span>
+                <span class="sub-divider"></span>
+                <span>发行中</span>
+              </div>
               <div class="actor-nft-stats">
                 <div class="actor-nft-stat">
                   <span class="stat-label">发行总量</span>
@@ -698,24 +1633,50 @@
                 </div>
                 <span class="progress-text">已铸造 6.25%</span>
               </div>
-              <div class="actor-nft-staked">
-                <span class="staked-label">我已质押</span>
-                <span class="staked-value">0</span>
+              <div class="actor-nft-divider"></div>
+              <div class="actor-nft-holdings">
+                <div class="hold-item">
+                  <span class="hold-label">我持有</span>
+                  <span class="hold-value">12</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">已质押</span>
+                  <span class="hold-value" style="color:#f59e0b;">5</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">可操作</span>
+                  <span class="hold-value">7</span>
+                </div>
               </div>
-              <!-- 参演短剧字段 -->
               <div class="actor-drama-field" onclick="openActorDramaModal('李云飞')">
-                <span class="field-label">参演短剧</span>
+                <span class="field-label"><span class="field-emoji">🎬</span> 参演短剧</span>
                 <span class="field-value clickable">2 部 <span class="arrow-icon">›</span></span>
               </div>
             </div>
+            <div class="nft-footer">
+              <button class="button button-amber" style="flex:0.8;" onclick="handleActorStakeClick(this)">
+                <span class="btn-icon">🔓</span> 解质押
+              </button>
+              <button class="button" onclick="handleActorStakeMoreClick(this)">
+                <span class="btn-icon">🔒</span> 追加质押
+              </button>
+            </div>
           </div>
+
+          <!-- A-003: 林梦瑶（已质押） -->
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80" alt="林梦瑶 NFT" />
               <span class="nft-id-badge">#A-003</span>
+              <span class="nft-stake-status pledged"><span class="status-dot"></span> 已质押</span>
             </div>
             <div class="nft-body">
               <h4>林梦瑶</h4>
+              <div class="nft-sub">
+                <span>ERC-1155</span>
+                <span class="sub-divider"></span>
+                <span>发行中</span>
+              </div>
               <div class="actor-nft-stats">
                 <div class="actor-nft-stat">
                   <span class="stat-label">发行总量</span>
@@ -736,24 +1697,50 @@
                 </div>
                 <span class="progress-text">已铸造 10%</span>
               </div>
-              <div class="actor-nft-staked">
-                <span class="staked-label">我已质押</span>
-                <span class="staked-value">0</span>
+              <div class="actor-nft-divider"></div>
+              <div class="actor-nft-holdings">
+                <div class="hold-item">
+                  <span class="hold-label">我持有</span>
+                  <span class="hold-value">6</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">已质押</span>
+                  <span class="hold-value" style="color:#f59e0b;">2</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">可操作</span>
+                  <span class="hold-value">4</span>
+                </div>
               </div>
-              <!-- 参演短剧字段 -->
               <div class="actor-drama-field" onclick="openActorDramaModal('林梦瑶')">
-                <span class="field-label">参演短剧</span>
+                <span class="field-label"><span class="field-emoji">🎬</span> 参演短剧</span>
                 <span class="field-value clickable">2 部 <span class="arrow-icon">›</span></span>
               </div>
             </div>
+            <div class="nft-footer">
+              <button class="button button-amber" style="flex:0.8;" onclick="handleActorStakeClick(this)">
+                <span class="btn-icon">🔓</span> 解质押
+              </button>
+              <button class="button" onclick="handleActorStakeMoreClick(this)">
+                <span class="btn-icon">🔒</span> 追加质押
+              </button>
+            </div>
           </div>
+
+          <!-- A-004: 赵无极（已质押） -->
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=900&q=80" alt="赵无极 NFT" />
               <span class="nft-id-badge">#A-004</span>
+              <span class="nft-stake-status pledged"><span class="status-dot"></span> 已质押</span>
             </div>
             <div class="nft-body">
               <h4>赵无极</h4>
+              <div class="nft-sub">
+                <span>ERC-1155</span>
+                <span class="sub-divider"></span>
+                <span>发行中</span>
+              </div>
               <div class="actor-nft-stats">
                 <div class="actor-nft-stat">
                   <span class="stat-label">发行总量</span>
@@ -774,18 +1761,37 @@
                 </div>
                 <span class="progress-text">已铸造 8.33%</span>
               </div>
-              <div class="actor-nft-staked">
-                <span class="staked-label">我已质押</span>
-                <span class="staked-value">0</span>
+              <div class="actor-nft-divider"></div>
+              <div class="actor-nft-holdings">
+                <div class="hold-item">
+                  <span class="hold-label">我持有</span>
+                  <span class="hold-value">9</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">已质押</span>
+                  <span class="hold-value" style="color:#f59e0b;">7</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">可操作</span>
+                  <span class="hold-value">2</span>
+                </div>
               </div>
-              <!-- 参演短剧字段 -->
               <div class="actor-drama-field" onclick="openActorDramaModal('赵无极')">
-                <span class="field-label">参演短剧</span>
+                <span class="field-label"><span class="field-emoji">🎬</span> 参演短剧</span>
                 <span class="field-value clickable">1 部 <span class="arrow-icon">›</span></span>
               </div>
             </div>
+            <div class="nft-footer">
+              <button class="button button-amber" style="flex:0.8;" onclick="handleActorStakeClick(this)">
+                <span class="btn-icon">🔓</span> 解质押
+              </button>
+              <button class="button" onclick="handleActorStakeMoreClick(this)">
+                <span class="btn-icon">🔒</span> 追加质押
+              </button>
+            </div>
           </div>
-          <!-- 未质押 -->
+
+          <!-- A-005: 上官婉儿（未质押） -->
           <div class="nft-card" data-staked="false">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80" alt="上官婉儿 NFT" />
@@ -793,6 +1799,11 @@
             </div>
             <div class="nft-body">
               <h4>上官婉儿</h4>
+              <div class="nft-sub">
+                <span>ERC-1155</span>
+                <span class="sub-divider"></span>
+                <span>发行中</span>
+              </div>
               <div class="actor-nft-stats">
                 <div class="actor-nft-stat">
                   <span class="stat-label">发行总量</span>
@@ -813,13 +1824,33 @@
                 </div>
                 <span class="progress-text">已铸造 16.67%</span>
               </div>
-              <!-- 参演短剧字段 -->
+              <div class="actor-nft-divider"></div>
+              <div class="actor-nft-holdings">
+                <div class="hold-item">
+                  <span class="hold-label">我持有</span>
+                  <span class="hold-value">3</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">已质押</span>
+                  <span class="hold-value" style="color:#657586;">0</span>
+                </div>
+                <div class="hold-item">
+                  <span class="hold-label">可操作</span>
+                  <span class="hold-value">3</span>
+                </div>
+              </div>
               <div class="actor-drama-field" onclick="openActorDramaModal('上官婉儿')">
-                <span class="field-label">参演短剧</span>
+                <span class="field-label"><span class="field-emoji">🎬</span> 参演短剧</span>
                 <span class="field-value clickable">1 部 <span class="arrow-icon">›</span></span>
               </div>
             </div>
+            <div class="nft-footer centered">
+              <button class="button" onclick="handleActorStakeClick(this)">
+                <span class="btn-icon">🔒</span> 质押 NFT
+              </button>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -1209,16 +2240,19 @@
 
     // 给所有「铸造短剧NFT」按钮绑定事件
     document.addEventListener('click', function(e) {
-      const btn = e.target.closest('.card-list-item .button');
-      if (btn && btn.textContent.trim() === '铸造短剧NFT') {
-        e.preventDefault();
-        const card = btn.closest('.card-list-item');
-        if (card && card.dataset.status === 'approved') {
-          openMintModal();
-        } else if (card && card.dataset.status === 'pending') {
-          // do nothing, handled by disabled button
-        } else if (card && card.dataset.status === 'rejected') {
-          alert('❌ 该短剧未通过审核，无法铸造。请修改后重新提交。');
+      const btn = e.target.closest('.card-list-item .card-action .button');
+      if (btn) {
+        const text = btn.textContent.trim();
+        if (text.includes('铸造短剧NFT')) {
+          e.preventDefault();
+          const card = btn.closest('.card-list-item');
+          if (card && card.dataset.status === 'approved') {
+            openMintModal();
+          } else if (card && card.dataset.status === 'pending') {
+            // do nothing, handled by disabled button
+          } else if (card && card.dataset.status === 'rejected') {
+            alert('❌ 该短剧未通过审核，无法铸造。请修改后重新提交。');
+          }
         }
       }
     });
@@ -1314,16 +2348,17 @@
           statusEl.className = 'nft-stake-status';
           coverWrap.appendChild(statusEl);
         }
-        statusEl.textContent = '已质押';
+        statusEl.innerHTML = '<span class="status-dot"></span> 已质押';
         statusEl.className = 'nft-stake-status pledged';
 
         const footer = card.querySelector('.nft-footer');
         if (footer) {
+          footer.className = 'nft-footer';
+          footer.style.gap = '';
           footer.innerHTML = `
-            <button class="button" style="background:#f59e0b;flex:1;">解质押</button>
-            <button class="button" style="background:var(--accent);flex:1;" onclick="handleBindActorClick(this)">绑定演员</button>
+            <button class="button button-amber"><span class="btn-icon">🔓</span> 解质押</button>
+            <button class="button" onclick="handleBindActorClick(this)"><span class="btn-icon">🎬</span> 绑定演员</button>
           `;
-          footer.style.gap = '8px';
         }
 
         alert(`✅ 「${currentStakeNft.name}」质押成功！\n\n从此刻起，「${currentStakeNft.name}」短剧每笔销售的 70% 分润将自动累计至您的账户。\n\n可在「短剧NFT」标签页查看质押状态。`);
@@ -1350,8 +2385,9 @@
         // 恢复为单个「质押NFT」按钮
         const footer = card.querySelector('.nft-footer');
         if (footer) {
-          footer.innerHTML = `<button class="button">质押NFT</button>`;
+          footer.className = 'nft-footer centered';
           footer.style.gap = '';
+          footer.innerHTML = `<button class="button"><span class="btn-icon">🔒</span> 质押NFT</button>`;
         }
 
         alert(`✅ 「${currentStakeNft.name}」解质押成功！\n\n已累计分润：${document.getElementById('stakePendingEarned').textContent}\n\n可在收益页中领取累计的分润。`);
@@ -1364,14 +2400,17 @@
       if (e.target === this) closeStakeModal();
     });
 
-    // 给所有「质押NFT」按钮绑定事件（在 tab2 中）
+    // 给所有「质押NFT」/「解质押」按钮绑定事件（在 tab2 中）
     document.addEventListener('click', function(e) {
       const btn = e.target.closest('.nft-card .nft-footer .button');
-      if (btn && (btn.textContent.trim() === '质押NFT' || btn.textContent.trim() === '解质押')) {
-        e.preventDefault();
-        const card = btn.closest('.nft-card');
-        if (card) {
-          openStakeModal(card);
+      if (btn) {
+        const text = btn.textContent.trim();
+        if (text.includes('质押NFT') || text.includes('解质押')) {
+          e.preventDefault();
+          const card = btn.closest('.nft-card');
+          if (card) {
+            openStakeModal(card);
+          }
         }
       }
     });
@@ -1696,17 +2735,10 @@
 
   // === 演员NFT筛选 ===
   function filterActorNFTs(filter, btn) {
-    // 更新按钮状态
     document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
-    
-    // 获取所有NFT卡片
-    const nftCards = document.querySelectorAll('#tab4 .nft-card');
-    
-    // 根据筛选条件显示/隐藏卡片
-    nftCards.forEach(card => {
+    document.querySelectorAll('#tab4 .nft-card').forEach(card => {
       const isStaked = card.dataset.staked === 'true';
-        
       if (filter === 'all') {
         card.style.display = '';
       } else if (filter === 'staked') {
@@ -1715,74 +2747,44 @@
         card.style.display = !isStaked ? '' : 'none';
       }
     });
-    
-    // 更新底部显示内容
-    updateActorNFTFooter(filter);
   }
 
-  // === 更新演员NFT底部显示内容 ===
-  function updateActorNFTFooter(filter) {
-    const nftCards = document.querySelectorAll('#tab4 .nft-card');
-    
-    nftCards.forEach(card => {
-      const isStaked = card.dataset.staked === 'true';
-      
-      // 查找或创建 nft-footer
-      let footer = card.querySelector('.nft-footer');
-      if (!footer) {
-        footer = document.createElement('div');
-        footer.className = 'nft-footer centered';
-        card.appendChild(footer);
-      }
-      
-      // 清除原有内容
-      footer.innerHTML = '';
-      
-      if (filter === 'staked' && !isStaked) {
-        // 已筛选为已质押但当前未质押，不显示任何内容
-        return;
-      } else if (filter === 'unstaked' && isStaked) {
-        // 已筛选为未质押但当前已质押，不显示任何内容
-        return;
-      }
-      
-      if (isStaked) {
-        // 已质押显示"我已质押"和质押数量
-        const container = document.createElement('div');
-        container.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:0 16px;width:100%;';
-        // 为每个卡片使用固定的质押数量
-        const nftId = card.querySelector('.nft-id-badge')?.textContent || '';
-        const stakedAmounts = { '#A-001': 3, '#A-002': 5, '#A-003': 2, '#A-004': 7 };
-        const stakedAmount = stakedAmounts[nftId] || 1;
-        container.innerHTML = `
-          <span style="color:var(--text-muted);font-size:0.95rem;">我已质押</span>
-          <span style="color:var(--accent);font-weight:700;font-size:1.1rem;">${stakedAmount}</span>
-        `;
-        footer.appendChild(container);
-      } else {
-        // 未质押显示"我持有"和按钮
-        const container = document.createElement('div');
-        container.style.cssText = 'display:flex;flex-direction:column;gap:12px;width:100%;';
-        container.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0 16px;">
-            <span style="color:var(--text-muted);font-size:0.95rem;">我持有</span>
-            <span style="color:var(--accent);font-weight:700;font-size:1.1rem;">3</span>
-          </div>
-          <button class="button" style="font-size:0.9rem;padding:10px 20px;width:100%;">质押NFT</button>
-        `;
-        // 绑定点击事件
-        const stakeBtn = container.querySelector('.button');
-        stakeBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          openActorStakeModal(card);
-        });
-        footer.appendChild(container);
-      }
-    });
+  // === 演员NFT质押/解质押 ===
+  function handleActorStakeClick(btn) {
+    const card = btn.closest('.nft-card');
+    if (!card) return;
+    openActorStakeModal(card);
   }
 
-  // === 打开演员NFT质押弹窗 ===
+  function handleActorStakeMoreClick(btn) {
+    const card = btn.closest('.nft-card');
+    if (!card) return;
+    const name = card.querySelector('.nft-body h4')?.textContent || '';
+    const nftId = card.querySelector('.nft-id-badge')?.textContent || '';
+    const holdEl = card.querySelector('.hold-item:last-child .hold-value');
+    const available = holdEl ? parseInt(holdEl.textContent) || 0 : 0;
+    if (available <= 0) {
+      showToast('没有可追加质押的演员NFT');
+      return;
+    }
+    const qty = prompt(`「${name}」当前可追加质押 ${available} 个\n请输入追加质押数量：`, '1');
+    if (!qty) return;
+    const num = parseInt(qty);
+    if (isNaN(num) || num <= 0 || num > available) {
+      showToast(`请输入 1 ~ ${available} 之间的数量`);
+      return;
+    }
+    // 模拟追加质押
+    const stakedEl = card.querySelector('.hold-item:nth-child(2) .hold-value');
+    const operEl = card.querySelector('.hold-item:last-child .hold-value');
+    if (stakedEl && operEl) {
+      stakedEl.textContent = (parseInt(stakedEl.textContent) + num).toString();
+      operEl.textContent = (parseInt(operEl.textContent) - num).toString();
+    }
+    showToast(`✅ 已追加质押 ${num} 个「${name}」演员NFT`);
+  }
+
+  // === 打开演员NFT质押弹窗（复用短剧NFT质押弹窗） ===
   function openActorStakeModal(card) {
     if (!card) return;
     const name = card.querySelector('.nft-body h4')?.textContent || '演员NFT';
@@ -1867,11 +2869,37 @@
         const id = card.querySelector('.nft-id-badge')?.textContent || '';
         if (id === nftId) {
           card.dataset.staked = 'true';
-          // 更新actor-nft-staked中的数量
-          const stakedEl = card.querySelector('.actor-nft-staked .staked-value');
-          if (stakedEl) {
-            const current = parseInt(stakedEl.textContent) || 0;
-            stakedEl.textContent = current + 3;
+          // 更新hold-item中的已质押和可操作数量
+          const items = card.querySelectorAll('.hold-item');
+          if (items.length >= 3) {
+            const stakedVal = items[1].querySelector('.hold-value');
+            const operVal = items[2].querySelector('.hold-value');
+            if (stakedVal && operVal) {
+              stakedVal.textContent = (parseInt(stakedVal.textContent) + 3).toString();
+              operVal.textContent = (parseInt(operVal.textContent) - 3).toString();
+              stakedVal.style.color = '#f59e0b';
+            }
+          }
+          // 添加已质押徽章
+          const coverWrap = card.querySelector('.nft-cover-wrap');
+          if (coverWrap && !coverWrap.querySelector('.nft-stake-status')) {
+            const badge = document.createElement('span');
+            badge.className = 'nft-stake-status pledged';
+            badge.innerHTML = '<span class="status-dot"></span> 已质押';
+            coverWrap.appendChild(badge);
+          }
+          // 更新footer
+          const footer = card.querySelector('.nft-footer');
+          if (footer) {
+            footer.className = 'nft-footer';
+            footer.innerHTML = `
+              <button class="button button-amber" style="flex:0.8;" onclick="handleActorStakeClick(this)">
+                <span class="btn-icon">🔓</span> 解质押
+              </button>
+              <button class="button" onclick="handleActorStakeMoreClick(this)">
+                <span class="btn-icon">🔒</span> 追加质押
+              </button>
+            `;
           }
         }
       });
@@ -1879,12 +2907,6 @@
       const name = document.getElementById('stakeNftName').textContent;
       alert(`✅ 「${name}」演员NFT质押成功！`);
       closeStakeModal();
-      
-      // 刷新当前筛选状态
-      const activeFilter = document.querySelector('#tab4 .filter-pill.active');
-      if (activeFilter) {
-        filterActorNFTs(activeFilter.textContent === '全部' ? 'all' : activeFilter.textContent === '已质押' ? 'staked' : 'unstaked', activeFilter);
-      }
     }, 1000);
   }
 
@@ -1903,29 +2925,39 @@
         const id = card.querySelector('.nft-id-badge')?.textContent || '';
         if (id === nftId) {
           card.dataset.staked = 'false';
-          const stakedEl = card.querySelector('.actor-nft-staked .staked-value');
-          if (stakedEl) stakedEl.textContent = '0';
+          // 更新hold-item：已质押归零，可操作恢复
+          const items = card.querySelectorAll('.hold-item');
+          if (items.length >= 3) {
+            const stakedVal = items[1].querySelector('.hold-value');
+            const operVal = items[2].querySelector('.hold-value');
+            const heldVal = items[0].querySelector('.hold-value');
+            if (stakedVal && operVal && heldVal) {
+              const oldStaked = parseInt(stakedVal.textContent) || 0;
+              stakedVal.textContent = '0';
+              stakedVal.style.color = '#657586';
+              operVal.textContent = (parseInt(operVal.textContent) + oldStaked).toString();
+            }
+          }
+          // 移除已质押徽章
+          const badge = card.querySelector('.nft-stake-status');
+          if (badge) badge.remove();
+          // 更新footer
+          const footer = card.querySelector('.nft-footer');
+          if (footer) {
+            footer.className = 'nft-footer centered';
+            footer.innerHTML = `<button class="button" onclick="handleActorStakeClick(this)"><span class="btn-icon">🔒</span> 质押 NFT</button>`;
+          }
         }
       });
 
       alert(`✅ 「${name}」演员NFT解质押成功！`);
       closeStakeModal();
-      
-      // 刷新当前筛选状态
-      const activeFilter = document.querySelector('#tab4 .filter-pill.active');
-      if (activeFilter) {
-        filterActorNFTs(activeFilter.textContent === '全部' ? 'all' : activeFilter.textContent === '已质押' ? 'staked' : 'unstaked', activeFilter);
-      }
     }, 1000);
   }
 
-  // === 给演员NFT卡片添加点击事件 ===
+  // === 页面加载完成后初始化（占位） ===
   function setupActorNFTClickEvents() {
-    // 初始化时更新一次footer
-    const activeFilter = document.querySelector('#tab4 .filter-pill.active');
-    if (activeFilter) {
-      updateActorNFTFooter(activeFilter.textContent === '全部' ? 'all' : activeFilter.textContent === '已质押' ? 'staked' : 'unstaked');
-    }
+    // 静态HTML已渲染完毕，无需额外操作
   }
 
   // === 参演短剧弹窗 ===
