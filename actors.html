@@ -99,13 +99,16 @@
     .card-body { padding: 26px 24px 22px; display: flex; flex-direction: column; gap: 20px; flex: 1; }
     .card h3 { margin: 0 0 10px; font-size: 1.55rem; line-height: 1.2; }
     .card p { margin: 0; color: var(--text-muted); line-height: 1.8; min-height: 58px; }
-    .actor-summary { background: #f8fbff; border: 1px solid #e6eff7; border-radius: 24px; padding: 18px 18px 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-    .metric-item { display: flex; flex-direction: column; gap: 4px; }
-    .metric-item strong { font-size: 1.15rem; color: var(--text); }
-    .metric-item span { color: var(--text-muted); font-size: 0.92rem; }
-    .card-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
-    .card-price { font-weight: 700; font-size: 1rem; }
-    .button-secondary { min-width: 120px; justify-content: center; }
+    .actor-summary { display: flex; gap: 16px; padding: 10px 0 2px; border-top: 1px solid var(--border); margin-top: auto; }
+    .metric-item { display: flex; align-items: center; gap: 4px; }
+    .metric-item strong { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+    .metric-item span { color: var(--text-muted); font-size: 0.78rem; }
+    .card-bottom { display: flex; flex-direction: column; gap: 12px; }
+    .card-price { font-weight: 800; font-size: 1.3rem; color: var(--accent); letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
+    .card-price::before { content: '售价'; font-weight: 500; font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0; }
+    .card-actions { display: flex; gap: 8px; }
+    .card-actions .button-secondary { flex: 1; min-width: 0; }
+    .button-secondary { min-width: 0; justify-content: center; }
     .banner-1 { background: linear-gradient(135deg, #e0f7ff 0%, #ffffff 100%); }
     .banner-2 { background: linear-gradient(135deg, #ffe4e7 0%, #fff9fb 100%); }
     .banner-3 { background: linear-gradient(135deg, #edeaff 0%, #f9f8ff 100%); }
@@ -124,10 +127,8 @@
           <h1>演员广场</h1>
           <p>每张演员NFT都是一个可以聊天、运营、分润的AI IP。</p>
         </div>
-        <!-- 移除了创建演员按钮 -->
       </div>
 
-      <!-- 添加搜索功能 -->
       <div class="search-container">
         <input type="text" class="search-input" id="actorSearch" placeholder="搜索演员..." />
       </div>
@@ -145,12 +146,15 @@
               <p>未来偶像型AI演员，适合对话与剧情分润场景。</p>
             </div>
             <div class="actor-summary">
-              <div class="metric-item"><strong>98</strong><span>已Mint</span></div>
-              <div class="metric-item"><strong>10</strong><span>可Mint</span></div>
+              <div class="metric-item"><strong>已Mint 98</strong></div>
+              <div class="metric-item"><strong>可Mint 10</strong></div>
             </div>
             <div class="card-bottom">
               <div class="card-price">10 USDC</div>
-              <button class="button-secondary actor-mint-btn" data-name="Luna" data-price="19.2 USDT" data-amount="123" data-tag="记忆修复师" data-wallet="0x1234....fods" data-contract="CharacterNFT.mint()" data-balance="999" data-estimate="12.0 USDT">Mint</button>
+              <div class="card-actions">
+                <button class="button-secondary actor-chat-btn" data-actor="Luna">💬 对话</button>
+                <button class="button-secondary actor-mint-btn" data-name="Luna" data-price="19.2 USDT" data-amount="123" data-tag="记忆修复师" data-wallet="0x1234....fods" data-contract="CharacterNFT.mint()" data-balance="999" data-estimate="12.0 USDT">Mint</button>
+              </div>
             </div>
           </div>
         </article>
@@ -167,12 +171,15 @@
               <p>轻社交型NFT演员，支持 AI 聊天、剧情运营与收益分成。</p>
             </div>
             <div class="actor-summary">
-              <div class="metric-item"><strong>98</strong><span>已Mint</span></div>
-              <div class="metric-item"><strong>10</strong><span>可Mint</span></div>
+              <div class="metric-item"><strong>已Mint 98</strong></div>
+              <div class="metric-item"><strong>可Mint 10</strong></div>
             </div>
             <div class="card-bottom">
               <div class="card-price">10 USDC</div>
-              <button class="button-secondary actor-mint-btn" data-name="Luna" data-price="19.2 USDT" data-amount="123" data-tag="记忆修复师" data-wallet="0x1234....fods" data-contract="CharacterNFT.mint()" data-balance="999" data-estimate="12.0 USDT">Mint</button>
+              <div class="card-actions">
+                <button class="button-secondary actor-chat-btn" data-actor="Luna">💬 对话</button>
+                <button class="button-secondary actor-mint-btn" data-name="Luna" data-price="19.2 USDT" data-amount="123" data-tag="记忆修复师" data-wallet="0x1234....fods" data-contract="CharacterNFT.mint()" data-balance="999" data-estimate="12.0 USDT">Mint</button>
+              </div>
             </div>
           </div>
         </article>
@@ -189,12 +196,15 @@
               <p>多场景IP演员，支持创作者分润与粉丝互动。</p>
             </div>
             <div class="actor-summary">
-              <div class="metric-item"><strong>98</strong><span>已Mint</span></div>
-              <div class="metric-item"><strong>10</strong><span>可Mint</span></div>
+              <div class="metric-item"><strong>已Mint 98</strong></div>
+              <div class="metric-item"><strong>可Mint 10</strong></div>
             </div>
             <div class="card-bottom">
               <div class="card-price">10 USDC</div>
-              <button class="button-secondary actor-mint-btn" data-name="Luna" data-price="19.2 USDT" data-amount="123" data-tag="记忆修复师" data-wallet="0x1234....fods" data-contract="CharacterNFT.mint()" data-balance="999" data-estimate="12.0 USDT">Mint</button>
+              <div class="card-actions">
+                <button class="button-secondary actor-chat-btn" data-actor="Luna">💬 对话</button>
+                <button class="button-secondary actor-mint-btn" data-name="Luna" data-price="19.2 USDT" data-amount="123" data-tag="记忆修复师" data-wallet="0x1234....fods" data-contract="CharacterNFT.mint()" data-balance="999" data-estimate="12.0 USDT">Mint</button>
+              </div>
             </div>
           </div>
         </article>
@@ -232,6 +242,7 @@
 
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
+  <script src="ai-chat.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const searchInput = document.getElementById('actorSearch');
@@ -240,6 +251,7 @@
       const mintModalClose = document.getElementById('mintModalClose');
       const mintCancel = document.getElementById('mintCancel');
       const mintButtons = document.querySelectorAll('.actor-mint-btn');
+      const chatButtons = document.querySelectorAll('.actor-chat-btn');
       const mintModalSubtitle = document.getElementById('mintModalSubtitle');
       const mintModalImage = document.getElementById('mintModalImage');
       const mintModalTag = document.getElementById('mintModalTag');
@@ -247,14 +259,23 @@
       const mintContract = document.getElementById('mintContract');
       const mintBalance = document.getElementById('mintBalance');
       const mintEstimate = document.getElementById('mintEstimate');
+      
+      // AI 对话按钮事件
+      chatButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const actorName = this.dataset.actor || 'Luna';
+          const card = this.closest('.card');
+          const avatarSrc = card.querySelector('.actor-avatar img')?.src || '';
+          openAIChat(actorName, avatarSrc);
+        });
+      });
 
       searchInput.addEventListener('input', function() {
         const searchTerm = this.value.toLowerCase();
-
         cards.forEach(card => {
           const actorName = card.querySelector('h3').textContent.toLowerCase();
           const actorDescription = card.querySelector('p').textContent.toLowerCase();
-
           if (actorName.includes(searchTerm) || actorDescription.includes(searchTerm)) {
             card.style.display = 'flex';
           } else {
@@ -280,13 +301,11 @@
         mintModal.setAttribute('aria-hidden', 'false');
       }
 
-      // 阻止 Mint 按钮点击事件冒泡，避免触发卡片跳转
       mintButtons.forEach(button => {
         button.addEventListener('click', (event) => {
           event.stopPropagation();
           const card = button.closest('.card');
           const imageSrc = card.querySelector('.actor-avatar img')?.src || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80';
-
           openMintModal({
             name: button.dataset.name || 'Luna',
             price: button.dataset.price || '19.2 USDT',
@@ -301,7 +320,6 @@
         });
       });
 
-      // 点击演员卡片跳转到演员主页
       cards.forEach(card => {
         card.addEventListener('click', () => {
           const actorName = card.dataset.actor || card.querySelector('h3').textContent.trim();
@@ -309,18 +327,12 @@
           const avatarSrc = card.querySelector('.actor-avatar img')?.src || '';
           const description = card.querySelector('p')?.textContent || '';
           const price = card.querySelector('.card-price')?.textContent || '10 USDC';
-          const minted = card.querySelector('.metric-item:nth-child(1) strong')?.textContent || '0';
-          const available = card.querySelector('.metric-item:nth-child(2) strong')?.textContent || '0';
-
-          // 将演员数据通过 URL 参数传递到演员主页
+          const minted = card.querySelector('.metric-item:nth-child(1) strong')?.textContent.replace(/[^0-9]/g, '') || '0';
+          const available = card.querySelector('.metric-item:nth-child(2) strong')?.textContent.replace(/[^0-9]/g, '') || '0';
           const params = new URLSearchParams({
-            id: actorId,
-            name: actorName,
-            avatar: avatarSrc,
-            description: description,
-            price: price,
-            minted: minted,
-            available: available
+            id: actorId, name: actorName, avatar: avatarSrc,
+            description: description, price: price,
+            minted: minted, available: available
           });
           window.location.href = `actor-profile.html?${params.toString()}`;
         });
@@ -330,18 +342,12 @@
       mintCancel.addEventListener('click', closeMintModal);
       const mintConfirm = document.getElementById('mintConfirm');
       mintModal.addEventListener('click', event => {
-        if (event.target === mintModal) {
-          closeMintModal();
-        }
+        if (event.target === mintModal) closeMintModal();
       });
-
       document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && mintModal.classList.contains('active')) {
-          closeMintModal();
-        }
+        if (event.key === 'Escape' && mintModal.classList.contains('active')) closeMintModal();
       });
 
-      // Confirm mint flow: show loading, update counts, show success actions
       function setButtonLoading(btn, loading) {
         if (loading) {
           btn.dataset.orig = btn.innerHTML;
@@ -357,52 +363,36 @@
         try {
           const mintedEl = card.querySelector('.actor-summary .metric-item:nth-child(1) strong');
           const availEl = card.querySelector('.actor-summary .metric-item:nth-child(2) strong');
-
           const minted = parseInt(mintedEl.textContent.replace(/[^0-9]/g, '')) || 0;
           const avail = parseInt(availEl.textContent.replace(/[^0-9]/g, '')) || 0;
-
-          mintedEl.textContent = minted + 1;
-          availEl.textContent = Math.max(0, avail - 1);
-        } catch (e) {
-          // ignore
-        }
+          mintedEl.textContent = '已Mint ' + (minted + 1);
+          availEl.textContent = '可Mint ' + Math.max(0, avail - 1);
+        } catch (e) {}
       }
 
       function showSuccessInModal(card, data) {
         const headerTitle = document.getElementById('mintModalTitle');
         const body = mintModal.querySelector('.modal-body');
         const actions = mintModal.querySelector('.modal-actions');
-
         headerTitle.textContent = 'Mint 成功';
-        body.innerHTML = `
-          <div style="padding:18px 12px;">
-            <p style="margin:0 0 8px;color:var(--text);font-weight:600">已成功为 <strong>${data.name}</strong> 支付并 Mint</p>
-            <p style="margin:0 0 12px;color:var(--text-muted);">交易已提交，若为链上操作请在钱包或区块浏览器查看状态。</p>
-            <div style="display:flex;gap:12px;flex-wrap:wrap">
-              <button class=\"button\" id=\"viewNftBtn\">查看我的 NFT</button>
-              <button class=\"button-secondary\" id=\"continueBtn\">继续浏览</button>
-            </div>
-          </div>`;
-
+        body.innerHTML = `<div style="padding:18px 12px;">
+          <p style="margin:0 0 8px;color:var(--text);font-weight:600">已成功为 <strong>${data.name}</strong> 支付并 Mint</p>
+          <p style="margin:0 0 12px;color:var(--text-muted);">交易已提交，若为链上操作请在钱包或区块浏览器查看状态。</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="button" id="viewNftBtn">查看我的 NFT</button>
+            <button class="button-secondary" id="continueBtn">继续浏览</button>
+          </div>
+        </div>`;
         actions.style.display = 'none';
-
-        // Wire follow-up buttons
         setTimeout(() => {
-          const viewBtn = document.getElementById('viewNftBtn');
-          const contBtn = document.getElementById('continueBtn');
-          if (viewBtn) viewBtn.addEventListener('click', () => { alert('打开「我的 NFT」页（示意）'); closeMintModal(); });
-          if (contBtn) contBtn.addEventListener('click', () => { closeMintModal(); });
+          document.getElementById('viewNftBtn')?.addEventListener('click', () => { alert('打开「我的 NFT」页（示意）'); closeMintModal(); });
+          document.getElementById('continueBtn')?.addEventListener('click', () => { closeMintModal(); });
         }, 50);
       }
 
       mintConfirm.addEventListener('click', () => {
-        // find active card data (from current modal image src match)
         setButtonLoading(mintConfirm, true);
-
-        // small simulated delay to mimic network/tx
         setTimeout(() => {
-          // update counts on the card that opened modal
-          // try to find the card whose image matches modal image
           const modalImg = mintModal.querySelector('#mintModalImage');
           const imgSrc = modalImg?.src || '';
           let targetCard = null;
@@ -410,19 +400,13 @@
             const aImg = c.querySelector('.actor-avatar img');
             if (aImg && aImg.src === imgSrc) targetCard = c;
           });
-
           if (targetCard) updateCardCounts(targetCard);
-
-          // show success UI
-          const data = {
-            name: mintModalSubtitle.textContent.split('·')[0].trim() || 'Luna'
-          };
+          const data = { name: mintModalSubtitle.textContent.split('·')[0].trim() || 'Luna' };
           showSuccessInModal(targetCard, data);
           setButtonLoading(mintConfirm, false);
         }, 1200);
       });
     });
   </script>
-  <script src="auth.js"></script>
 </body>
 </html>

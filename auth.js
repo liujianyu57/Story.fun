@@ -12,6 +12,8 @@ const PRIVY_MOCK_USER = {
   avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
   wallet: '0x7A2b...3fD8',
   isLoggedIn: false,
+  // 用户持有的演员 NFT 列表（持有 1 个及以上即可与任意演员进行 AI 对话）
+  actorNfts: ['Luna'], // 模拟：默认持有 Luna 的 NFT
 };
 
 // ============================================================

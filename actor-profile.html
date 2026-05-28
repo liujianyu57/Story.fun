@@ -509,7 +509,7 @@
           <a class="action-btn primary" href="actors.html" id="mintBtn">
             <span class="icon">🎭</span> Mint 此演员
           </a>
-          <button class="action-btn" onclick="showToast('💬 AI 对话功能开发中')">
+          <button class="action-btn" id="aiChatBtn">
             <span class="icon">💬</span> AI 对话
           </button>
         </div>
@@ -591,6 +591,7 @@
 
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
+  <script src="ai-chat.js"></script>
   <script>
     // ============================================================
     //  演员数据（模拟链上数据）
@@ -770,6 +771,13 @@
       const progressPct = (actor.minted / actor.totalSupply) * 100;
       document.getElementById('progressFill').style.width = progressPct.toFixed(2) + '%';
       document.getElementById('progressText').textContent = `已铸造 ${progressPct.toFixed(1)}% (${actor.minted.toLocaleString()} / ${actor.totalSupply.toLocaleString()})`;
+
+      // 绑定 AI 对话按钮
+      const chatBtn = document.getElementById('aiChatBtn');
+      chatBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openAIChat(actor.name, actor.avatar);
+      });
 
       // 更新参演短剧
       renderDramas(actor);
