@@ -113,10 +113,63 @@
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     /* ===== End Auth Styles ===== */
 
+    /* ===== 原型状态切换器 ===== */
+    .proto-toggle { position: fixed; top: 50%; right: 0; transform: translateY(-50%); z-index: 999; display: flex; flex-direction: column; align-items: center; gap: 4px; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(12px); border-radius: 14px 0 0 14px; padding: 14px 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.1); border-right: none; }
+    .proto-toggle-label { font-size: 0.65rem; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; font-weight: 600; writing-mode: vertical-lr; }
+    .proto-toggle-btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 14px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600; transition: all 0.2s ease; white-space: nowrap; min-width: 80px; background: rgba(255, 255, 255, 0.07); color: rgba(255, 255, 255, 0.5); }
+    .proto-toggle-btn:hover { background: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.8); }
+    .proto-toggle-btn.active { background: var(--accent); color: #fff; box-shadow: 0 2px 12px rgba(0, 179, 136, 0.4); }
+    .proto-toggle-btn .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .proto-toggle-btn.active .dot { background: #fff; }
+    .proto-toggle-btn:not(.active) .dot { background: rgba(255, 255, 255, 0.25); }
+
+    /* 挖矿未开始状态样式 */
+    .mining-inactive .earning-value,
+    .mining-inactive .earnings-summary strong,
+    .mining-inactive .pool-share-main strong,
+    .mining-inactive .pool-share-item strong,
+    .mining-inactive .detail-right span:first-child {
+      filter: grayscale(1);
+      opacity: 0.35;
+    }
+    .mining-inactive .earning-card,
+    .mining-inactive .earnings-summary,
+    .mining-inactive .pool-share-panel,
+    .mining-inactive .pool-share-item,
+    .mining-inactive .details-item {
+      position: relative;
+    }
+    .mining-inactive .earning-card::after,
+    .mining-inactive .earnings-summary::after,
+    .mining-inactive .pool-share-panel::after,
+    .mining-inactive .pool-share-item::after,
+    .mining-inactive .details-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: rgba(247, 251, 255, 0.5);
+      pointer-events: none;
+    }
+
+    /* 未开始横幅提示 */
+    .mining-inactive .earnings-summary .button,
+    .mining-inactive .mining-active-content { display: none; }
+
+    .mining-notice { display: none; text-align: center; padding: 60px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 28px; box-shadow: var(--shadow); }
+    .mining-inactive .mining-notice { display: block; }
+    .mining-notice-icon { font-size: 3rem; margin-bottom: 16px; }
+    .mining-notice h3 { margin: 0 0 8px; font-size: 1.4rem; color: var(--text); }
+    .mining-notice p { margin: 0; color: var(--text-muted); line-height: 1.7; }
+
+    .mining-inactive .details-panel { display: none; }
+
     @media (max-width: 960px) {
       .grid-2, .grid-4,
       .earnings-grid,
       .pool-share-grid { grid-template-columns: 1fr; }
+      .proto-toggle { padding: 10px 8px; }
+      .proto-toggle-btn { min-width: 60px; font-size: 0.75rem; padding: 8px 10px; }
     }
   </style>
 </head>
@@ -141,125 +194,163 @@
         </div>
       </div>
 
-      <div class="earnings-grid">
-        <article class="earning-card">
-          <div>
-            <div class="earning-type">创作者池</div>
-            <div class="earning-note">预估本期收益</div>
-          </div>
-          <div class="earning-value">2.50 STORY</div>
-          <div class="earning-meta">创作者价值：50</div>
-        </article>
-        <article class="earning-card">
-          <div>
-            <div class="earning-type">观众池</div>
-            <div class="earning-note">预估本期收益</div>
-          </div>
-          <div class="earning-value">1.75 STORY</div>
-          <div class="earning-meta">互动价值：35</div>
-        </article>
-        <article class="earning-card">
-          <div>
-            <div class="earning-type">见证者池</div>
-            <div class="earning-note">预估本期收益</div>
-          </div>
-          <div class="earning-value">0.00 STORY</div>
-          <div class="earning-meta">质押池份额：0</div>
-        </article>
-        <article class="earning-card">
-          <div>
-            <div class="earning-type">邀请者池</div>
-            <div class="earning-note">预估本期收益</div>
-          </div>
-          <div class="earning-value">1.00 STORY</div>
-          <div class="earning-meta">邀请价值：20</div>
-        </article>
+      <!-- 挖矿未开始提示（仅在未开始状态显示） -->
+      <div class="mining-notice">
+        <div class="mining-notice-icon">⛏️</div>
+        <h3>挖矿尚未开始</h3>
+        <p>本期挖矿活动尚未启动，请耐心等待。启动后将展示预估收益与矿池分配数据。</p>
       </div>
 
-      <div class="earnings-summary">
-        <span>总可领取奖励</span>
-        <strong>5.25 STORY</strong>
-        <div class="summary-actions">
-          <button class="button">领取收益</button>
-          <button class="button-secondary">结算记录</button>
+      <div class="mining-active-content">
+        <div class="earnings-grid">
+          <article class="earning-card">
+            <div>
+              <div class="earning-type">创作者池</div>
+              <div class="earning-note">预估本期收益</div>
+            </div>
+            <div class="earning-value">2.50 STORY</div>
+            <div class="earning-meta">创作者价值：50</div>
+          </article>
+          <article class="earning-card">
+            <div>
+              <div class="earning-type">观众池</div>
+              <div class="earning-note">预估本期收益</div>
+            </div>
+            <div class="earning-value">1.75 STORY</div>
+            <div class="earning-meta">互动价值：35</div>
+          </article>
+          <article class="earning-card">
+            <div>
+              <div class="earning-type">见证者池</div>
+              <div class="earning-note">预估本期收益</div>
+            </div>
+            <div class="earning-value">0.00 STORY</div>
+            <div class="earning-meta">质押池份额：0</div>
+          </article>
+          <article class="earning-card">
+            <div>
+              <div class="earning-type">邀请者池</div>
+              <div class="earning-note">预估本期收益</div>
+            </div>
+            <div class="earning-value">1.00 STORY</div>
+            <div class="earning-meta">邀请价值：20</div>
+          </article>
         </div>
-      </div>
 
-      <div class="pool-section">
-        <div class="section-label">
-          <div>
-            <h2>本期矿池</h2>
-            <p>总矿池和各池分配比例清晰展示，帮助你快速了解收益结构。</p>
-          </div>
+        <div class="earnings-summary">
+          <span>总可领取奖励</span>
+          <strong>5.25 STORY</strong>
           <div class="summary-actions">
+            <button class="button">领取收益</button>
+            <button class="button-secondary">结算记录</button>
           </div>
         </div>
 
-        <div class="pool-share-panel">
-          <h3>当前总矿池</h3>
-          <div class="pool-share-main">
-            <div class="pool-total-label">总矿池</div>
-            <strong>10,000 STORY</strong>
+        <div class="pool-section">
+          <div class="section-label">
+            <div>
+              <h2>本期矿池</h2>
+              <p>总矿池和各池分配比例清晰展示，帮助你快速了解收益结构。</p>
+            </div>
+            <div class="summary-actions">
+            </div>
           </div>
-          <div class="pool-share-grid">
-            <div class="pool-share-item">
-              <div>创作者池 (50%)</div>
-              <strong>5,000 STORY</strong>
+
+          <div class="pool-share-panel">
+            <h3>当前总矿池</h3>
+            <div class="pool-share-main">
+              <div class="pool-total-label">总矿池</div>
+              <strong>10,000 STORY</strong>
             </div>
-            <div class="pool-share-item">
-              <div>观众池 (20%)</div>
-              <strong>2,000 STORY</strong>
-            </div>
-            <div class="pool-share-item">
-              <div>见证者池 (20%)</div>
-              <strong>2,000 STORY</strong>
-            </div>
-            <div class="pool-share-item">
-              <div>邀请者池 (10%)</div>
-              <strong>1,000 STORY</strong>
+            <div class="pool-share-grid">
+              <div class="pool-share-item">
+                <div>创作者池 (50%)</div>
+                <strong>5,000 STORY</strong>
+              </div>
+              <div class="pool-share-item">
+                <div>观众池 (20%)</div>
+                <strong>2,000 STORY</strong>
+              </div>
+              <div class="pool-share-item">
+                <div>见证者池 (20%)</div>
+                <strong>2,000 STORY</strong>
+              </div>
+              <div class="pool-share-item">
+                <div>邀请者池 (10%)</div>
+                <strong>1,000 STORY</strong>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="details-panel">
-        <h3>价值分明细</h3>
-        <div class="details-list">
-          <div class="details-item">
-            <div class="detail-left">
-              <div class="detail-title">付费解锁第4集</div>
-              <div class="detail-sub">观众池</div>
+        <div class="details-panel">
+          <h3>价值分明细</h3>
+          <div class="details-list">
+            <div class="details-item">
+              <div class="detail-left">
+                <div class="detail-title">付费解锁第4集</div>
+                <div class="detail-sub">观众池</div>
+              </div>
+              <div class="detail-right">
+                <span>+20</span>
+                <span>2026-04-29 09:15</span>
+              </div>
             </div>
-            <div class="detail-right">
-              <span>+20</span>
-              <span>2026-04-29 09:15</span>
+            <div class="details-item">
+              <div class="detail-left">
+                <div class="detail-title">评分（1011）</div>
+                <div class="detail-sub">观众池</div>
+              </div>
+              <div class="detail-right">
+                <span>+20</span>
+                <span>2026-04-29 09:15</span>
+              </div>
             </div>
-          </div>
-          <div class="details-item">
-            <div class="detail-left">
-              <div class="detail-title">评分（1011）</div>
-              <div class="detail-sub">观众池</div>
-            </div>
-            <div class="detail-right">
-              <span>+20</span>
-              <span>2026-04-29 09:15</span>
-            </div>
-          </div>
-          <div class="details-item">
-            <div class="detail-left">
-              <div class="detail-title">完播第1集</div>
-              <div class="detail-sub">观众池</div>
-            </div>
-            <div class="detail-right">
-              <span>+20</span>
-              <span>2026-04-29 09:15</span>
+            <div class="details-item">
+              <div class="detail-left">
+                <div class="detail-title">完播第1集</div>
+                <div class="detail-sub">观众池</div>
+              </div>
+              <div class="detail-right">
+                <span>+20</span>
+                <span>2026-04-29 09:15</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
   </div>
+
+  <!-- 原型状态切换器（右侧浮动） -->
+  <div class="proto-toggle" id="protoToggle">
+    <div class="proto-toggle-label">原型</div>
+    <button class="proto-toggle-btn active" data-state="active" onclick="setMiningState('active')">
+      <span class="dot"></span> 进行中
+    </button>
+    <button class="proto-toggle-btn" data-state="inactive" onclick="setMiningState('inactive')">
+      <span class="dot"></span> 未开始
+    </button>
+  </div>
+
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
+  <script>
+    // 挖矿页面原型状态切换
+    function setMiningState(state) {
+      const el = document.querySelector('section');
+      const btns = document.querySelectorAll('.proto-toggle-btn');
+      
+      if (state === 'inactive') {
+        el.classList.add('mining-inactive');
+        btns.forEach(b => b.classList.remove('active'));
+        document.querySelector('.proto-toggle-btn[data-state="inactive"]').classList.add('active');
+      } else {
+        el.classList.remove('mining-inactive');
+        btns.forEach(b => b.classList.remove('active'));
+        document.querySelector('.proto-toggle-btn[data-state="active"]').classList.add('active');
+      }
+    }
+  </script>
 </body>
 </html>

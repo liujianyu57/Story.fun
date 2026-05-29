@@ -135,6 +135,67 @@
     .cover-upload p { color: var(--text-muted); font-size: 0.95rem; }
     .cover-upload p strong { color: var(--accent); }
 
+    /* ==== Batch Video Upload Styles ==== */
+    .batch-upload-zone { position: relative; border: 2px dashed var(--border); border-radius: 18px; padding: 28px 24px; text-align: center; cursor: pointer; transition: all 0.3s ease; background: #f8fbff; margin-bottom: 24px; }
+
+    .batch-upload-zone:hover,
+    .batch-upload-zone.drag-over { border-color: var(--accent); background: var(--accent-soft); }
+    .batch-upload-zone .upload-icon { font-size: 3rem; color: var(--text-muted); margin-bottom: 12px; }
+    .batch-upload-zone p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+    .batch-upload-zone p strong { color: var(--accent); }
+    .batch-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .batch-upload-hint { display: flex; justify-content: center; gap: 24px; margin-top: 12px; flex-wrap: wrap; }
+    .batch-upload-hint span { font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+
+    /* Upload Queue */
+    .upload-queue { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .upload-queue-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+    .upload-queue-header h4 { font-size: 1rem; font-weight: 600; }
+    .upload-queue-header .queue-count { color: var(--text-muted); font-size: 0.88rem; }
+    .upload-queue-empty { text-align: center; padding: 32px 16px; color: var(--text-muted); font-size: 0.95rem; }
+
+    /* Upload Item */
+    .upload-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border: 1px solid var(--border); border-radius: 16px; background: #fafcff; transition: all 0.2s ease; }
+    .upload-item:hover { border-color: rgba(0,179,136,0.25); box-shadow: 0 2px 8px rgba(0,179,136,0.06); }
+    .upload-item .thumb { width: 48px; height: 48px; border-radius: 10px; background: rgba(0,0,0,0.04); display: grid; place-items: center; font-size: 1.4rem; flex-shrink: 0; overflow: hidden; position: relative; }
+    .upload-item .thumb video,
+    .upload-item .thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+    .upload-item .thumb .file-type-badge { position: absolute; bottom: 2px; right: 2px; font-size: 0.6rem; background: rgba(0,0,0,0.6); color: #fff; padding: 1px 5px; border-radius: 4px; line-height: 1.4; }
+    .upload-item .info { flex: 1; min-width: 0; }
+    .upload-item .info .name { font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .upload-item .info .meta { font-size: 0.82rem; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .upload-item .info .progress-bar { width: 100%; height: 4px; background: var(--border); border-radius: 999px; margin-top: 8px; overflow: hidden; }
+    .upload-item .info .progress-bar .progress-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.3s ease; width: 0%; }
+    .upload-item .info .progress-bar .progress-fill.error { background: var(--danger); }
+    .upload-item .info .progress-bar .progress-fill.paused { background: var(--warning); }
+    .upload-item .item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .upload-item .status-badge { font-size: 0.75rem; padding: 3px 10px; border-radius: 999px; font-weight: 500; white-space: nowrap; }
+    .upload-item .status-badge.uploading { background: rgba(0,179,136,0.1); color: var(--accent); }
+    .upload-item .status-badge.done { background: rgba(34,197,94,0.1); color: #16a34a; }
+    .upload-item .status-badge.failed { background: rgba(244,91,105,0.1); color: var(--danger); }
+    .upload-item .status-badge.waiting { background: rgba(255,159,44,0.1); color: var(--warning); }
+
+    /* Episode Title Editor Inline */
+    .upload-item .title-edit { display: flex; align-items: center; gap: 6px; }
+    .upload-item .title-edit input { padding: 4px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; font-family: inherit; outline: none; width: 160px; transition: border-color 0.2s; background: var(--surface); }
+    .upload-item .title-edit input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+
+    /* Batch toolbar */
+    .batch-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 16px 0; margin-top: 4px; }
+    .batch-toolbar .btn-tool { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
+    .batch-toolbar .btn-tool:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .batch-toolbar .btn-tool.danger:hover { border-color: var(--danger); color: var(--danger); background: rgba(244,91,105,0.06); }
+    .batch-toolbar .btn-tool:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Sortable dragging */
+    .upload-item.dragging { opacity: 0.4; border-color: var(--accent); }
+    .upload-item.drag-over-target { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+    .drag-handle { cursor: grab; color: var(--text-muted); font-size: 1rem; user-select: none; }
+    .drag-handle:active { cursor: grabbing; }
+
+    /* Episode number on the far left */
+    .upload-item .episode-num { width: 28px; text-align: center; font-weight: 700; font-size: 0.95rem; color: var(--accent); flex-shrink: 0; }
+
     /* Tags / Genres */
     .tag-options { display: flex; flex-wrap: wrap; gap: 10px; }
     .tag-option { padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.2s ease; }
@@ -277,71 +338,52 @@
       </div>
       <div class="form-panel-footer">
         <span></span>
-        <button class="button" onclick="document.getElementById('step1').style.display='none';document.getElementById('step2').style.display='block';this.closest('.steps-bar').querySelectorAll('.step-indicator')[0].classList.add('done');this.closest('.steps-bar').querySelectorAll('.step-indicator')[1].classList.add('active');">下一步：剧集管理 →</button>
+        <button class="button" onclick="goToStep(2)">下一步：剧集管理 →</button>
       </div>
     </div>
 
-    <!-- Step 2: 剧集管理 -->
+    <!-- Step 2: 剧集管理 (批量上传) -->
     <div class="form-panel" id="step2" style="display:none;">
       <div class="form-panel-header">
         <h3>🎬 剧集管理</h3>
-        <p>添加短剧的剧集信息，每集可单独设置标题与简介。</p>
+        <p>批量上传视频文件，系统将自动按文件名排序生成剧集列表。支持拖拽排序、删除、编辑标题等操作。</p>
       </div>
       <div class="form-panel-body">
-        <div class="form-row full">
-          <div class="form-group">
-            <label>总集数</label>
-            <input type="number" placeholder="例如：30" min="1" max="999" />
+        <!-- Batch Upload Zone -->
+        <div class="batch-upload-zone" id="batchUploadZone">
+          <div class="upload-icon">📹</div>
+          <p>点击上传，提交后会按视频名称自动排序</p>
+          <div class="batch-upload-hint">
+            <span>限制文件类型 mp4， flv， wmv， asf， mkv， avi， rm， rmvb， mpg， mpeg， mov， webm</span>
+            <span>限制单集时长不短于30秒，整剧总时长大于10分钟，文件大小不超过3GB</span>
           </div>
+
+          <input type="file" id="videoFileInput" accept="video/mp4,video/x-flv,video/x-ms-wmv,video/x-ms-asf,video/x-matroska,video/avi,video/x-msvideo,application/vnd.rn-realmedia,video/x-pn-realvideo,video/mpeg,video/quicktime,video/webm" multiple />
+
         </div>
-        <div style="margin-bottom:20px;">
-          <div class="list-item">
-            <span class="item-index">1</span>
-            <div class="item-content">
-              <h4>第一集</h4>
-              <p>输入剧集标题（可选）</p>
-            </div>
-            <div class="item-actions">
-              <button class="btn-icon" title="编辑">✎</button>
-              <button class="btn-icon danger" title="删除">✕</button>
-            </div>
+
+        <!-- Upload Queue -->
+        <div id="uploadQueue" class="upload-queue" style="display:none;">
+          <div class="upload-queue-header">
+            <h4>📄 已添加的视频 <span class="queue-count" id="queueCount">(0 个文件)</span></h4>
           </div>
-          <div class="list-item">
-            <span class="item-index">2</span>
-            <div class="item-content">
-              <h4>第二集</h4>
-              <p>输入剧集标题（可选）</p>
-            </div>
-            <div class="item-actions">
-              <button class="btn-icon" title="编辑">✎</button>
-              <button class="btn-icon danger" title="删除">✕</button>
-            </div>
-          </div>
-          <div class="list-item">
-            <span class="item-index">3</span>
-            <div class="item-content">
-              <h4>第三集</h4>
-              <p>输入剧集标题（可选）</p>
-            </div>
-            <div class="item-actions">
-              <button class="btn-icon" title="编辑">✎</button>
-              <button class="btn-icon danger" title="删除">✕</button>
-            </div>
-          </div>
-          <button class="btn-add">+ 添加剧集</button>
+          <div id="queueItems"></div>
+          <div id="queueEmpty" class="upload-queue-empty">暂无视频文件，请点击上方区域添加</div>
         </div>
-        <div class="form-row full">
-          <div class="form-group">
-            <label>单集时长 <span class="hint">（分钟）</span></label>
-            <input type="number" placeholder="例如：10" min="1" max="120" />
-          </div>
+
+            <!-- Batch Toolbar -->
+        <div class="batch-toolbar" id="batchToolbar" style="display:none;">
+          <span style="font-size:0.82rem;color:var(--text-muted);" id="uploadStats"></span>
         </div>
+
       </div>
+
       <div class="form-panel-footer">
-        <button class="button-ghost" onclick="document.getElementById('step2').style.display='none';document.getElementById('step1').style.display='block';this.closest('.steps-bar').querySelectorAll('.step-indicator')[1].classList.remove('active');this.closest('.steps-bar').querySelectorAll('.step-indicator')[1].classList.remove('done');">← 上一步</button>
-        <button class="button" onclick="document.getElementById('step2').style.display='none';document.getElementById('step3').style.display='block';this.closest('.steps-bar').querySelectorAll('.step-indicator')[1].classList.add('done');this.closest('.steps-bar').querySelectorAll('.step-indicator')[2].classList.add('active');">下一步：角色管理 →</button>
+        <button class="button-ghost" onclick="goToStep(1)">← 上一步</button>
+        <button class="button" onclick="goToStep(3)">下一步：角色管理 →</button>
       </div>
     </div>
+
 
     <!-- Step 3: 角色管理 -->
     <div class="form-panel" id="step3" style="display:none;">
@@ -397,8 +439,8 @@
         </div>
       </div>
       <div class="form-panel-footer">
-        <button class="button-ghost" onclick="document.getElementById('step3').style.display='none';document.getElementById('step2').style.display='block';this.closest('.steps-bar').querySelectorAll('.step-indicator')[2].classList.remove('active');this.closest('.steps-bar').querySelectorAll('.step-indicator')[2].classList.remove('done');">← 上一步</button>
-        <button class="button" onclick="document.getElementById('step3').style.display='none';document.getElementById('step4').style.display='block';this.closest('.steps-bar').querySelectorAll('.step-indicator')[2].classList.add('done');this.closest('.steps-bar').querySelectorAll('.step-indicator')[3].classList.add('active');">下一步：定价 →</button>
+        <button class="button-ghost" onclick="goToStep(2)">← 上一步</button>
+        <button class="button" onclick="goToStep(4)">下一步：定价 →</button>
       </div>
     </div>
 
@@ -458,7 +500,7 @@
         </div>
       </div>
       <div class="form-panel-footer">
-        <button class="button-ghost" onclick="document.getElementById('step4').style.display='none';document.getElementById('step3').style.display='block';this.closest('.steps-bar').querySelectorAll('.step-indicator')[3].classList.remove('active');this.closest('.steps-bar').querySelectorAll('.step-indicator')[3].classList.remove('done');">← 上一步</button>
+        <button class="button-ghost" onclick="goToStep(3)">← 上一步</button>
         <button class="button" style="padding:12px 36px;">提交审核</button>
       </div>
     </div>
@@ -466,5 +508,422 @@
 
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
+
+<script>
+/**
+ * Step Navigation
+ */
+function goToStep(num) {
+  const steps = ['step1','step2','step3','step4'];
+  const indicators = document.querySelectorAll('.step-indicator');
+  steps.forEach((id, i) => {
+    document.getElementById(id).style.display = i + 1 === num ? 'block' : 'none';
+    if (i + 1 < num) {
+      indicators[i].classList.add('done');
+      indicators[i].classList.remove('active');
+    } else if (i + 1 === num) {
+      indicators[i].classList.add('active');
+      indicators[i].classList.remove('done');
+    } else {
+      indicators[i].classList.remove('active', 'done');
+    }
+  });
+}
+
+/**
+ * Batch Video Upload Engine
+ */
+const batchUpload = {
+  files: [],
+  idCounter: 0,
+  isUploading: false,
+
+  init() {
+    const zone = document.getElementById('batchUploadZone');
+    const input = document.getElementById('videoFileInput');
+
+    zone.addEventListener('click', (e) => {
+      if (e.target.tagName !== 'INPUT') input.click();
+    });
+
+    input.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        this.addFiles(e.target.files);
+        input.value = '';
+      }
+    });
+
+    zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length > 0) this.addFiles(e.dataTransfer.files);
+    });
+
+    document.addEventListener('dragover', (e) => e.preventDefault());
+    document.addEventListener('drop', (e) => e.preventDefault());
+  },
+
+  addFiles(fileList) {
+    const validFiles = [];
+    const maxSize = 3 * 1024 * 1024 * 1024;
+
+    for (const file of fileList) {
+      const isVideo = file.type.startsWith('video/') || /\.(mp4|flv|wmv|asf|mkv|avi|rm|rmvb|mpg|mpeg|mov|webm)$/i.test(file.name);
+      if (!isVideo) {
+        this.showToast(`"${file.name}" 不是视频文件，已跳过`);
+        continue;
+      }
+      if (file.size > maxSize) {
+        this.showToast(`"${file.name}" 超过 3GB 限制，已跳过`);
+        continue;
+      }
+
+      validFiles.push(file);
+    }
+
+    if (validFiles.length === 0) return;
+
+    validFiles.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN', { numeric: true }));
+
+    const newItems = validFiles.map(file => ({
+      id: ++this.idCounter,
+      file,
+      name: file.name.replace(/\.[^/.]+$/, ''),
+      originalName: file.name,
+      size: file.size,
+      type: file.type,
+      title: '',
+      order: this.files.length + 1,
+      status: 'waiting',
+      progress: 0,
+      url: null,
+      duration: null,
+      thumbUrl: null,
+    }));
+
+    newItems.forEach((item, i) => { item.order = this.files.length + i + 1; });
+    // Auto-fill title with filename
+    newItems.forEach(item => { if (!item.title) item.title = item.name; });
+    this.files = this.files.concat(newItems);
+
+    // Generate thumbnails asynchronously
+    newItems.forEach(item => this.generateThumbnail(item.file, item.id));
+
+    this.render();
+    this.showToast(`已添加 ${newItems.length} 个视频文件`);
+    // Auto-upload all waiting files
+    this.startAllUpload();
+  },
+
+  removeFile(id) {
+    const file = this.files.find(f => f.id === id);
+    if (!file) return;
+    if (!confirm(`确定要删除第 ${file.order} 集"${file.title || file.name}"吗？`)) return;
+    this.files = this.files.filter(f => f.id !== id);
+    this.reorder();
+    this.render();
+  },
+
+
+  removeAll() {
+    if (this.files.length === 0) return;
+    if (!confirm('确定要清空所有已添加的视频吗？')) return;
+    this.files = [];
+    this.render();
+  },
+
+  reorder() {
+    this.files.forEach((f, i) => f.order = i + 1);
+  },
+
+  sortByName() {
+    this.files.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN', { numeric: true }));
+    this.reorder();
+    this.render();
+  },
+
+  setTitle(id, title) {
+    const file = this.files.find(f => f.id === id);
+    if (file) file.title = title;
+  },
+
+  replaceFile(id) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'video/mp4,video/quicktime,video/x-msvideo,video/*';
+    input.style.display = 'none';
+    input.addEventListener('change', (e) => {
+      if (e.target.files.length === 0) return;
+      const file = e.target.files[0];
+      const isVideo = file.type.startsWith('video/') || /\.(mp4|flv|wmv|asf|mkv|avi|rm|rmvb|mpg|mpeg|mov|webm)$/i.test(file.name);
+      if (!isVideo) { this.showToast(`"${file.name}" 不是视频文件`); return; }
+      if (file.size > 3 * 1024 * 1024 * 1024) { this.showToast(`"${file.name}" 超过 3GB 限制`); return; }
+
+      const item = this.files.find(f => f.id === id);
+      if (!item) return;
+      item.file = file;
+      item.name = file.name.replace(/\.[^/.]+$/, '');
+      item.originalName = file.name;
+      item.size = file.size;
+      item.type = file.type;
+      item.status = 'waiting';
+      item.progress = 0;
+      item.url = null;
+      item.thumbUrl = null;
+      item.duration = null;
+      this.generateThumbnail(file, id);
+      this.render();
+      this.showToast(`已替换为 "${file.name}"`);
+      this.startAllUpload();
+    });
+    document.body.appendChild(input);
+    input.click();
+    setTimeout(() => input.remove(), 1000);
+  },
+
+  formatSize(bytes) {
+    if (bytes === 0) return '0 B';
+    const units = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return (bytes / Math.pow(1024, i)).toFixed(i > 0 ? 1 : 0) + ' ' + units[i];
+  },
+
+  formatDuration(seconds) {
+    if (!seconds) return '';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  },
+
+  generateThumbnail(file, id) {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.muted = true;
+    video.playsInline = true;
+
+    video.onloadeddata = () => {
+      const item = this.files.find(f => f.id === id);
+      if (item) {
+        item.duration = video.duration || null;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = 160;
+      canvas.height = 90;
+      canvas.getContext('2d').drawImage(video, 0, 0, 160, 90);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+      if (item) item.thumbUrl = dataUrl;
+      this.renderThumbnail(id, dataUrl);
+      this.renderItem(item);
+      this.updateStats();
+      video.remove();
+      URL.revokeObjectURL(video.src);
+    };
+    video.onerror = () => { video.remove(); URL.revokeObjectURL(video.src); };
+    video.src = URL.createObjectURL(file);
+    video.currentTime = 1;
+  },
+
+
+  renderThumbnail(id, dataUrl) {
+    const el = document.querySelector(`[data-file-id="${id}"] .thumb`);
+    if (!el) return;
+    const img = document.createElement('img');
+    img.src = dataUrl;
+    img.alt = '';
+    const badge = el.querySelector('.file-type-badge');
+    el.innerHTML = '';
+    el.appendChild(img);
+    if (badge) el.appendChild(badge);
+  },
+
+  async uploadFile(item) {
+    if (item.status === 'done' || item.status === 'uploading') return;
+    item.status = 'uploading';
+    item.progress = 0;
+    item.uploadedBytes = 0;
+    this.renderItem(item);
+
+    const totalSteps = 20;
+    for (let i = 1; i <= totalSteps; i++) {
+      await new Promise(r => setTimeout(r, 120 + Math.random() * 180));
+      const pct = Math.min(i / totalSteps, 0.99);
+      item.progress = Math.round(pct * 100);
+      item.uploadedBytes = Math.round(item.size * pct);
+      this.renderItemProgress(item);
+    }
+
+    item.status = 'done';
+    item.progress = 100;
+    item.uploadedBytes = item.size;
+    item.url = URL.createObjectURL(item.file);
+    this.renderItem(item);
+    this.updateStats();
+  },
+
+
+  async startAllUpload() {
+    const pending = this.files.filter(f => f.status === 'waiting' || f.status === 'failed');
+    if (pending.length === 0) { this.showToast('所有文件已上传完成'); return; }
+
+    this.isUploading = true;
+
+    for (const item of pending) {
+      await this.uploadFile(item);
+    }
+
+    this.isUploading = false;
+    this.showToast('全部上传完成！');
+  },
+
+  retryUpload(id) {
+    const item = this.files.find(f => f.id === id);
+    if (item && item.status === 'failed') { item.progress = 0; this.uploadFile(item); }
+  },
+
+  updateStats() {
+    const total = this.files.length;
+    const done = this.files.filter(f => f.status === 'done').length;
+    const failed = this.files.filter(f => f.status === 'failed').length;
+    const el = document.getElementById('uploadStats');
+    if (total === 0) { el.textContent = ''; }
+    else if (done === total) { el.textContent = `✅ ${done}/${total} 上传完成`; }
+    else {
+      let text = `📊 ${done}/${total} 上传完成`;
+      if (failed > 0) text += `, ⚠️ ${failed} 失败`;
+      el.textContent = text;
+    }
+  },
+
+
+  render() {
+    const container = document.getElementById('queueItems');
+    const queueEl = document.getElementById('uploadQueue');
+    const emptyEl = document.getElementById('queueEmpty');
+    const toolbar = document.getElementById('batchToolbar');
+    const countEl = document.getElementById('queueCount');
+
+    if (this.files.length === 0) {
+      queueEl.style.display = 'none';
+      emptyEl.style.display = 'block';
+      toolbar.style.display = 'none';
+      return;
+    }
+
+    queueEl.style.display = 'block';
+    emptyEl.style.display = 'none';
+    toolbar.style.display = 'flex';
+    countEl.textContent = `(${this.files.length} 个文件)`;
+    container.innerHTML = this.files.map(item => this.renderItemHTML(item)).join('');
+    this.updateStats();
+  },
+
+  renderItemHTML(item) {
+    const statusText = { waiting: '等待上传', uploading: '上传中', done: '上传完成', failed: '上传失败' };
+
+    const statusClass = item.status;
+    const episodeNum = item.order;
+    const ext = item.originalName.split('.').pop().toUpperCase();
+
+    const thumbContent = item.thumbUrl
+      ? `<img src="${item.thumbUrl}" alt="" /><span class="file-type-badge">${ext}</span>`
+      : `<span style="font-size:1.6rem;">🎬</span><span class="file-type-badge">${ext}</span>`;
+
+    const progressHTML = (item.status === 'uploading')
+      ? `<div class="progress-bar"><div class="progress-fill" style="width:${item.progress}%"></div></div>`
+      : (item.status === 'done')
+        ? `<div class="progress-bar"><div class="progress-fill" style="width:100%;background:#16a34a;"></div></div>`
+        : (item.status === 'failed')
+          ? `<div class="progress-bar"><div class="progress-fill error" style="width:100%"></div></div>`
+          : '';
+
+    const progressText = (item.status === 'uploading')
+      ? `<span class="progress-text">${this.formatSize(item.uploadedBytes || 0)} / ${this.formatSize(item.size)}</span>`
+      : '';
+
+    return `<div class="upload-item" data-file-id="${item.id}">
+      <span class="episode-num">${episodeNum}</span>
+      <div class="thumb">${thumbContent}</div>
+      <div class="info">
+        <div class="name">
+          <span class="title-edit"><input type="text" value="${this.escapeHtml(item.title || item.name)}" placeholder="可选的标题" onchange="batchUpload.setTitle(${item.id}, this.value)" /></span>
+        </div>
+        <div class="meta">
+          <span class="file-size">${this.formatSize(item.size)}</span>
+          ${item.duration ? `<span class="duration">⏱ ${this.formatDuration(item.duration)}</span>` : ''}
+          ${progressText}
+          <span class="status-badge ${statusClass}">${statusText[item.status]}</span>
+        </div>
+
+        ${progressHTML}
+      </div>
+
+      <div class="item-actions">
+        ${item.status === 'failed' ? `<button class="btn-icon" title="重试" onclick="batchUpload.retryUpload(${item.id})">↻</button>` : ''}
+        <button class="btn-icon" title="替换视频" onclick="batchUpload.replaceFile(${item.id})">🔄</button>
+        <button class="btn-icon danger" title="删除" onclick="batchUpload.removeFile(${item.id})">✕</button>
+      </div>
+    </div>`;
+  },
+
+  renderItem(item) {
+    const el = document.querySelector(`[data-file-id="${item.id}"]`);
+    if (el) el.outerHTML = this.renderItemHTML(item);
+  },
+
+  renderItemProgress(item) {
+    const el = document.querySelector(`[data-file-id="${item.id}"]`);
+    if (!el) return;
+    const fill = el.querySelector('.progress-fill');
+    const badge = el.querySelector('.status-badge');
+    if (fill) fill.style.width = item.progress + '%';
+    if (badge) { badge.className = 'status-badge uploading'; badge.textContent = '上传中'; }
+    // Update progress text (uploaded size)
+    const progressTextEl = el.querySelector('.progress-text');
+    if (progressTextEl) {
+      progressTextEl.textContent = `${this.formatSize(item.uploadedBytes || 0)} / ${this.formatSize(item.size)}`;
+    } else {
+      // Create progress text element if not exist
+      const meta = el.querySelector('.meta');
+      if (meta) {
+        const pt = document.createElement('span');
+        pt.className = 'progress-text';
+        pt.textContent = `${this.formatSize(item.uploadedBytes || 0)} / ${this.formatSize(item.size)}`;
+        meta.insertBefore(pt, meta.querySelector('.status-badge'));
+      }
+    }
+  },
+
+
+  escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  },
+
+  showToast(msg) {
+    const existing = document.querySelector('.batch-toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = 'batch-toast';
+    toast.textContent = msg;
+    Object.assign(toast.style, {
+      position: 'fixed', bottom: '24px', left: '50%',
+      transform: 'translateX(-50%) translateY(100px)',
+      background: 'rgba(26,35,47,0.92)', backdropFilter: 'blur(8px)',
+      color: '#fff', padding: '12px 24px', borderRadius: '14px',
+      fontSize: '0.92rem', boxShadow: '0 8px 32px rgba(27,45,71,0.25)',
+      zIndex: '10000', transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease',
+      opacity: '0', maxWidth: '400px', textAlign: 'center', fontWeight: '500',
+    });
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => { toast.style.transform = 'translateX(-50%) translateY(0)'; toast.style.opacity = '1'; });
+    setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(100px)'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 2500);
+  },
+};
+
+document.addEventListener('DOMContentLoaded', () => batchUpload.init());
+</script>
 </body>
 </html>
