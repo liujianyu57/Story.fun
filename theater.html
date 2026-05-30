@@ -259,6 +259,12 @@
       
     </section>
 
+    <div id="noResults" class="no-results" style="display: none; text-align: center; padding: 60px 20px; margin-bottom: 34px; background: rgba(255,255,255,0.7); border-radius: var(--radius-lg); border: 2px dashed var(--border);">
+      <div style="font-size: 3rem; margin-bottom: 16px;">🔍</div>
+      <h3 style="margin: 0 0 8px; color: var(--text); font-size: 1.3rem;">没有找到结果</h3>
+      <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">试试更换搜索关键词或筛选条件</p>
+    </div>
+
     <section class="gallery" aria-label="热门剧场卡片">
       <article class="card" data-category="金融" data-sort="recommended" onclick="location.href='drama-detail.html'">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1618044733300-9472054094ee?auto=format&fit=crop&w=800&q=80" alt="重生之我在币圈当大佬" />
@@ -320,6 +326,19 @@
 
     <script>
       // 搜索和筛选功能
+      // 检查并更新"无结果"提示的显示状态
+      function updateNoResults() {
+        const noResults = document.getElementById('noResults');
+        const cards = document.querySelectorAll('.card');
+        let visibleCount = 0;
+        cards.forEach(card => {
+          if (card.style.display !== 'none') {
+            visibleCount++;
+          }
+        });
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
       document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('searchInput');
         const filterTags = document.querySelectorAll('.filter-tag');
@@ -339,6 +358,8 @@
               card.style.display = 'none';
             }
           });
+          
+          updateNoResults();
         });
         
         // 筛选功能
@@ -378,6 +399,8 @@
                 }
             });
             }
+            
+            updateNoResults();
           });
         });
       });
