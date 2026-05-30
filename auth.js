@@ -12,8 +12,15 @@ const PRIVY_MOCK_USER = {
   avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
   wallet: '0x7A2b...3fD8',
   isLoggedIn: false,
+  // 登录方式：'email' | 'wallet' | null
+  authMethod: null,
   // 用户持有的演员 NFT 列表（持有 1 个及以上即可与任意演员进行 AI 对话）
   actorNfts: ['Luna'], // 模拟：默认持有 Luna 的 NFT
+  // 模拟的币种余额
+  balances: {
+    story: 10123,
+    usdt: 100.23
+  }
 };
 
 // ============================================================
@@ -40,7 +47,8 @@ document.addEventListener('header-loaded', function() {
 });
 
 function initAuth() {
-  // 查找所有 .auth-container 并渲染
+  // 注入样式（只注入一次），然后查找所有 .auth-container 并渲染
+  injectAuthStyles();
   const containers = document.querySelectorAll('.auth-container');
   containers.forEach(container => {
     renderAuthUI(container);
@@ -48,10 +56,60 @@ function initAuth() {
 }
 
 // ============================================================
+//  Inject dropdown styles
+// ============================================================
+function injectAuthStyles() {
+  if (document.getElementById('authStyles')) return;
+  const css = `
+  .auth-user-menu{position:relative;display:inline-block}
+  .auth-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;border:3px solid rgba(0,0,0,0);box-sizing:border-box}
+  .auth-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .auth-avatar-dot{position:absolute;right:6px;bottom:6px;width:10px;height:10px;background:#13bba3;border-radius:50%;box-shadow:0 0 0 3px rgba(19,187,163,0.12)}
+
+  .auth-dropdown{position:absolute;right:0;top:64px;width:340px;background:#fff;border-radius:16px;padding:18px;box-shadow:0 18px 40px rgba(22,33,51,0.08);border:1px solid rgba(22,33,51,0.04);opacity:0;transform:translateY(-8px);pointer-events:none;transition:all 220ms ease;z-index:9999}
+  .auth-dropdown.active,.auth-dropdown.active{opacity:1;transform:translateY(0);pointer-events:auto}
+
+  .auth-dropdown-top{display:flex;gap:12px;align-items:center;padding-bottom:12px}
+  .auth-dropdown-top-avatar{width:56px;height:56px;border-radius:12px;object-fit:cover}
+  .auth-dropdown-main{font-weight:700;font-size:18px;color:#0b1720}
+  .auth-dropdown-sub{color:#8b98a6;margin-top:4px}
+
+  .auth-balance-list{margin-top:8px}
+  .auth-balance-item{display:flex;align-items:center;justify-content:space-between;background:#f7f8f9;padding:12px;border-radius:12px;margin-bottom:10px}
+  .auth-balance-left{display:flex;align-items:center;gap:12px}
+  .auth-token-icon{width:44px;height:44px;border-radius:10px;flex:0 0 44px}
+  .token-story{background:linear-gradient(135deg,#00c2a8,#00b3ff);}
+  .token-usdt{background:linear-gradient(135deg,#0bb07b,#10a37a);}
+  .auth-token-name{font-weight:700}
+  .auth-token-sub{color:#7d8a94;font-size:13px}
+  .auth-balance-amount{font-weight:700;color:#0b1720}
+
+  .auth-balance-actions{display:flex;gap:16px;padding:12px 0}
+  .btn{padding:12px 20px;border-radius:28px;font-weight:700;cursor:pointer;border:0}
+  .btn-primary{background:linear-gradient(90deg,#00c2a8,#00b3ff);color:#fff}
+  .btn-outline{background:transparent;border:2px solid #10b39a;color:#0b1720}
+
+  .auth-dropdown-divider{height:1px;background:#eef2f4;margin:8px 0;border-radius:1px}
+  .auth-dropdown-item{display:flex;align-items:center;gap:10px;padding:12px 6px;color:#0b1720;text-decoration:none}
+  .auth-dropdown-item span{font-size:18px}
+  .auth-dropdown-logout{color:#0b1720}
+  `;
+  const style = document.createElement('style');
+  style.id = 'authStyles';
+  style.appendChild(document.createTextNode(css));
+  document.head.appendChild(style);
+}
+
+// ============================================================
 //  渲染登录/用户菜单
 // ============================================================
 function renderAuthUI(container) {
   if (currentUser.isLoggedIn) {
+    // 根据登录方式展示不同内容：邮箱登录展示充值/提现按钮，钱包登录不展示
+    const isEmail = currentUser.authMethod === 'email';
+    const displayName = isEmail ? currentUser.email : currentUser.name;
+    const subLabel = isEmail ? '邮箱账户' : '钱包账户';
+    const usdtDisplay = typeof currentUser.balances?.usdt === 'number' ? `$${currentUser.balances.usdt.toFixed(2)}` : '-';
     container.innerHTML = `
       <div class="auth-user-menu">
         <div class="auth-avatar" onclick="toggleDropdown(event)">
@@ -59,26 +117,54 @@ function renderAuthUI(container) {
           <span class="auth-avatar-dot"></span>
         </div>
         <div class="auth-dropdown" id="authDropdown">
-          <div class="auth-dropdown-header">
-            <img src="${currentUser.avatar}" alt="${currentUser.name}" />
-            <div>
-              <div class="auth-dropdown-name">${currentUser.name}</div>
-              <div class="auth-dropdown-wallet">${currentUser.wallet}</div>
+          <div class="auth-dropdown-top">
+            <div class="auth-dropdown-top-left">
+              <img class="auth-dropdown-top-avatar" src="${currentUser.avatar}" alt="${currentUser.name}" />
+            </div>
+            <div class="auth-dropdown-top-right">
+              <div class="auth-dropdown-main">${displayName}</div>
+              <div class="auth-dropdown-sub">${subLabel}</div>
             </div>
           </div>
+
+          <div class="auth-balance-list">
+            <div class="auth-balance-item">
+              <div class="auth-balance-left">
+                <div class="auth-token-icon token-story"></div>
+                <div>
+                  <div class="auth-token-name">STORY</div>
+                  <div class="auth-token-sub">Story</div>
+                </div>
+              </div>
+              <div class="auth-balance-amount">${currentUser.balances?.story ?? '-'}
+              </div>
+            </div>
+
+            <div class="auth-balance-item">
+              <div class="auth-balance-left">
+                <div class="auth-token-icon token-usdt"></div>
+                <div>
+                  <div class="auth-token-name">USDT</div>
+                  <div class="auth-token-sub">Tether USD</div>
+                </div>
+              </div>
+              <div class="auth-balance-amount">${usdtDisplay}</div>
+            </div>
+          </div>
+
+          ${isEmail ? `
+            <div class="auth-balance-actions">
+              <button class="btn btn-primary" onclick="showToast('充值 USDT 功能开发中')">充值 USDT</button>
+              <button class="btn btn-outline" onclick="showToast('提现 USDT 功能开发中')">提现 USDT</button>
+            </div>
+          ` : ''}
+
           <div class="auth-dropdown-divider"></div>
-          <a class="auth-dropdown-item" href="#" onclick="showToast('👤 个人中心开发中')">
-            <span>👤</span> 个人中心
+          <a class="auth-dropdown-item" href="#" onclick="showToast('🕘 交易记录开发中')">
+            <span>⟳</span> 交易记录
           </a>
-          <a class="auth-dropdown-item" href="#" onclick="showToast('🖼️ 我的 NFT 开发中')">
-            <span>🖼️</span> 我的 NFT
-          </a>
-          <a class="auth-dropdown-item" href="#" onclick="showToast('⚙️ 账户设置开发中')">
-            <span>⚙️</span> 账户设置
-          </a>
-          <div class="auth-dropdown-divider"></div>
           <a class="auth-dropdown-item auth-dropdown-logout" href="#" onclick="handleLogout()">
-            <span>🚪</span> 退出登录
+            <span>🚪</span> Logout
           </a>
         </div>
       </div>
@@ -169,8 +255,18 @@ function mockLogin(method) {
   setTimeout(() => {
     // 登录成功
     currentUser.isLoggedIn = true;
+    // 记录登录方式
+    currentUser.authMethod = method;
     currentUser.name = '加密小白';
     currentUser.avatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80';
+    // 如果是钱包登录，显示钱包地址为主要标识（保持 name 不变）
+    if (method === 'wallet') {
+      currentUser.wallet = currentUser.wallet || '0x7A2b...3fD8';
+    }
+    // 如果是邮箱登录，把 email 占位换成示例邮箱（可按需替换）
+    if (method === 'email') {
+      currentUser.email = currentUser.email || 'user@example.com';
+    }
 
     // 关闭弹窗
     closeLoginModal();
@@ -193,6 +289,7 @@ function handleLogout() {
   if (!confirm('确定要退出登录吗？')) return;
 
   currentUser.isLoggedIn = false;
+  currentUser.authMethod = null;
 
   // 关闭下拉菜单
   closeDropdown();
