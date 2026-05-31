@@ -133,6 +133,13 @@
   function insertFallbackBottomNav() {
     const html = `<div class="bottom-nav-wrapper">
   <div class="bottom-nav">
+    <a class="bottom-nav-item" href="recommend.html" data-tab="recommend">
+      <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14.0013 2.33337C20.3165 2.33337 25.668 7.68487 25.668 14C25.668 20.3152 20.3165 25.6667 14.0013 25.6667C7.68606 25.6667 2.33464 20.3152 2.33464 14C2.33464 7.68487 7.68606 2.33337 14.0013 2.33337Z" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M11.668 9.91671L19.8346 14L11.668 18.0834V9.91671Z" fill="currentColor"/>
+      </svg>
+      <span class="bottom-nav-label">推荐</span>
+    </a>
     <a class="bottom-nav-item" href="theater.html" data-tab="theater">
       <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M24.8376 14.0001C24.8376 19.9861 19.9849 24.8388 13.9989 24.8388C8.01281 24.8388 3.16016 19.9861 3.16016 14.0001C3.16016 8.014 8.01281 3.16135 13.9989 3.16135C19.9849 3.16135 24.8376 8.014 24.8376 14.0001Z" fill="none" stroke="currentColor" stroke-width="1.49333" stroke-linecap="round" stroke-linejoin="round"/>
@@ -140,6 +147,7 @@
       </svg>
       <span class="bottom-nav-label">剧场</span>
     </a>
+
     <a class="bottom-nav-item" href="actors.html" data-tab="nft">
       <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M13.9053 2.66797C13.9639 2.63382 14.0361 2.63382 14.0947 2.66797L23.6611 8.24805C23.719 8.2818 23.7549 8.34415 23.7549 8.41113V19.5889C23.7549 19.6559 23.719 19.7182 23.6611 19.752L14.0947 25.332C14.0361 25.3662 13.9639 25.3662 13.9053 25.332L4.33887 19.752C4.28101 19.7182 4.24512 19.6558 4.24512 19.5889V8.41113C4.24512 8.34415 4.28101 8.2818 4.33887 8.24805L13.9053 2.66797Z" stroke="currentColor" stroke-width="1.49"/>
