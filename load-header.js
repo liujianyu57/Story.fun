@@ -138,6 +138,116 @@
   opacity: 0.9;
 }
 
+/* ── Hamburger Button (hidden on desktop) ── */
+.story-header-wrapper .hamburger-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ── Mobile Navigation Drawer ── */
+.story-header-wrapper .mobile-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.story-header-wrapper .mobile-drawer-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.story-header-wrapper .mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  z-index: 2001;
+  background: #ffffff;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+  gap: 8px;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.08);
+}
+.story-header-wrapper .mobile-drawer.open {
+  transform: translateX(0);
+}
+.story-header-wrapper .mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 20px;
+  border-bottom: 0.5px solid #D9D9E0;
+  margin-bottom: 8px;
+}
+.story-header-wrapper .mobile-drawer-logo {
+  width: 29px;
+  height: 29px;
+  object-fit: contain;
+}
+.story-header-wrapper .mobile-drawer-brand {
+  font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 590;
+  font-size: 19.64px;
+  background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.story-header-wrapper .mobile-drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.story-header-wrapper .mobile-drawer-link {
+  font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #1C2024;
+  text-decoration: none;
+  padding: 14px 16px;
+  border-radius: 12px;
+  transition: background 0.15s ease;
+}
+.story-header-wrapper .mobile-drawer-link:hover {
+  background: rgba(0,0,0,0.04);
+}
+.story-header-wrapper .mobile-drawer-link.active {
+  color: #00BBA7;
+  background: rgba(0, 187, 167, 0.08);
+}
+.story-header-wrapper .mobile-drawer-close {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: rgba(0,0,0,0.04);
+  border-radius: 50%;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .story-header-wrapper .header-inner {
@@ -147,41 +257,109 @@
 @media (max-width: 768px) {
   .story-header-wrapper .header-inner {
     padding: 12px 20px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
   }
-  .story-header-wrapper .nav-links {
-    order: 3;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+  /* Hide brand logo & text on mobile; show hamburger */
+  .story-header-wrapper .header-logo-img,
+  .story-header-wrapper .brand-text {
+    display: none;
   }
-  .story-header-wrapper .nav-links::-webkit-scrollbar {
+  .story-header-wrapper .hamburger-btn {
+    display: flex;
+  }
+  .story-header-wrapper .nav-links {
     display: none;
   }
   .story-header-wrapper .lang-btn span {
     display: none;
+  }
+  .story-header-wrapper .mobile-drawer-overlay {
+    display: block;
   }
 }
 @media (max-width: 480px) {
   .story-header-wrapper .header-inner {
     padding: 10px 16px;
   }
-  .story-header-wrapper .brand-text {
-    font-size: 16px;
-  }
   .story-header-wrapper .nav-link {
     font-size: 13px;
     padding: 8px 10px;
   }
 }
+
 `;
 
     const style = document.createElement('style');
     style.id = 'story-header-styles';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
+  }
+
+  // ============================================================
+  //  构建移动端抽屉导航 HTML
+  // ============================================================
+  function buildMobileDrawerHtml() {
+    const navItems = [
+      { href: 'index.html', label: '首页' },
+      { href: 'theater.html', label: '剧场' },
+      { href: 'actors.html', label: '演员' },
+      { href: 'narrator.html', label: '叙事者中心' },
+      { href: 'rewards.html', label: '收益' },
+      { href: 'mining.html', label: '挖矿' },
+      { href: 'whitepaper.html', label: '白皮书' },
+    ];
+
+    const navLinksHtml = navItems.map(item => {
+      const activeClass = item.href === currentPage ? ' active' : '';
+      return `<a class="mobile-drawer-link${activeClass}" href="${item.href}">${item.label}</a>`;
+    }).join('');
+
+    return `
+<div class="mobile-drawer-overlay" id="mobileDrawerOverlay"></div>
+<nav class="mobile-drawer" id="mobileDrawer">
+  <button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close menu">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 4L4 12" stroke="#1C2024" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M4 4L12 12" stroke="#1C2024" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <div class="mobile-drawer-header">
+    <img class="mobile-drawer-logo" src="image/storyfun-logo-icon.png" width="29" height="29" alt="Story.fun" />
+    <span class="mobile-drawer-brand">Story.fun</span>
+  </div>
+  <div class="mobile-drawer-nav">
+    ${navLinksHtml}
+  </div>
+</nav>`;
+  }
+
+  // ============================================================
+  //  绑定移动端抽屉事件
+  // ============================================================
+  function bindMobileDrawerEvents() {
+    const hamburger = document.querySelector('.hamburger-btn');
+    const drawer = document.getElementById('mobileDrawer');
+    const overlay = document.getElementById('mobileDrawerOverlay');
+    const closeBtn = document.getElementById('mobileDrawerClose');
+
+    if (!hamburger || !drawer || !overlay) return;
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', openDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
   }
 
   // ============================================================
@@ -200,6 +378,12 @@
       });
     }
 
+    // 追加移动端抽屉导航 HTML
+    const wrapper = document.querySelector('.story-header-wrapper');
+    if (wrapper) {
+      wrapper.insertAdjacentHTML('beforeend', buildMobileDrawerHtml());
+    }
+
     // 标记当前页面导航为 active
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
@@ -209,8 +393,12 @@
       }
     });
 
+    // 绑定移动端抽屉事件
+    bindMobileDrawerEvents();
+
     document.dispatchEvent(new CustomEvent('header-loaded'));
   }
+
 
   // ============================================================
   //  Fallback HTML（当 header.html 加载失败时使用）
@@ -220,9 +408,17 @@
 <div class="header">
   <div class="header-inner">
     <div class="brand">
+      <button class="hamburger-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6H20" stroke="#1C2024" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 12H20" stroke="#1C2024" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 18H20" stroke="#1C2024" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
       <img class="header-logo-img" src="image/storyfun-logo-icon.png" width="29" height="29" alt="Story.fun" />
       <span class="brand-text">Story.fun</span>
     </div>
+
     <nav class="nav-links">
       <a class="nav-link" href="index.html">首页</a>
       <a class="nav-link" href="theater.html">剧场</a>
