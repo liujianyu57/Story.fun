@@ -186,7 +186,17 @@ function injectAuthStyles() {
   .withdraw-field-group{display:flex;flex-direction:column;gap:8px}
   .withdraw-field-label{font-weight:510;font-size:16px;color:#1C2024}
   .withdraw-input-field{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 8px 16px;height:48px;background:#F0F0F3;border-radius:12px;border:none}
-  .withdraw-input-field input{flex:1;background:transparent;border:none;outline:none;font-size:16px;color:#1C2024;font-family:inherit}
+  .withdraw-input-field input{flex:1;background:transparent;border:none;outline:none;font-size:16px;color:#1C2024;font-family:inherit;min-width:0}
+  .withdraw-scan-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:8px;cursor:pointer;color:#60646C;flex-shrink:0;transition:all 0.2s;padding:0}
+  .withdraw-scan-btn:hover{color:#00BBA7;background:rgba(0,187,167,0.1)}
+  @media (min-width: 769px) { .withdraw-scan-btn { display: none; } }
+  /* H5 扫码弹窗 */
+  .qr-scanner-overlay{position:fixed;inset:0;z-index:10001;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);padding:24px}
+  .qr-scanner-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;font-size:22px;cursor:pointer;display:grid;place-items:center;transition:background 0.2s;z-index:10}
+  .qr-scanner-close:hover{background:rgba(255,255,255,0.25)}
+  .qr-scanner-video{width:100%;max-width:360px;border-radius:16px;overflow:hidden}
+  .qr-scanner-hint{color:rgba(255,255,255,0.7);font-size:14px;margin-top:20px;text-align:center}
+  .qr-scanner-loading{color:#fff;font-size:16px;text-align:center}
   .withdraw-input-field input::placeholder{color:#60646C}
   .withdraw-input-hint{font-size:12px;line-height:16px;color:#8B8D98}
   .withdraw-input-suffix{font-weight:700;font-size:16px;color:#1C2024;white-space:nowrap}
@@ -494,6 +504,17 @@ function openWithdrawModal() {
             <div class="withdraw-field-label">提现地址</div>
             <div class="withdraw-input-field">
               <input type="text" id="withdrawAddress" placeholder="输入接收USDC的钱包地址" />
+              <button class="withdraw-scan-btn" onclick="openQrScanner()" type="button" title="扫码识别地址">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+                  <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+                  <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+                  <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+                  <rect x="7" y="7" width="10" height="10" rx="1.5"/>
+                  <path d="M12 10v4"/>
+                  <path d="M10 12h4"/>
+                </svg>
+              </button>
             </div>
             <span class="withdraw-input-hint">请确认地址正确，转账后无法撤回</span>
           </div>
@@ -552,6 +573,229 @@ function closeWithdrawModal() {
     document.body.style.overflow = '';
   }
 }
+
+// ============================================================
+//  H5 扫码识别钱包地址（基于相机 / 图片上传）
+// ============================================================
+function openQrScanner() {
+  // 先尝试使用原生 navigator.mediaDevices 调起相机扫码
+  // 如果可用则展示相机预览，否则回退到文件上传方式
+  if (typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    // 展示全屏扫码 UI
+    let scannerEl = document.getElementById('qrScannerOverlay');
+    if (scannerEl) scannerEl.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'qrScannerOverlay';
+    overlay.className = 'qr-scanner-overlay';
+    overlay.innerHTML = `
+      <button class="qr-scanner-close" onclick="closeQrScanner()">✕</button>
+      <div class="qr-scanner-loading">📷 正在启动相机...</div>
+    `;
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    // 尝试启动后置摄像头
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+      .then(function(stream) {
+        // 创建 video 元素
+        const video = document.createElement('video');
+        video.className = 'qr-scanner-video';
+        video.setAttribute('autoplay', '');
+        video.setAttribute('playsinline', '');
+        video.srcObject = stream;
+        overlay.innerHTML = `
+          <button class="qr-scanner-close" onclick="closeQrScanner()">✕</button>
+          <video class="qr-scanner-video" autoplay playsinline></video>
+          <div class="qr-scanner-hint">将二维码对准相机</div>
+          <div class="qr-scanner-hint" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.5)">或 <button onclick="openQrScannerFallback()" style="background:none;border:none;color:#00BBA7;text-decoration:underline;cursor:pointer;font-size:13px">上传二维码图片</button></div>
+        `;
+        const videoEl = overlay.querySelector('video');
+        videoEl.srcObject = stream;
+        videoEl.play();
+
+        // 保存 stream 以便关闭时释放
+        overlay._stream = stream;
+
+        // 简易扫码：用 canvas 定时截图尝试识别（需要加载 jsQR 库）
+        loadJsQrLibrary(function() {
+          startQrScanning(videoEl, stream);
+        });
+      })
+      .catch(function() {
+        // 相机启动失败，回退到文件上传
+        openQrScannerFallback();
+      });
+  } else {
+    // 不支持相机，回退到文件上传
+    openQrScannerFallback();
+  }
+}
+
+function closeQrScanner() {
+  const overlay = document.getElementById('qrScannerOverlay');
+  if (overlay) {
+    // 释放相机资源
+    if (overlay._stream) {
+      overlay._stream.getTracks().forEach(function(track) { track.stop(); });
+    }
+    if (window._qrScanTimer) {
+      clearInterval(window._qrScanTimer);
+      window._qrScanTimer = null;
+    }
+    overlay.remove();
+    document.body.style.overflow = '';
+  }
+}
+
+function openQrScannerFallback() {
+  const overlay = document.getElementById('qrScannerOverlay');
+  if (!overlay) return;
+
+  // 释放已有相机
+  if (overlay._stream) {
+    overlay._stream.getTracks().forEach(function(track) { track.stop(); });
+  }
+  if (window._qrScanTimer) {
+    clearInterval(window._qrScanTimer);
+    window._qrScanTimer = null;
+  }
+
+  // 替换为文件上传 UI
+  overlay.innerHTML = `
+    <button class="qr-scanner-close" onclick="closeQrScanner()">✕</button>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+      <div style="width:120px;height:120px;border-radius:20px;background:rgba(255,255,255,0.1);display:grid;place-items:center;font-size:48px">📷</div>
+      <div class="qr-scanner-hint">选择包含二维码的图片</div>
+      <input type="file" id="qrFileInput" accept="image/*" style="display:none" onchange="decodeQrFromFile(event)" />
+      <button onclick="document.getElementById('qrFileInput').click()" style="padding:12px 24px;border-radius:999px;border:none;background:#00BBA7;color:#fff;font-size:15px;font-weight:600;cursor:pointer">选择图片</button>
+    </div>
+  `;
+}
+
+function decodeQrFromFile(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // 尝试用 jsQR 解码
+      loadJsQrLibrary(function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        try {
+          const code = jsQR(imageData.data, imageData.width, imageData.height);
+          if (code && code.data) {
+            handleQrResult(code.data);
+          } else {
+            showToast('⚠️ 未识别到二维码，请重试');
+          }
+        } catch(err) {
+          showToast('⚠️ 二维码识别失败');
+        }
+      });
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function loadJsQrLibrary(callback) {
+  if (typeof jsQR !== 'undefined') {
+    callback();
+    return;
+  }
+  // 动态加载 jsQR 库
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js';
+  script.onload = callback;
+  script.onerror = function() {
+    // 加载失败，手动输入提示
+    showToast('⚠️ 扫码库加载失败，请手动输入地址');
+    closeQrScanner();
+  };
+  document.head.appendChild(script);
+}
+
+function startQrScanning(videoEl, stream) {
+  if (window._qrScanTimer) {
+    clearInterval(window._qrScanTimer);
+  }
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  let scanCount = 0;
+
+  window._qrScanTimer = setInterval(function() {
+    if (!videoEl.videoWidth || !videoEl.videoHeight) return;
+
+    canvas.width = videoEl.videoWidth;
+    canvas.height = videoEl.videoHeight;
+    ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    try {
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      if (code && code.data) {
+        handleQrResult(code.data);
+      }
+    } catch(e) {
+      // 识别出错时忽略
+    }
+
+    scanCount++;
+    // 最多扫描 300 次（约 30 秒）后停止
+    if (scanCount > 300) {
+      clearInterval(window._qrScanTimer);
+      window._qrScanTimer = null;
+      showToast('⏱️ 扫码超时，请重试或手动输入');
+    }
+  }, 100);
+}
+
+function handleQrResult(data) {
+  // 关闭扫码 UI
+  closeQrScanner();
+
+  // 尝试提取钱包地址（支持 eth 地址格式 0x... 或直接地址）
+  let address = data.trim();
+
+  // 如果是以 ethereum: 开头的协议 URI，提取地址部分
+  if (address.startsWith('ethereum:')) {
+    address = address.replace(/^ethereum:/, '').replace(/[?&].*$/, '');
+  }
+
+  // 验证是否为有效的以太坊地址格式（0x + 40 位 hex）
+  if (/^0x[a-fA-F0-9]{40}$/.test(address)) {
+    const input = document.getElementById('withdrawAddress');
+    if (input) {
+      input.value = address;
+      showToast('✅ 已识别钱包地址');
+    }
+  } else if (/^[a-fA-F0-9]{40}$/.test(address)) {
+    // 没有 0x 前缀的地址，自动补上
+    address = '0x' + address;
+    const input = document.getElementById('withdrawAddress');
+    if (input) {
+      input.value = address;
+      showToast('✅ 已识别钱包地址');
+    }
+  } else {
+    // 尝试判断是否为其他链地址或不符合格式
+    showToast('⚠️ 识别的地址格式不正确，请手动确认');
+    const input = document.getElementById('withdrawAddress');
+    if (input) {
+      input.value = data.trim();
+    }
+  }
+}
+
 
 function setQuickAmount(value) {
   const input = document.getElementById('withdrawAmount');

@@ -78,7 +78,7 @@
   background: rgba(0,0,0,0.03);
 }
 .story-header-wrapper .nav-link.active {
-  color: #1C2024;
+  color: #00BBA7;
   border-radius: 999px;
 }
 .story-header-wrapper .header-actions {
