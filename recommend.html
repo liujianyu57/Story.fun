@@ -67,11 +67,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .player-progress:hover .pp-fill .pp-thumb,
 .player-progress.show-thumb .pp-fill .pp-thumb{opacity:1}
 /* ---- Progress Tooltip ---- */
-.pp-tooltip{position:fixed;z-index:105;pointer-events:none;opacity:0;transition:opacity .15s;left:50%;transform:translateX(-50%);bottom:calc(50px + 6px + 12px)}
+.pp-tooltip{position:fixed;z-index:105;pointer-events:none;opacity:0;transition:opacity .15s;left:50%;transform:translateX(-50%);bottom:calc(50px + 6px + 24px)}
 
 .pp-tooltip.show{opacity:1}
-.pp-tooltip .pp-tip-img{width:140px;height:80px;border-radius:8px;object-fit:cover;display:block;box-shadow:0 4px 16px rgba(0,0,0,.5);border:1.5px solid rgba(255,255,255,.15)}
-.pp-tooltip .pp-tip-time{position:absolute;left:50%;bottom:-18px;transform:translateX(-50%);background:rgba(0,0,0,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;border:.5px solid rgba(255,255,255,.12)}
+.pp-tooltip .pp-tip-img{width:86px;height:130px;border-radius:10px;object-fit:cover;display:block;box-shadow:0 4px 20px rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.2)}
+.pp-tooltip .pp-tip-time{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);background:rgba(0,0,0,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;border:.5px solid rgba(255,255,255,.12)}
 .bnav{position:fixed;left:0;right:0;bottom:0;z-index:100;height:50px;padding-bottom:env(safe-area-inset-bottom,0);background:rgba(0,0,0,.65);backdrop-filter:blur(60px);-webkit-backdrop-filter:blur(60px);border-top:.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center}
 .bnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;height:100%;padding:4px 4px 2px;text-decoration:none;color:rgba(255,255,255,.55);transition:color .2s;-webkit-tap-highlight-color:transparent}
 .bnav a.active{color:#fff}
