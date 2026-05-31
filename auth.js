@@ -24,9 +24,33 @@ const PRIVY_MOCK_USER = {
 };
 
 // ============================================================
-//  状态管理
+//  状态管理 — 从 localStorage 恢复登录态
 // ============================================================
-let currentUser = { ...PRIVY_MOCK_USER, isLoggedIn: false };
+function loadUserFromStorage() {
+  try {
+    const saved = localStorage.getItem('storyfun_user');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.isLoggedIn) return parsed;
+    }
+  } catch (e) {}
+  return null;
+}
+
+function saveUserToStorage(user) {
+  try {
+    localStorage.setItem('storyfun_user', JSON.stringify(user));
+  } catch (e) {}
+}
+
+function clearUserFromStorage() {
+  try {
+    localStorage.removeItem('storyfun_user');
+  } catch (e) {}
+}
+
+const storedUser = loadUserFromStorage();
+let currentUser = storedUser ? { ...PRIVY_MOCK_USER, ...storedUser } : { ...PRIVY_MOCK_USER, isLoggedIn: false };
 
 // ============================================================
 //  DOM 就绪后初始化
@@ -61,6 +85,30 @@ function initAuth() {
 function injectAuthStyles() {
   if (document.getElementById('authStyles')) return;
   const css = `
+  /* ===== Login Modal Styles (shared across all pages) ===== */
+  .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+  .auth-modal-overlay.active { opacity: 1; visibility: visible; }
+  .auth-modal { background: var(--surface, #ffffff); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+  .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
+  .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted, #5e6f83); transition: all 0.2s; z-index: 1; }
+  .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text, #13202e); }
+  .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
+  .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent, #00b388), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+  .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; color: var(--text, #13202e); }
+  .auth-modal-header p { margin: 0; color: var(--text-muted, #5e6f83); font-size: 0.92rem; }
+  .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+  .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border, #deeaf7); background: var(--surface, #ffffff); color: var(--text, #13202e); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+  .auth-social-btn:hover { border-color: var(--accent, #00b388); background: var(--accent-soft, rgba(0, 179, 136, 0.12)); }
+  .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted, #5e6f83); font-size: 0.85rem; margin: 4px 0; }
+  .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border, #deeaf7); }
+  .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent, #00b388); background: var(--accent-soft, rgba(0,179,136,0.12)); color: var(--accent, #00b388); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+  .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+  .auth-modal-tos { text-align: center; color: var(--text-muted, #5e6f83); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
+  .auth-modal-tos a { color: var(--accent, #00b388); text-decoration: none; }
+  .auth-modal-tos a:hover { text-decoration: underline; }
+
+  /* ===== Auth Dropdown Styles ===== */
   .auth-user-menu{position:relative;display:inline-block}
   .auth-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;border:3px solid rgba(0,0,0,0);box-sizing:border-box}
   .auth-avatar img{width:100%;height:100%;object-fit:cover;display:block}
@@ -335,6 +383,9 @@ function mockLogin(method) {
       currentUser.email = currentUser.email || 'user@example.com';
     }
 
+    // 保存登录态到 localStorage
+    saveUserToStorage(currentUser);
+
     // 关闭弹窗
     closeLoginModal();
 
@@ -357,6 +408,9 @@ function handleLogout() {
 
   currentUser.isLoggedIn = false;
   currentUser.authMethod = null;
+
+  // 清除 localStorage 中的登录态
+  clearUserFromStorage();
 
   // 关闭下拉菜单
   closeDropdown();
