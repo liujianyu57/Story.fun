@@ -55,7 +55,7 @@
     .auth-modal-tos a:hover { text-decoration: underline; }
     .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-    .page-intro { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 24px; padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 28px; box-shadow: var(--shadow); }
+    .page-intro { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
     .page-intro h2 { margin: 0; font-size: 2.2rem; line-height: 1.05; }
     .page-intro p { margin: 0; color: var(--text-muted); line-height: 1.7; }
     .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.2s ease; text-decoration: none; }
@@ -1528,7 +1528,7 @@
         <div class="nft-grid">
 
           <!-- A-001: 苏婉清（已质押） -->
-          <div class="nft-card" data-staked="true">
+          <div class="nft-card" data-staked="true" onclick="location.href='actor-profile.html'">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80" alt="苏婉清 NFT" />
               <span class="nft-id-badge">#A-001</span>
@@ -1592,7 +1592,7 @@
           </div>
 
           <!-- A-002: 李云飞（已质押） -->
-          <div class="nft-card" data-staked="true">
+          <div class="nft-card" data-staked="true" onclick="location.href='actor-profile.html'">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80" alt="李云飞 NFT" />
               <span class="nft-id-badge">#A-002</span>
@@ -1656,7 +1656,7 @@
           </div>
 
           <!-- A-003: 林梦瑶（已质押） -->
-          <div class="nft-card" data-staked="true">
+          <div class="nft-card" data-staked="true" onclick="location.href='actor-profile.html'">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80" alt="林梦瑶 NFT" />
               <span class="nft-id-badge">#A-003</span>
@@ -1719,72 +1719,10 @@
             </div>
           </div>
 
-          <!-- A-004: 赵无极（已质押） -->
-          <div class="nft-card" data-staked="true">
-            <div class="nft-cover-wrap">
-              <img class="nft-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=900&q=80" alt="赵无极 NFT" />
-              <span class="nft-id-badge">#A-004</span>
-              <span class="nft-stake-status pledged"><span class="status-dot"></span> 已质押</span>
-            </div>
-            <div class="nft-body">
-              <h4>赵无极</h4>
-              <div class="nft-sub">
-                <span>ERC-1155</span>
-                <span class="sub-divider"></span>
-                <span>发行中</span>
-              </div>
-              <div class="actor-nft-stats">
-                <div class="actor-nft-stat">
-                  <span class="stat-label">发行总量</span>
-                  <span class="stat-value">6,000</span>
-                </div>
-                <div class="actor-nft-stat">
-                  <span class="stat-label">可Mint</span>
-                  <span class="stat-value">5,500</span>
-                </div>
-                <div class="actor-nft-stat">
-                  <span class="stat-label">已铸造</span>
-                  <span class="stat-value">500</span>
-                </div>
-              </div>
-              <div class="actor-nft-progress">
-                <div class="progress-bar-bg">
-                  <div class="progress-bar-fill" style="width:8.33%"></div>
-                </div>
-                <span class="progress-text">已铸造 8.33%</span>
-              </div>
-              <div class="actor-nft-divider"></div>
-              <div class="actor-nft-holdings">
-                <div class="hold-item">
-                  <span class="hold-label">我持有</span>
-                  <span class="hold-value">9</span>
-                </div>
-                <div class="hold-item">
-                  <span class="hold-label">已质押</span>
-                  <span class="hold-value" style="color:#f59e0b;">7</span>
-                </div>
-                <div class="hold-item">
-                  <span class="hold-label">可操作</span>
-                  <span class="hold-value">2</span>
-                </div>
-              </div>
-              <div class="actor-drama-field" onclick="openActorDramaModal('赵无极')">
-                <span class="field-label"><span class="field-emoji">🎬</span> 参演短剧</span>
-                <span class="field-value clickable">1 部 <span class="arrow-icon">›</span></span>
-              </div>
-            </div>
-            <div class="nft-footer">
-              <button class="button button-amber" style="flex:0.8;" onclick="handleActorStakeClick(this)">
-                <span class="btn-icon">🔓</span> 解质押
-              </button>
-              <button class="button" onclick="handleActorStakeMoreClick(this)">
-                <span class="btn-icon">🔒</span> 追加质押
-              </button>
-            </div>
-          </div>
-
           <!-- A-005: 上官婉儿（未质押） -->
-          <div class="nft-card" data-staked="false">
+
+          <div class="nft-card" data-staked="false" onclick="location.href='actor-profile.html'">
+
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80" alt="上官婉儿 NFT" />
               <span class="nft-id-badge">#A-005</span>
