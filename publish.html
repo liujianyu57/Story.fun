@@ -26,14 +26,6 @@
     * { box-sizing: border-box; margin: 0; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
     .app-shell { max-width: 1280px; margin: 0 auto; padding: 24px; }
-    .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 24px; background: rgba(255,255,255,0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 32px; }
-    .brand { display: flex; align-items: center; gap: 14px; }
-    .brand .icon { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, rgba(0,179,136,0.18), rgba(0,179,136,0.06)); display: grid; place-items: center; color: var(--accent); font-weight: 700; font-size: 1.1rem; border: 1px solid rgba(0, 179, 136, 0.30); }
-    .brand h1 { margin: 0; font-size: 1.2rem; }
-    .brand .small { display: block; font-size: 0.92rem; color: var(--text-muted); }
-    .nav-links { display: flex; flex-wrap: wrap; gap: 10px; }
-    .nav-link { text-decoration: none; color: var(--text-muted); padding: 10px 18px; border-radius: 999px; transition: all 0.25s ease; font-weight: 600; font-size: 0.94rem; }
-    .nav-link:hover { color: var(--text); background: rgba(0,0,0,0.03); }
     .nav-link.active { color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px rgba(0,179,136,0.15); }
 
     /* ===== Auth Styles ===== */
@@ -284,7 +276,7 @@
             <label>封面图</label>
             <div class="cover-upload">
               <div class="upload-icon">🖼️</div>
-              <p>点击或拖拽上传封面图<br /><strong>支持 JPG、PNG，建议比例 16:9</strong></p>
+              <p>点击或拖拽上传封面图<br /><strong>支持 JPG、PNG，建议比例 6:5</strong></p>
             </div>
           </div>
         </div>
@@ -293,31 +285,6 @@
             <label>短剧简介 <span class="hint">（最多 500 字）</span></label>
             <textarea placeholder="描述短剧的核心剧情、风格特色与亮点……"></textarea>
             <span class="char-count">0/500</span>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>类型</label>
-            <select>
-              <option>请选择类型</option>
-              <option>古装</option>
-              <option>现代</option>
-              <option>科幻</option>
-              <option>悬疑</option>
-              <option>喜剧</option>
-              <option>爱情</option>
-              <option>奇幻</option>
-              <option>历史</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>语言</label>
-            <select>
-              <option>中文（普通话）</option>
-              <option>中文（粤语）</option>
-              <option>英文</option>
-              <option>日文</option>
-            </select>
           </div>
         </div>
         <div class="form-row full">

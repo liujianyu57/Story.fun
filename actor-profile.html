@@ -26,15 +26,6 @@
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
     .app-shell { max-width: 1280px; margin: 0 auto; padding: 24px; }
-    .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 24px; background: rgba(255,255,255,0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 32px; }
-    .brand { display: flex; align-items: center; gap: 14px; }
-    .brand .icon { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, rgba(0,179,136,0.18), rgba(0,179,136,0.06)); display: grid; place-items: center; color: var(--accent); font-weight: 700; font-size: 1rem; border: 1px solid rgba(0, 179, 136, 0.30); }
-    .brand h1 { margin: 0; font-size: 1.2rem; }
-    .brand .small { display: block; font-size: 0.92rem; color: var(--text-muted); }
-    .nav-links { display: flex; flex-wrap: wrap; gap: 10px; }
-    .nav-link { text-decoration: none; color: var(--text-muted); padding: 10px 18px; border-radius: 999px; transition: all 0.25s ease; font-weight: 600; font-size: 0.94rem; }
-    .nav-link:hover { color: var(--text); background: rgba(0,0,0,0.03); }
-    .nav-link.active { color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px rgba(0,179,136,0.15); }
 
     .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 0.92rem; color: var(--text-muted); }
     .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
