@@ -592,9 +592,10 @@
           <h4>${c.name}</h4>
           <div class="cast-role">${c.role}</div>
           ${c.bound && c.actor
-            ? `<span class="cast-actor" onclick="showToast('🎭 查看演员 ${c.actor} 详情','🎭')">🎭 ${c.actor}</span>`
+            ? `<span class="cast-actor" onclick="location.href='actor-profile.html'">🎭 ${c.actor}</span>`
             : `<span class="cast-actor unbound">未绑定演员</span>`
           }
+
         </div>
       `).join('');
     }

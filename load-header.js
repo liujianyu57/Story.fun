@@ -39,10 +39,12 @@
   gap: 10px;
   flex-shrink: 0;
 }
-.story-header-wrapper .header-logo-svg {
+.story-header-wrapper .header-logo-svg,
+.story-header-wrapper .header-logo-img {
   width: 29px;
   height: 29px;
   display: block;
+  object-fit: contain;
 }
 .story-header-wrapper .brand-text {
   font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -218,18 +220,7 @@
 <div class="header">
   <div class="header-inner">
     <div class="brand">
-      <svg class="header-logo-svg" width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="fbLogoGrad" x1="0" y1="28.57" x2="28.57" y2="0" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#05DF72"/>
-            <stop offset="0.5" stop-color="#00BBA7"/>
-            <stop offset="1" stop-color="#00B8DB"/>
-          </linearGradient>
-        </defs>
-        <rect x="0.5" y="0.5" width="28" height="28" rx="8" fill="url(#fbLogoGrad)" fill-opacity="0.12" stroke="url(#fbLogoGrad)" stroke-width="1"/>
-        <path d="M14.5 6.5L9 15.5H20L14.5 6.5Z" fill="url(#fbLogoGrad)"/>
-        <path d="M14.5 22.5L9 13.5H20L14.5 22.5Z" fill="url(#fbLogoGrad)" fill-opacity="0.5"/>
-      </svg>
+      <img class="header-logo-img" src="image/storyfun-logo-icon.png" width="29" height="29" alt="Story.fun" />
       <span class="brand-text">Story.fun</span>
     </div>
     <nav class="nav-links">
