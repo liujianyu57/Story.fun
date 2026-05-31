@@ -223,6 +223,10 @@ function renderAuthUI(container) {
           ` : ''}
 
           <div class="auth-dropdown-divider"></div>
+          <a class="auth-dropdown-item" href="#" onclick="openProfileCenter()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            个人中心
+          </a>
           <a class="auth-dropdown-item" href="#" onclick="showToast('🕘 交易记录开发中')">
             <span>⟳</span> 交易记录
           </a>
@@ -394,6 +398,14 @@ document.addEventListener('click', function(event) {
     }
   }
 });
+
+// ============================================================
+//  个人中心
+// ============================================================
+function openProfileCenter() {
+  closeDropdown();
+  window.location.href = 'profile-center.html';
+}
 
 // ============================================================
 //  提现弹窗（Withdraw Modal）

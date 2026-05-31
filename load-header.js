@@ -27,9 +27,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 16px 88px;
+  padding: 16px 44px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .story-header-wrapper .brand {
   display: flex;

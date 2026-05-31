@@ -25,7 +25,7 @@
     }
     * { box-sizing: border-box; margin: 0; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
-    .app-shell { max-width: 1280px; margin: 0 auto; padding: 24px; }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
     .nav-link.active { color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px rgba(0,179,136,0.15); }
 
     /* ===== Auth Styles ===== */
@@ -82,15 +82,17 @@
     .page-header a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; transition: color 0.2s; display: inline-flex; align-items: center; gap: 6px; }
     .page-header a:hover { color: var(--accent); }
 
-    /* Steps */
-    .steps-bar { display: flex; gap: 12px; margin-bottom: 32px; padding: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; box-shadow: var(--shadow-sm); overflow-x: auto; }
-    .step-indicator { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; font-size: 0.92rem; font-weight: 600; color: var(--text-muted); white-space: nowrap; transition: all 0.3s ease; cursor: default; }
-    .step-indicator .step-num { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 0.85rem; font-weight: 700; background: rgba(0,0,0,0.05); color: var(--text-muted); transition: all 0.3s ease; }
-    .step-indicator.active { background: var(--accent-soft); color: var(--accent); }
-    .step-indicator.active .step-num { background: var(--accent); color: #fff; }
-    .step-indicator.done { color: var(--accent); }
-    .step-indicator.done .step-num { background: var(--accent); color: #fff; }
-    .step-arrow { color: var(--border); font-size: 1.2rem; flex-shrink: 0; }
+    /* Steps Bar - Figma style numbered circles */
+    .steps-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding: 12px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; box-shadow: var(--shadow-sm); overflow-x: auto; }
+    .step-item { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .step-item .step-circle { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 0.85rem; font-weight: 700; background: rgba(0,0,0,0.05); color: var(--text-muted); transition: all 0.3s ease; flex-shrink: 0; }
+    .step-item .step-label { font-size: 0.88rem; font-weight: 500; color: var(--text-muted); transition: color 0.3s ease; }
+    .step-item.active .step-circle { background: #13202e; color: #fff; }
+    .step-item.active .step-label { color: #13202e; font-weight: 600; }
+    .step-item.done .step-circle { background: var(--accent); color: #fff; }
+    .step-item.done .step-label { color: var(--accent); }
+    .step-item.inactive .step-circle { background: #e5e5e5; color: #8b8d98; }
+    .step-item.inactive .step-label { color: #60646c; }
 
     /* Form Panel */
     .form-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
@@ -194,44 +196,96 @@
     .tag-option:hover { border-color: var(--accent); color: var(--accent); }
     .tag-option.selected { background: var(--accent); color: #fff; border-color: transparent; }
 
-    /* Episode / Character Item */
-    .list-item { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border: 1px solid var(--border); border-radius: 18px; background: #fafcff; }
-    .list-item + .list-item { margin-top: 12px; }
-    .list-item .item-index { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
-    .list-item .item-content { flex: 1; min-width: 0; }
-    .list-item .item-content h4 { font-size: 1rem; margin-bottom: 4px; }
-    .list-item .item-content p { color: var(--text-muted); font-size: 0.9rem; }
-    .list-item .item-actions { display: flex; gap: 8px; flex-shrink: 0; }
-    .btn-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); cursor: pointer; display: grid; place-items: center; color: var(--text-muted); transition: all 0.2s ease; font-size: 1rem; }
-    .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-icon.danger:hover { border-color: var(--danger); color: var(--danger); }
-    .btn-add { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1px dashed var(--accent); background: transparent; color: var(--accent); cursor: pointer; font-size: 0.92rem; font-weight: 600; transition: all 0.2s ease; margin-top: 12px; }
-    .btn-add:hover { background: var(--accent-soft); }
+    /* ===== Character Card Grid (Step 3 - Figma Inspired) ===== */
+    .char-panel-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 0 16px; border-bottom: 2px solid var(--accent); margin-bottom: 24px; }
+    .char-panel-header h3 { font-size: 1.25rem; font-weight: 700; color: var(--text); margin: 0; }
+    .char-add-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 999px; border: none; background: var(--accent-soft); color: var(--accent); font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .char-add-btn:hover { background: rgba(0,179,136,0.2); }
+    .char-add-btn .plus-icon { font-size: 1.1rem; line-height: 1; }
 
-    /* Pricing */
-    .pricing-table { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .pricing-card { padding: 24px; border: 1px solid var(--border); border-radius: 20px; background: #fafcff; transition: all 0.3s ease; }
-    .pricing-card:hover { border-color: var(--accent); }
-    .pricing-card h4 { font-size: 1.1rem; margin-bottom: 6px; }
-    .pricing-card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px; }
-    .pricing-card .price-input { display: flex; align-items: center; gap: 12px; }
-    .pricing-card .price-input input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 1rem; font-family: inherit; outline: none; transition: border-color 0.2s; }
-    .pricing-card .price-input input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-    .pricing-card .price-input span { font-weight: 600; color: var(--text-muted); }
-    .pricing-note { margin-top: 16px; padding: 14px 18px; border-radius: 14px; background: rgba(0,179,136,0.06); border: 1px solid rgba(0,179,136,0.12); color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; }
+    .char-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 28px; }
+
+    .char-card { border: 1px solid var(--border); border-radius: 18px; overflow: hidden; background: #fafcff; transition: all 0.25s ease; }
+    .char-card:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(0,179,136,0.08); }
+    .char-card .char-avatar-area { height: 160px; background: #f0f4f8; display: grid; place-items: center; position: relative; overflow: hidden; }
+    .char-card .char-avatar-area img { width: 100%; height: 100%; object-fit: cover; }
+    .char-card .char-avatar-area .char-avatar-placeholder { width: 80px; height: 80px; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; font-size: 2rem; color: var(--accent); }
+    .char-card .char-body { padding: 18px 20px 20px; }
+    .char-card .char-body .char-name { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .char-card .char-body .char-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 14px; min-height: 2.6em; }
+    .char-card .char-body .char-actions { display: flex; gap: 10px; }
+    .char-card .char-body .char-actions .char-action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 7px 12px; border-radius: 80px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .char-card .char-body .char-actions .char-action-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .char-card .char-body .char-actions .char-action-btn.danger:hover { border-color: var(--danger); color: var(--danger); background: rgba(244,91,105,0.06); }
+
+    .char-card.add-card { border: 2px dashed var(--border); background: transparent; display: grid; place-items: center; cursor: pointer; min-height: 320px; transition: all 0.25s ease; }
+    .char-card.add-card:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .char-card.add-card .add-card-content { text-align: center; padding: 24px; }
+    .char-card.add-card .add-card-content .add-icon { font-size: 2.4rem; color: var(--text-muted); margin-bottom: 12px; }
+    .char-card.add-card .add-card-content p { color: var(--text-muted); font-size: 0.95rem; }
+    .char-card.add-card .add-card-content p strong { color: var(--accent); }
+
+    /* Character Edit Modal */
+    .char-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .char-modal-overlay.active { opacity: 1; visibility: visible; }
+    .char-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 480px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .char-modal-overlay.active .char-modal { transform: scale(1) translateY(0); }
+    .char-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 16px; }
+    .char-modal-header h3 { font-size: 1.2rem; font-weight: 700; margin: 0; }
+    .char-modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; }
+    .char-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .char-modal-body { padding: 8px 28px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .char-modal-body .form-group label { font-size: 0.92rem; font-weight: 600; color: var(--text); }
+    .char-modal-body .form-group input,
+    .char-modal-body .form-group textarea { padding: 12px 16px; border: 1px solid var(--border); border-radius: 14px; font-size: 0.95rem; font-family: inherit; background: var(--surface); color: var(--text); outline: none; transition: border-color 0.2s ease; width: 100%; }
+    .char-modal-body .form-group input:focus,
+    .char-modal-body .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .char-modal-body .form-group textarea { min-height: 80px; resize: vertical; }
+    .char-modal-body .char-avatar-upload { display: flex; align-items: center; gap: 16px; }
+    .char-modal-body .char-avatar-upload .avatar-preview { width: 64px; height: 64px; border-radius: 50%; background: #f0f4f8; display: grid; place-items: center; font-size: 1.6rem; color: var(--text-muted); overflow: hidden; flex-shrink: 0; }
+    .char-modal-body .char-avatar-upload .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .char-modal-body .char-avatar-upload .avatar-upload-btn { padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
+    .char-modal-body .char-avatar-upload .avatar-upload-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .char-modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 28px 24px; }
+    .char-modal-footer .button { min-width: 100px; justify-content: center; }
+
+    /* ===== End Character Card Grid ===== */
+
+    /* ===== Pricing & Revenue (Figma Style) ===== */
+    .pricing-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 32px; }
+    .pricing-subtitle { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
+    .pricing-section { display: flex; flex-direction: column; gap: 12px; }
+    .pricing-section-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .pricing-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .pricing-field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 180px; }
+    .pricing-field label { font-size: 0.88rem; font-weight: 500; color: var(--text-muted); }
+    .pricing-field .input-wrap { display: flex; align-items: center; gap: 8px; }
+    .pricing-field .input-wrap input { flex: 1; padding: 14px 16px; border: 1px solid #f0f0f3; border-radius: 16px; font-size: 0.95rem; font-family: inherit; background: #f6f6f6; color: var(--text); outline: none; transition: border-color 0.2s ease; min-width: 0; width: 100%; }
+    .pricing-field .input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .pricing-field .input-wrap .unit { font-size: 0.92rem; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+    .pricing-hint { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; letter-spacing: 0.01em; }
+
+    .revenue-preview { background: rgba(0,179,136,0.06); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .revenue-preview .revenue-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .revenue-preview .revenue-header .label { font-size: 1rem; font-weight: 700; color: var(--accent); }
+    .revenue-preview .revenue-header .value { font-size: 1rem; font-weight: 700; color: var(--accent); }
+    .revenue-preview .revenue-note { font-size: 0.82rem; color: rgba(0,179,136,0.7); line-height: 1.6; letter-spacing: 0.01em; }
 
     /* Buttons */
-    .button, .button-secondary, .button-ghost { border: none; cursor: pointer; border-radius: 999px; padding: 12px 24px; font-size: 0.95rem; transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+    .button, .button-secondary, .button-ghost, .button-outline { border: none; cursor: pointer; border-radius: 999px; padding: 12px 24px; font-size: 0.95rem; transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
     .button { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
     .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,179,136,0.40); }
     .button-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
     .button-secondary:hover { border-color: var(--accent); color: var(--accent); }
     .button-ghost { background: transparent; color: var(--text-muted); }
     .button-ghost:hover { color: var(--text); }
+    .button-outline { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .button-outline:hover { border-color: var(--text); color: var(--text); }
 
     /* Responsive */
-    @media (max-width: 900px) { .form-row, .form-row.three, .pricing-table { grid-template-columns: 1fr; } .steps-bar { border-radius: var(--radius); flex-wrap: nowrap; } }
-    @media (max-width: 680px) { .form-panel-body, .form-panel-header, .form-panel-footer { padding-left: 20px; padding-right: 20px; } }
+    @media (max-width: 1200px) { .char-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px) { .form-row, .form-row.three { grid-template-columns: 1fr; } .steps-bar { border-radius: var(--radius); flex-wrap: nowrap; } .char-grid { grid-template-columns: repeat(2, 1fr); } .pricing-panel { padding: 20px; } }
+    @media (max-width: 680px) { .form-panel-body, .form-panel-header, .form-panel-footer { padding-left: 20px; padding-right: 20px; } .char-grid { grid-template-columns: 1fr; } .char-panel-header { flex-direction: column; align-items: stretch; gap: 12px; } }
   </style>
 </head>
 <body>
@@ -246,15 +300,27 @@
       </div>
     </div>
 
-    <!-- Step Progress -->
+    <!-- Step Progress - Figma Style -->
     <div class="steps-bar">
-      <span class="step-indicator active"><span class="step-num">1</span> 基本信息</span>
-      <span class="step-arrow">›</span>
-      <span class="step-indicator"><span class="step-num">2</span> 剧集管理</span>
-      <span class="step-arrow">›</span>
-      <span class="step-indicator"><span class="step-num">3</span> 角色管理</span>
-      <span class="step-arrow">›</span>
-      <span class="step-indicator"><span class="step-num">4</span> 定价</span>
+      <div class="step-item active">
+        <span class="step-circle">1</span>
+        <span class="step-label">基本信息</span>
+      </div>
+      <span style="color:#deeaf7;font-size:1.2rem;">›</span>
+      <div class="step-item">
+        <span class="step-circle">2</span>
+        <span class="step-label">剧集管理</span>
+      </div>
+      <span style="color:#deeaf7;font-size:1.2rem;">›</span>
+      <div class="step-item">
+        <span class="step-circle">3</span>
+        <span class="step-label">角色管理</span>
+      </div>
+      <span style="color:#deeaf7;font-size:1.2rem;">›</span>
+      <div class="step-item">
+        <span class="step-circle">4</span>
+        <span class="step-label">定价 & 收益</span>
+      </div>
     </div>
 
     <!-- Step 1: 基本信息 -->
@@ -352,123 +418,144 @@
     </div>
 
 
-    <!-- Step 3: 角色管理 -->
+    <!-- Step 3: 角色管理 - Figma Card Grid Style -->
     <div class="form-panel" id="step3" style="display:none;">
       <div class="form-panel-header">
         <h3>👤 角色管理</h3>
         <p>为短剧创建角色，设定角色名称、头像与性格简介。</p>
       </div>
       <div class="form-panel-body">
-        <div style="margin-bottom:20px;">
-          <div class="list-item">
-            <span class="item-index" style="background:rgba(0,179,136,0.15);color:var(--accent);">1</span>
-            <div class="item-content">
-              <h4>未命名角色 1</h4>
-              <p>点击编辑填写角色名称与简介</p>
-            </div>
-            <div class="item-actions">
-              <button class="btn-icon" title="编辑">✎</button>
-              <button class="btn-icon danger" title="删除">✕</button>
-            </div>
-          </div>
-          <div class="list-item">
-            <span class="item-index" style="background:rgba(0,179,136,0.15);color:var(--accent);">2</span>
-            <div class="item-content">
-              <h4>未命名角色 2</h4>
-              <p>点击编辑填写角色名称与简介</p>
-            </div>
-            <div class="item-actions">
-              <button class="btn-icon" title="编辑">✎</button>
-              <button class="btn-icon danger" title="删除">✕</button>
-            </div>
-          </div>
-          <button class="btn-add">+ 添加角色</button>
+        <!-- Character Manager Header -->
+        <div class="char-panel-header">
+          <h3>添加主要角色</h3>
+          <button class="char-add-btn" onclick="charManager.openAddModal()">
+            <span class="plus-icon">+</span> 添加角色
+          </button>
         </div>
-        <div class="form-row full">
-          <div class="form-group">
-            <label>AI 角色生成提示词 <span class="hint">（可选）</span></label>
-            <textarea placeholder="描述角色生成风格参考，例如：古代侠客，面容俊朗，神情坚毅……"></textarea>
-          </div>
+
+        <!-- Character Grid -->
+        <div class="char-grid" id="charGrid">
+          <!-- Characters rendered by JS -->
         </div>
-        <div class="form-row three">
-          <div class="form-group">
-            <label>最大角色数</label>
-            <input type="number" placeholder="10" min="1" max="99" />
-          </div>
-          <div class="form-group">
-            <label>主要角色</label>
-            <input type="number" placeholder="2" min="1" max="10" />
-          </div>
-          <div class="form-group">
-            <label>配角</label>
-            <input type="number" placeholder="8" min="0" max="99" />
-          </div>
-        </div>
+
       </div>
+
       <div class="form-panel-footer">
-        <button class="button-ghost" onclick="goToStep(2)">← 上一步</button>
-        <button class="button" onclick="goToStep(4)">下一步：定价 →</button>
+        <div style="display:flex;gap:10px;">
+          <button class="button-outline" onclick="charManager.saveDraft()">💾 保存草稿</button>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="button-ghost" onclick="goToStep(2)">← 上一步</button>
+          <button class="button" onclick="goToStep(4)">下一步 →</button>
+        </div>
       </div>
     </div>
 
-    <!-- Step 4: 定价 -->
+    <!-- Character Edit Modal -->
+    <div class="char-modal-overlay" id="charModal">
+      <div class="char-modal">
+        <div class="char-modal-header">
+          <h3 id="charModalTitle">添加角色</h3>
+          <button class="char-modal-close" onclick="charManager.closeModal()">✕</button>
+        </div>
+        <div class="char-modal-body">
+          <input type="hidden" id="editCharId" />
+          <div class="form-group">
+            <label>头像</label>
+            <div class="char-avatar-upload">
+              <div class="avatar-preview" id="avatarPreview">👤</div>
+              <button class="avatar-upload-btn" onclick="charManager.uploadAvatar()">上传头像</button>
+              <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>角色名称 <span class="hint">（必填）</span></label>
+            <input type="text" id="editCharName" placeholder="例如：林婉儿" maxlength="20" />
+          </div>
+          <div class="form-group">
+            <label>性格简介 <span class="hint">（可选）</span></label>
+            <textarea id="editCharDesc" placeholder="描述角色的性格、背景故事……" maxlength="200"></textarea>
+          </div>
+        </div>
+        <div class="char-modal-footer">
+          <button class="button-ghost" onclick="charManager.closeModal()">取消</button>
+          <button class="button" onclick="charManager.saveChar()">保存</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Step 4: 定价 & 收益 - Figma Style -->
     <div class="form-panel" id="step4" style="display:none;">
       <div class="form-panel-header">
-        <h3>💰 定价</h3>
-        <p>设定短剧的单价、折扣与创作者分润比例。</p>
+        <h3>💰 定价 & 收益</h3>
+        <p>设定短剧的定价与收益分成。</p>
       </div>
       <div class="form-panel-body">
-        <div class="pricing-table">
-          <div class="pricing-card">
-            <h4>单价</h4>
-            <p>每集或整部短剧的 USDC 定价</p>
-            <div class="price-input">
-              <input type="number" placeholder="9.8" step="0.1" min="0" />
-              <span>USDC</span>
+        <div class="pricing-panel">
+          <!-- Hint -->
+          <div class="pricing-subtitle">
+            单集解锁 / 批量优惠解锁，观众可自由选择
+          </div>
+
+          <!-- 单集解锁 -->
+          <div class="pricing-section">
+            <div class="pricing-section-title">单集解锁</div>
+            <div class="pricing-row">
+              <div class="pricing-field" style="max-width:240px;">
+                <label>单集定价</label>
+                <div class="input-wrap">
+                  <input type="number" placeholder="9.8" step="0.1" min="0" />
+                  <span class="unit">USDC</span>
+                </div>
+              </div>
+              <div class="pricing-field" style="max-width:240px;">
+                <label>免费集数</label>
+                <div class="input-wrap">
+                  <input type="number" placeholder="1" step="1" min="1" />
+                  <span class="unit">集</span>
+                </div>
+              </div>
+            </div>
+            <div class="pricing-hint">观众可直接按单集付费解锁内容。设置免费集数可吸引用户试看。</div>
+          </div>
+
+          <!-- 批量解锁 -->
+          <div class="pricing-section">
+            <div class="pricing-section-title">批量解锁（设置优惠）</div>
+            <div class="pricing-row">
+              <div class="pricing-field" style="max-width:240px;">
+                <label>设置优惠</label>
+                <div class="input-wrap">
+                  <input type="number" placeholder="20" min="0" max="100" style="max-width:200px;" />
+                  <span class="unit">% OFF（优惠）</span>
+                </div>
+              </div>
+            </div>
+            <div class="pricing-hint">例如设置 20%，观众批量解锁全部剧集时享受 20% 优惠，按单集总价计算后减免。</div>
+          </div>
+
+          <!-- 收益分成预览 -->
+          <div class="pricing-section">
+            <div class="pricing-section-title">收益分成预览</div>
+            <div class="revenue-preview">
+              <div class="revenue-header">
+                <span class="label">创作者收入</span>
+                <span class="value">70%</span>
+              </div>
+              <div class="revenue-note">平台协议费将用于生态销毁与激励池，具体比例可参考官方文档。</div>
             </div>
           </div>
-          <div class="pricing-card">
-            <h4>推荐折扣</h4>
-            <p>为推荐观看者提供的折扣比例</p>
-            <div class="price-input">
-              <input type="number" placeholder="10" min="0" max="100" />
-              <span>%</span>
-            </div>
-          </div>
-          <div class="pricing-card">
-            <h4>创作者分润比例</h4>
-            <p>每次购买中创作者获得的收益比例</p>
-            <div class="price-input">
-              <input type="number" placeholder="70" min="0" max="100" />
-              <span>%</span>
-            </div>
-          </div>
-          <div class="pricing-card">
-            <h4>推荐分润比例</h4>
-            <p>推荐人获得的收益比例</p>
-            <div class="price-input">
-              <input type="number" placeholder="10" min="0" max="100" />
-              <span>%</span>
-            </div>
-          </div>
-        </div>
-        <div class="form-row full" style="margin-top:20px;">
-          <div class="form-group">
-            <label>付费模式</label>
-            <div class="tag-options">
-              <span class="tag-option">按集付费</span>
-              <span class="tag-option selected">整部购买</span>
-              <span class="tag-option">订阅制</span>
-            </div>
-          </div>
-        </div>
-        <div class="pricing-note">
-          <strong>💡 提示：</strong>定价确认发布后将进入审核流程，审核通过后自动生效。分润比例为链上智能合约自动执行，不可单方面修改。
         </div>
       </div>
       <div class="form-panel-footer">
-        <button class="button-ghost" onclick="goToStep(3)">← 上一步</button>
-        <button class="button" style="padding:12px 36px;">提交审核</button>
+        <div style="display:flex;gap:10px;">
+          <button class="button-outline">💾 保存草稿</button>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="button-ghost" onclick="goToStep(3)">← 上一步</button>
+          <button class="button" style="padding:12px 36px;" onclick="submitForReview()">提交审核</button>
+        </div>
       </div>
     </div>
   </div>
@@ -478,24 +565,228 @@
 
 <script>
 /**
+ * Submit for review - navigate to narrator center
+ */
+function submitForReview() {
+  // Show a brief success toast before redirecting
+  const toast = document.createElement('div');
+  toast.textContent = '✅ 已提交审核，正在跳转...';
+  Object.assign(toast.style, {
+    position: 'fixed', top: '50%', left: '50%',
+    transform: 'translate(-50%, -50%)',
+    background: 'rgba(26,35,47,0.92)', backdropFilter: 'blur(8px)',
+    color: '#fff', padding: '16px 32px', borderRadius: '16px',
+    fontSize: '1rem', boxShadow: '0 12px 40px rgba(27,45,71,0.3)',
+    zIndex: '10000', fontWeight: '600',
+  });
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    window.location.href = 'narrator.html';
+  }, 800);
+}
+
+/**
  * Step Navigation
  */
 function goToStep(num) {
   const steps = ['step1','step2','step3','step4'];
-  const indicators = document.querySelectorAll('.step-indicator');
+  const stepItems = document.querySelectorAll('.step-item');
   steps.forEach((id, i) => {
     document.getElementById(id).style.display = i + 1 === num ? 'block' : 'none';
+    const item = stepItems[i];
+    if (!item) return;
+    item.classList.remove('active', 'done', 'inactive');
     if (i + 1 < num) {
-      indicators[i].classList.add('done');
-      indicators[i].classList.remove('active');
+      item.classList.add('done');
     } else if (i + 1 === num) {
-      indicators[i].classList.add('active');
-      indicators[i].classList.remove('done');
+      item.classList.add('active');
     } else {
-      indicators[i].classList.remove('active', 'done');
+      item.classList.add('inactive');
     }
   });
 }
+
+/**
+ * Character Manager - Figma Inspired Card Grid
+ */
+const charManager = {
+  characters: [],
+  idCounter: 0,
+  editingId: null,
+
+  defaultChars: [
+    { name: '未命名角色 1', desc: '点击编辑填写角色名称与简介', avatar: null },
+    { name: '未命名角色 2', desc: '点击编辑填写角色名称与简介', avatar: null },
+  ],
+
+  init() {
+    this.defaultChars.forEach(c => this.addChar(c.name, c.desc, c.avatar));
+    this.render();
+
+    // Avatar file input
+    document.getElementById('avatarFileInput').addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        if (!file.type.startsWith('image/')) {
+          this.showToast('请选择图片文件');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const preview = document.getElementById('avatarPreview');
+          preview.innerHTML = `<img src="${ev.target.result}" alt="" />`;
+          preview.dataset.avatar = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+        e.target.value = '';
+      }
+    });
+  },
+
+  addChar(name, desc, avatar) {
+    this.characters.push({
+      id: ++this.idCounter,
+      name: name || '未命名角色',
+      desc: desc || '',
+      avatar: avatar || null,
+    });
+  },
+
+  removeChar(id) {
+    const char = this.characters.find(c => c.id === id);
+    if (!char) return;
+    if (!confirm(`确定要删除角色"${char.name}"吗？`)) return;
+    this.characters = this.characters.filter(c => c.id !== id);
+    this.render();
+  },
+
+  openAddModal() {
+    this.editingId = null;
+    document.getElementById('charModalTitle').textContent = '添加角色';
+    document.getElementById('editCharId').value = '';
+    document.getElementById('editCharName').value = '';
+    document.getElementById('editCharDesc').value = '';
+    document.getElementById('avatarPreview').innerHTML = '👤';
+    delete document.getElementById('avatarPreview').dataset.avatar;
+    document.getElementById('charModal').classList.add('active');
+  },
+
+  openEditModal(id) {
+    const char = this.characters.find(c => c.id === id);
+    if (!char) return;
+    this.editingId = id;
+    document.getElementById('charModalTitle').textContent = '编辑角色';
+    document.getElementById('editCharId').value = id;
+    document.getElementById('editCharName').value = char.name;
+    document.getElementById('editCharDesc').value = char.desc;
+    if (char.avatar) {
+      document.getElementById('avatarPreview').innerHTML = `<img src="${char.avatar}" alt="" />`;
+    } else {
+      document.getElementById('avatarPreview').innerHTML = '👤';
+    }
+    document.getElementById('charModal').classList.add('active');
+  },
+
+  closeModal() {
+    document.getElementById('charModal').classList.remove('active');
+  },
+
+  uploadAvatar() {
+    document.getElementById('avatarFileInput').click();
+  },
+
+  saveChar() {
+    const name = document.getElementById('editCharName').value.trim();
+    if (!name) {
+      this.showToast('请输入角色名称');
+      return;
+    }
+    const desc = document.getElementById('editCharDesc').value.trim();
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatar = avatarPreview.dataset.avatar || null;
+
+    if (this.editingId) {
+      const char = this.characters.find(c => c.id === this.editingId);
+      if (char) {
+        char.name = name;
+        char.desc = desc;
+        char.avatar = avatar;
+      }
+    } else {
+      this.addChar(name, desc, avatar);
+    }
+
+    this.closeModal();
+    this.render();
+    this.showToast(this.editingId ? '角色已更新' : '角色已添加');
+  },
+
+  render() {
+    const grid = document.getElementById('charGrid');
+    grid.innerHTML = this.characters.map(c => this.renderCard(c)).join('');
+    // Add the "add card" at the end
+    grid.insertAdjacentHTML('beforeend', this.renderAddCard());
+  },
+
+  renderCard(char) {
+    const avatarHtml = char.avatar
+      ? `<img src="${char.avatar}" alt="${char.name}" />`
+      : `<div class="char-avatar-placeholder">${char.name.charAt(0)}</div>`;
+
+    return `<div class="char-card" data-char-id="${char.id}">
+      <div class="char-avatar-area">
+        ${avatarHtml}
+      </div>
+      <div class="char-body">
+        <div class="char-name" title="${this.escapeHtml(char.name)}">${this.escapeHtml(char.name)}</div>
+        <div class="char-desc">${this.escapeHtml(char.desc || '暂无简介')}</div>
+        <div class="char-actions">
+          <button class="char-action-btn" onclick="charManager.openEditModal(${char.id})">✎ 编辑</button>
+          <button class="char-action-btn danger" onclick="charManager.removeChar(${char.id})">✕ 删除</button>
+        </div>
+      </div>
+    </div>`;
+  },
+
+  renderAddCard() {
+    return `<div class="char-card add-card" onclick="charManager.openAddModal()">
+      <div class="add-card-content">
+        <div class="add-icon">+</div>
+        <p><strong>添加角色</strong></p>
+      </div>
+    </div>`;
+  },
+
+  saveDraft() {
+    this.showToast('草稿已保存！');
+  },
+
+  escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  },
+
+  showToast(msg) {
+    const existing = document.querySelector('.batch-toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = 'batch-toast';
+    toast.textContent = msg;
+    Object.assign(toast.style, {
+      position: 'fixed', bottom: '24px', left: '50%',
+      transform: 'translateX(-50%) translateY(100px)',
+      background: 'rgba(26,35,47,0.92)', backdropFilter: 'blur(8px)',
+      color: '#fff', padding: '12px 24px', borderRadius: '14px',
+      fontSize: '0.92rem', boxShadow: '0 8px 32px rgba(27,45,71,0.25)',
+      zIndex: '10000', transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease',
+      opacity: '0', maxWidth: '400px', textAlign: 'center', fontWeight: '500',
+    });
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => { toast.style.transform = 'translateX(-50%) translateY(0)'; toast.style.opacity = '1'; });
+    setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(100px)'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 2500);
+  },
+};
 
 /**
  * Batch Video Upload Engine
@@ -890,7 +1181,10 @@ const batchUpload = {
   },
 };
 
-document.addEventListener('DOMContentLoaded', () => batchUpload.init());
+document.addEventListener('DOMContentLoaded', () => {
+  batchUpload.init();
+  charManager.init();
+});
 </script>
 </body>
 </html>

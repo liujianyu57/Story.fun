@@ -23,7 +23,7 @@
     }
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
-    .app-shell { max-width: 1280px; margin: 0 auto; padding: 24px; }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
     .auth-container { display: flex; align-items: center; }
     .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
     .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
@@ -634,9 +634,9 @@
     .footer-bottom-links a:hover { color: var(--accent); }
     @media (max-width: 1060px) {
       .hero { flex-direction: column; padding: 60px 40px; gap: 48px; }
-      .hero-banner { width: 100%; max-width: 534px; height: auto; aspect-ratio: 534/416; }
-      .hero-banner-blur, .hero-banner-main { width: 100%; height: auto; aspect-ratio: 534/400; position: relative; top: auto; left: auto; }
-      .hero-banner-blur { filter: blur(30px); }
+      .hero-banner { width: 100%; max-width: 534px; height: auto; position: relative; display: inline-block; }
+      .hero-banner-blur { width: 100%; height: auto; aspect-ratio: 534/400; position: absolute; top: 12px; left: 0; filter: blur(30px); }
+      .hero-banner-main { width: 100%; height: auto; aspect-ratio: 534/400; position: relative; top: auto; left: auto; }
       .hero-stats { flex-direction: column; gap: 24px; padding: 40px; }
       .hero-stat-divider { width: 48px; height: 0; border-left: none; border-top: 1px solid #D9D9E0; }
       .second-screen { padding: 60px 40px; }
