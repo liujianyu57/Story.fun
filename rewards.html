@@ -175,7 +175,7 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* ===== NFT分润样式 ===== */
+    /* ===== 铸造分润样式 ===== */
     .nft-profit-summary {
       display: flex;
       gap: 18px;
@@ -324,7 +324,7 @@
       <div class="page-intro">
         <div>
           <h1>收益</h1>
-          <p>质押收益、邀请返佣与NFT分润，快速掌握当前收益状态。</p>
+          <p>质押收益、邀请返佣与铸造分润，快速掌握当前收益状态。</p>
         </div>
       </div>
 
@@ -348,7 +348,7 @@
       <div class="rewards-tabs">
         <button class="rewards-tab active" onclick="switchTab('质押分润')">质押分润</button>
         <button class="rewards-tab" onclick="switchTab('邀请返佣')">邀请返佣</button>
-        <button class="rewards-tab" onclick="switchTab('NFT分润')">NFT分润</button>
+        <button class="rewards-tab" onclick="switchTab('铸造分润')">铸造分润</button>
       </div>
 
       <!-- ===== 质押分润 ===== -->
@@ -485,16 +485,16 @@
         </div>
       </div>
 
-      <!-- ===== NFT分润 ===== -->
-      <div id="tab-content-NFT分润" class="tab-content">
+      <!-- ===== 铸造分润 ===== -->
+      <div id="tab-content-铸造分润" class="tab-content">
         <!-- 统计概览 -->
         <div class="nft-profit-summary">
           <div class="nft-profit-stat">
-            <h4>累计NFT分润 (USDC)</h4>
+            <h4>累计铸造分润 (USDC)</h4>
             <div class="amount">890.50</div>
           </div>
           <div class="nft-profit-stat">
-            <h4>可领取NFT分润 (USDC)</h4>
+            <h4>可领取铸造分润 (USDC)</h4>
             <div class="amount">210.30</div>
           </div>
           <div class="nft-profit-stat">
@@ -507,11 +507,11 @@
           </div>
         </div>
 
-        <!-- NFT分润明细表格 -->
+        <!-- 铸造分润明细表格 -->
         <div class="panel">
           <div class="panel-header">
             <div>
-              <h2>NFT分润明细</h2>
+              <h2>铸造分润明细</h2>
               <p class="small">其他用户铸造您创建的演员NFT时，您将获得50%的分润收益。</p>
             </div>
           </div>
@@ -660,7 +660,7 @@
     };
 
     /**
-     * 切换主页签：质押分润 / 邀请返佣 / NFT分润
+     * 切换主页签：质押分润 / 邀请返佣 / 铸造分润
      */
     function switchTab(tabName) {
       // 更新页签按钮状态
@@ -717,7 +717,7 @@
     }
 
     /**
-     * 打开NFT分润明细弹窗
+     * 打开铸造分润明细弹窗
      */
     function showDetail(actorName, nftId) {
       const overlay = document.getElementById('detail-modal-overlay');
