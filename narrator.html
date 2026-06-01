@@ -1795,18 +1795,31 @@
           <button class="modal-close" onclick="closeMintModal()">✕</button>
         </div>
         <div class="modal-body">
-          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">选择已通过审核的短剧，将其铸造为链上 NFT。铸造后该短剧将可进行交易与分润。</p>
-          <div class="mintable-list" id="mintableList">
-            <!-- 已通过审核的短剧由 JS 动态渲染 -->
+          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">确认铸造该短剧为链上 NFT。铸造后该短剧将可进行交易与分润。</p>
+
+          <!-- 短剧预览 -->
+          <div id="mintPreview" style="display:flex;align-items:center;gap:18px;padding:18px;border-radius:18px;border:1px solid var(--border);background:#fafcff;margin-bottom:20px;">
+            <img id="mintDramaCover" src="" alt="" style="width:72px;height:72px;border-radius:14px;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
+            <div>
+              <h4 id="mintDramaTitle" style="margin:0 0 4px;font-size:1.1rem;">—</h4>
+              <p id="mintDramaMeta" style="margin:0;color:var(--text-muted);font-size:0.92rem;">—</p>
+            </div>
           </div>
-          <div class="empty-state" id="emptyState" style="display:none;">
-            <div class="empty-icon">📭</div>
-            <p>暂无可铸造的短剧<br />请先发布短剧并通过审核</p>
+
+          <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;margin-bottom:20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.85rem;color:var(--text-muted);">创作者分润</span>
+              <span id="mintDramaRoyalty" style="font-size:1.2rem;font-weight:700;color:var(--accent);">—</span>
+            </div>
+          </div>
+
+          <div style="padding:12px 16px;border-radius:12px;background:#fff8e6;border:1px solid rgba(255,159,44,0.20);">
+            <p style="margin:0;color:#b87a1a;font-size:0.88rem;line-height:1.6;">💰 铸造手续费 <strong>10 USDC</strong></p>
           </div>
         </div>
         <div class="modal-footer">
           <button class="button-secondary" onclick="closeMintModal()">取消</button>
-          <button class="button" id="mintConfirmBtn" onclick="confirmMint()" disabled>铸造所选 NFT</button>
+          <button class="button" id="mintConfirmBtn" onclick="confirmMint()">确认铸造</button>
         </div>
       </div>
     </div>
@@ -1853,7 +1866,17 @@
               <span style="color:var(--text-muted);font-size:0.95rem;">创作者保留需支付</span>
               <span id="actorTotalCost" style="font-size:1.35rem;font-weight:700;color:var(--accent);">0 USDC</span>
             </div>
-            <p style="margin:8px 0 0;color:var(--text-muted);font-size:0.88rem;line-height:1.6;">创作者保留的 NFT 将直接空投至您的钱包，需按 Mint 价格支付对应费用。</p>
+            <div style="margin:10px 0 0;padding-top:12px;border-top:1px solid rgba(0,179,136,0.15);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="color:var(--text-muted);font-size:0.88rem;">铸造手续费</span>
+                <span style="font-size:1rem;font-weight:600;color:var(--text);">10 USDC</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed rgba(0,179,136,0.20);">
+                <span style="font-weight:700;font-size:1rem;">合计</span>
+                <span id="actorTotalWithFee" style="font-size:1.35rem;font-weight:700;color:var(--accent);">0 USDC</span>
+              </div>
+            </div>
+            <p style="margin:12px 0 0;color:var(--text-muted);font-size:0.88rem;line-height:1.6;">创作者保留的 NFT 将直接空投至您的钱包，需按 Mint 价格支付对应费用。</p>
           </div>
 
           <div style="padding:12px 16px;border-radius:12px;background:#fff8e6;border:1px solid rgba(255,159,44,0.20);">
@@ -1866,6 +1889,7 @@
         </div>
       </div>
     </div>
+
 
     <!-- Modal: 质押短剧NFT -->
     <div class="modal-overlay" id="stakeModal">
@@ -2069,18 +2093,12 @@
     }
 
     // 模拟已通过审核的短剧数据
-    const approvedDramas = [
-      { id: 1, title: '江南烟雨', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80', episodes: 24, price: '12.5', status: '已通过' },
-      { id: 2, title: '星际迷航', cover: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=80', episodes: 16, price: '8.0', status: '已通过' },
-    ];
-
-    let selectedDramaId = null;
+    let currentMintDrama = null;
     const mintModal = document.getElementById('mintModal');
-    const mintableList = document.getElementById('mintableList');
-    const emptyState = document.getElementById('emptyState');
     const confirmBtn = document.getElementById('mintConfirmBtn');
 
     // === 页签切换 ===
+
     function switchTab(tabId, btn) {
       // 更新按钮状态
       document.querySelectorAll('.narrator-tab').forEach(t => t.classList.remove('active'));
@@ -2108,27 +2126,17 @@
     }
 
     // === 弹窗 ===
-    function openMintModal() {
-      if (approvedDramas.length === 0) {
-        mintableList.innerHTML = '';
-        emptyState.style.display = 'block';
-      } else {
-        emptyState.style.display = 'none';
-        mintableList.innerHTML = approvedDramas.map(d => `
-          <div class="mintable-item" data-id="${d.id}" onclick="selectDrama(${d.id})">
-            <div class="mint-thumb">
-              <img src="${d.cover}" alt="${d.title}" />
-            </div>
-            <div class="mint-info">
-              <h4>${d.title}</h4>
-              <p>集数 ${d.episodes} · 单价 ${d.price} USDC · 状态：${d.status}</p>
-            </div>
-            <div class="mint-check"></div>
-          </div>
-        `).join('');
-      }
-      selectedDramaId = null;
-      confirmBtn.disabled = true;
+    function openMintModal(drama) {
+      if (!drama) return;
+      currentMintDrama = drama;
+
+      // 填充预览信息
+      document.getElementById('mintDramaCover').src = drama.cover;
+      document.getElementById('mintDramaCover').alt = drama.title;
+      document.getElementById('mintDramaTitle').textContent = drama.title;
+      document.getElementById('mintDramaMeta').textContent = `${drama.episodes} 集`;
+      document.getElementById('mintDramaRoyalty').textContent = drama.royalty || '70%';
+
       mintModal.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -2136,30 +2144,20 @@
     function closeMintModal() {
       mintModal.classList.remove('open');
       document.body.style.overflow = '';
-    }
-
-    function selectDrama(id) {
-      selectedDramaId = id;
-      document.querySelectorAll('.mintable-item').forEach(el => {
-        const dramaId = parseInt(el.dataset.id);
-        el.classList.toggle('selected', dramaId === id);
-        el.querySelector('.mint-check').textContent = dramaId === id ? '✓' : '';
-      });
-      confirmBtn.disabled = false;
+      currentMintDrama = null;
     }
 
     function confirmMint() {
-      if (!selectedDramaId) return;
-      const drama = approvedDramas.find(d => d.id === selectedDramaId);
-      if (!drama) return;
+      if (!currentMintDrama) return;
 
       confirmBtn.textContent = '铸造中...';
       confirmBtn.disabled = true;
 
       setTimeout(() => {
-        alert(`✅ 「${drama.title}」短剧 NFT 铸造成功！\n\nNFT 详情：\n- 短剧：${drama.title}\n- 集数：${drama.episodes}\n- 单价：${drama.price} USDC\n\n可在「短剧NFT」标签中查看。`);
+        alert(`✅ 「${currentMintDrama.title}」短剧 NFT 铸造成功！\n\nNFT 详情：\n- 短剧：${currentMintDrama.title}\n- 集数：${currentMintDrama.episodes}\n- 单价：${currentMintDrama.price} USDC\n- 平台手续费：10 USDC\n\n手续费将分配给平台的创建者作为收益分润。\n可在「短剧NFT」标签中查看。`);
         closeMintModal();
-        confirmBtn.textContent = '铸造所选 NFT';
+        confirmBtn.textContent = '确认铸造';
+        confirmBtn.disabled = false;
       }, 1500);
     }
 
@@ -2168,7 +2166,7 @@
       if (e.target === this) closeMintModal();
     });
 
-    // 给所有「铸造短剧NFT」按钮绑定事件
+    // 给所有「铸造短剧NFT」按钮绑定事件——点击哪个卡片就铸造哪个
     document.addEventListener('click', function(e) {
       const btn = e.target.closest('.card-list-item .card-action .button');
       if (btn) {
@@ -2177,7 +2175,15 @@
           e.preventDefault();
           const card = btn.closest('.card-list-item');
           if (card && card.dataset.status === 'approved') {
-            openMintModal();
+            // 从卡片读取数据
+            const title = card.querySelector('.card-body h3').textContent.trim();
+            const cover = card.querySelector('.card-header img').src;
+            const subSpans = card.querySelectorAll('.card-sub span');
+            const episodes = subSpans.length > 0 ? subSpans[0].textContent.trim().replace(' 集', '') : '—';
+            const price = card.querySelector('.info-grid .info-item:first-child .info-value').textContent.trim().replace(' USDC', '');
+            const discount = card.querySelector('.info-grid .info-item:nth-child(2) .info-value').textContent.trim();
+            const royalty = card.querySelector('.info-item.full-width .info-value').textContent.trim();
+            openMintModal({ title, cover, episodes, price, discount, royalty });
           } else if (card && card.dataset.status === 'pending') {
             // do nothing, handled by disabled button
           } else if (card && card.dataset.status === 'rejected') {
@@ -2359,6 +2365,7 @@
       document.getElementById('actorMintPrice').textContent = mintPrice + ' USDC';
       document.getElementById('actorReserved').textContent = reserved.toLocaleString();
       document.getElementById('actorTotalCost').textContent = (reserved * mintPrice).toLocaleString() + ' USDC';
+      document.getElementById('actorTotalWithFee').textContent = (reserved * mintPrice + 10).toLocaleString() + ' USDC';
       actorMintModal.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
