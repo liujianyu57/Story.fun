@@ -3065,15 +3065,9 @@
     if (!card) return;
     const title = card.querySelector('.card-body h3').textContent.trim();
     const cover = card.querySelector('.card-header img').src;
-
-    // 弹窗只显示预览和跳转按钮
-    document.getElementById('editDramaCover').src = cover;
-    document.getElementById('editDramaCover').alt = title;
-    document.getElementById('editDramaTitleDisplay').textContent = title;
-    document.getElementById('editDramaStatus').textContent = card.dataset.status === 'approved' ? '已通过' : card.dataset.status === 'rejected' ? '未通过' : '审核中';
-
-    editDramaModal.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    // 直接跳转到编辑页，并携带短剧标题作为查询参数
+    const target = 'edit-drama.html?title=' + encodeURIComponent(title);
+    window.location.href = target;
   }
 
   function closeEditDramaModal() {
