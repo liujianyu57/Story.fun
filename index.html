@@ -125,6 +125,48 @@
     }
     .featured-banner-bg.old { opacity: 0; }
 
+    /* 视频背景 — 与背景图切换 */
+    .featured-video-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.6s ease;
+    }
+    .featured-video-bg.hidden { opacity: 0; pointer-events: none; }
+
+    /* 视频音量按钮 — 右下角 */
+    .featured-video-btn {
+      position: absolute;
+      z-index: 2;
+      bottom: 180px;
+      right: 40px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.45);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(6px);
+      pointer-events: auto;
+    }
+    .featured-video-btn .vol-icon { width: 22px; height: 22px; display: block; }
+    .featured-video-btn:hover {
+      background: rgba(0,0,0,0.70);
+      transform: scale(1.10);
+    }
+    .featured-video-btn.hidden { opacity: 0; pointer-events: none; }
+
+    @media (max-width: 760px) {
+      .featured-video-btn { bottom: 140px; right: 16px; width: 38px; height: 38px; font-size: 1.1rem; }
+    }
+
     /* 渐变遮罩 */
     .featured-overlay {
       position: absolute;
@@ -305,6 +347,19 @@
   <!-- ===== 编辑精选 Banner（全宽背景，延伸到 Header 背后） ===== -->
   <div class="featured-wrapper">
     <div class="featured-banner-bg" id="featured-bg"></div>
+    <video class="featured-video-bg hidden" id="featured-video" src="video/凤骨琉璃.mp4" loop playsinline preload="metadata"></video>
+    <button class="featured-video-btn" id="featured-video-btn" aria-label="切换声音">
+      <svg id="vol-icon-off" class="vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <line x1="22" y1="9" x2="16" y2="15" />
+        <line x1="16" y1="9" x2="22" y2="15" />
+      </svg>
+      <svg id="vol-icon-on" class="vol-icon" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      </svg>
+    </button>
     <div class="featured-overlay"></div>
 
     <div class="featured-section">
@@ -363,7 +418,7 @@
 
     <section class="gallery">
       <article class="card" data-category="金融" data-sort="recommended" onclick="location.href='drama-detail.html'">
-        <img class="card-thumb" src="https://images.unsplash.com/photo-1618044733300-9472054094ee?auto=format&fit=crop&w=800&q=80" alt="重生之我在币圈当大佬" />
+        <img class="card-thumb" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="重生之我在币圈当大佬" />
         <div class="card-body">
           <div class="card-meta"><span class="badge">金融</span><span class="episode">全44集</span></div>
           <h3>重生之我在币圈当大佬</h3>
@@ -372,7 +427,7 @@
         <div class="card-foot"><div class="info-row"><span>JACK</span><span>1.2k</span><span>4.9★</span></div></div>
       </article>
       <article class="card" data-category="悬疑" data-sort="newest" onclick="location.href='drama-detail.html'">
-        <img class="card-thumb" src="https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=800&q=80" alt="深渊回响" />
+        <img class="card-thumb" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80" alt="深渊回响" />
         <div class="card-body">
           <div class="card-meta"><span class="badge">悬疑</span><span class="episode">全12集</span></div>
           <h3>深渊回响</h3>
@@ -381,7 +436,7 @@
         <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4k</span><span>4.8★</span></div></div>
       </article>
       <article class="card" data-category="真实改编" data-sort="hot" onclick="location.href='drama-detail.html'">
-        <img class="card-thumb" src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=800&q=80" alt="暗流涌动" />
+        <img class="card-thumb" src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80" alt="暗流涌动" />
         <div class="card-body">
           <div class="card-meta"><span class="badge">真实改编</span><span class="episode">全24集</span></div>
           <h3>暗流涌动</h3>
@@ -400,19 +455,30 @@
 
   <script>
     const featuredDramas = [
-      { id: 1, title: '重生之我在币圈当大佬', category: '金融', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。', img: 'https://images.unsplash.com/photo-1618044733300-9472054094ee?auto=format&fit=crop&w=1200&q=80' },
-      { id: 2, title: '深渊回响', category: '悬疑', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', rating: '4.8 ★', desc: '每一条线索都指向过去的真相，AI角色与观众共同推演悬疑谜题。', img: 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=1200&q=80' },
-      { id: 3, title: '暗流涌动', category: '真实改编', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '真实事件改编，AI短剧在商业谍战与人性抉择间构建深度剧情张力。', img: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=1200&q=80' },
-      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1509248961158-c54c693626f5?auto=format&fit=crop&w=1200&q=80' },
-      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', rating: '4.8 ★', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80' }
+      { id: 1, title: '重生之我在币圈当大佬', category: '金融', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80' },
+      { id: 2, title: '深渊回响', category: '悬疑', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', rating: '4.8 ★', desc: '每一条线索都指向过去的真相，AI角色与观众共同推演悬疑谜题。', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80' },
+      { id: 3, title: '暗流涌动', category: '真实改编', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '真实事件改编，AI短剧在商业谍战与人性抉择间构建深度剧情张力。', img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=1200&q=80' },
+      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1516575334481-f85287c2c82d?auto=format&fit=crop&w=1200&q=80' },
+      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', rating: '4.8 ★', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=1200&q=80' }
     ];
 
     function switchFeatured(index) {
       const drama = featuredDramas[index];
       if (!drama) return;
       const bg = document.getElementById('featured-bg');
-      bg.classList.add('old');
-      setTimeout(() => { bg.style.backgroundImage = 'url(' + drama.img + ')'; bg.classList.remove('old'); }, 300);
+      const video = document.getElementById('featured-video');
+      // 第一个短剧显示视频，其余显示图片
+      if (index === 0) {
+        bg.classList.add('old');
+        video.classList.remove('hidden');
+        video.currentTime = 0;
+        video.play().catch(function(){});
+      } else {
+        video.classList.add('hidden');
+        video.pause();
+        bg.classList.add('old');
+        setTimeout(() => { bg.style.backgroundImage = 'url(' + drama.img + ')'; bg.classList.remove('old'); }, 300);
+      }
       document.getElementById('featured-title').textContent = drama.title;
       document.getElementById('featured-category').textContent = drama.category;
       document.getElementById('featured-episodes').textContent = drama.episodes;
@@ -425,7 +491,24 @@
 
     document.addEventListener('DOMContentLoaded', function() {
       const tc = document.getElementById('featured-thumbnails');
-      document.getElementById('featured-bg').style.backgroundImage = 'url(' + featuredDramas[0].img + ')';
+      // 首页加载时：第一个短剧显示视频背景（无声音静音播放）
+      const video = document.getElementById('featured-video');
+      video.muted = true;
+      video.classList.remove('hidden');
+      video.play().catch(function(){});
+      // 音量按钮：点击切换静音/取消静音（SVG 图标切换）
+      const volBtn = document.getElementById('featured-video-btn');
+      const iconOff = document.getElementById('vol-icon-off');
+      const iconOn = document.getElementById('vol-icon-on');
+      volBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        video.muted = !video.muted;
+        iconOff.style.display = video.muted ? '' : 'none';
+        iconOn.style.display = video.muted ? 'none' : '';
+        if (!video.muted) {
+          video.play().catch(function(){});
+        }
+      });
       featuredDramas.forEach((d, i) => {
         const el = document.createElement('div');
         el.className = 'featured-thumb-item' + (i === 0 ? ' active' : '');
