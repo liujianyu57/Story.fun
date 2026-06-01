@@ -10,28 +10,21 @@
       --surface: #ffffff;
       --accent: #00b388;
       --accent-soft: rgba(0, 179, 136, 0.12);
-      --accent-glow: rgba(0, 179, 136, 0.25);
       --text: #13202e;
       --text-muted: #5e6f83;
       --border: #deeaf7;
-      --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.06);
-      --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.07);
-      --shadow-lg: 0 20px 45px rgba(27, 45, 71, 0.10);
-      --radius: 24px;
-      --radius-lg: 32px;
       font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
+
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
 
     /* ===== Auth Styles ===== */
     .auth-container { display: flex; align-items: center; }
     .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
     .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-    .auth-login-icon { font-size: 1rem; }
     .auth-user-menu { position: relative; }
     .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
     .auth-avatar:hover { border-color: var(--accent); }
@@ -49,7 +42,6 @@
     .auth-dropdown-item span { font-size: 1.1rem; }
     .auth-dropdown-logout { color: #f45b69; }
     .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
-    /* Login Modal */
     .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .auth-modal-overlay.active { opacity: 1; visibility: visible; }
     .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
@@ -74,155 +66,275 @@
     .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    .hero { display: grid; grid-template-columns: 1fr; gap: 26px; align-items: stretch; margin-bottom: 34px; }
+    /* ============================================================
+       首页特有：Header 透明化（banner 背景透出）
+       ============================================================ */
+    .story-header-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+    .story-header-wrapper .header {
+      background: rgba(10, 20, 35, 0.45) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid rgba(255,255,255,0.10) !important;
+    }
+    .story-header-wrapper .nav-link { color: rgba(255,255,255,0.80) !important; }
+    .story-header-wrapper .nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.10) !important; }
+    .story-header-wrapper .nav-link.active { color: #00d4a3 !important; }
+    .story-header-wrapper .lang-btn { color: rgba(255,255,255,0.75) !important; }
+    .story-header-wrapper .lang-btn:hover { background: rgba(255,255,255,0.08) !important; }
+    .story-header-wrapper .lang-btn svg * { stroke: rgba(255,255,255,0.75); }
+    .story-header-wrapper .auth-login-btn {
+      border-color: rgba(255,255,255,0.25) !important;
+      background: rgba(255,255,255,0.12) !important;
+      color: #fff !important;
+    }
+    .story-header-wrapper .auth-login-btn:hover {
+      background: rgba(255,255,255,0.20) !important;
+      border-color: var(--accent) !important;
+    }
+    .story-header-wrapper .hamburger-btn svg path { stroke: #fff; }
+    .story-header-wrapper .brand-text {
+      background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ============================================================
+       编辑精选 Banner — 全宽背景，从 header 下方延伸到背后
+       ============================================================ */
+    .featured-wrapper {
+      position: relative;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      margin-top: -80px;        /* 往上拉到 header 背后 */
+      padding-top: 80px;        /* 内容从 header 底部开始 */
+      margin-bottom: 32px;
+      overflow: hidden;         /* 裁切背景动画溢出部分 */
+    }
+
+    /* 背景图 — 全宽，覆盖整个区域包括 header 背后 */
+    .featured-banner-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.6s ease;
+    }
+    .featured-banner-bg.old { opacity: 0; }
+
+    /* 渐变遮罩 */
+    .featured-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(0deg,   rgba(10,20,35,0.92) 0%,   rgba(10,20,35,0.40) 40%, transparent 70%),
+        linear-gradient(90deg,  rgba(10,20,35,0.65) 0%,   rgba(10,20,35,0.10) 60%, transparent 85%),
+        linear-gradient(180deg, rgba(10,20,35,0.30) 0%,   transparent 45%);
+      pointer-events: none;
+    }
+
+    /* 内容容器 */
+    .featured-section {
+      position: relative;
+      z-index: 1;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 24px;
+      min-height: 700px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== Banner 内容区 ===== */
+    .featured-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 48px 0 40px;
+      color: #fff;
+    }
+    .featured-content-inner { max-width: 680px; }
+
+    .featured-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f5b042, #f5923e);
+      color: #1a1a1a;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 7px 18px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
+    .featured-content h2 {
+      margin: 0 0 10px;
+      font-size: 3.6rem;
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.40);
+    }
+    .featured-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .featured-meta .badge, .featured-meta .episode { font-size: 0.85rem; padding: 6px 14px; }
+    .featured-meta .badge { background: rgba(0,179,136,0.20); color: #00d4a3; }
+    .featured-meta .episode { background: rgba(255,255,255,0.12); color: #eee; }
+    .featured-meta .meta-text { color: rgba(255,255,255,0.75); font-size: 0.92rem; }
+    .featured-content p {
+      margin: 0 0 24px;
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.85);
+      max-width: 560px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .featured-content .button {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      padding: 14px 36px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(0,179,136,0.45);
+      transition: all 0.3s ease;
+      display: inline-block;
+      width: fit-content;
+    }
+    .featured-content .button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(0,179,136,0.55);
+    }
+
+    /* 缩略图导航 */
+    .featured-thumbnails {
+      display: flex;
+      gap: 12px;
+      padding-bottom: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .featured-thumbnails::-webkit-scrollbar { display: none; }
+    .featured-thumb-item {
+      flex-shrink: 0;
+      width: 160px;
+      height: 90px;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      border: 2.5px solid transparent;
+      transition: all 0.3s ease;
+      opacity: 0.5;
+    }
+    .featured-thumb-item.active { border-color: var(--accent); opacity: 1; }
+    .featured-thumb-item:hover:not(.active) { opacity: 0.8; border-color: rgba(0,179,136,0.4); }
+    .featured-thumb-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .featured-thumb-item .thumb-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 6px 10px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ===== 搜索与筛选 ===== */
+    .hero { margin-bottom: 34px; }
     .hero-panel h2 { margin: 0 0 18px; font-size: clamp(2rem, 3vw, 3.2rem); line-height: 1.05; letter-spacing: -0.03em; }
     .hero-panel p { margin: 0 0 24px; color: var(--text-muted); font-size: 1.05rem; line-height: 1.8; max-width: 640px; }
-    
-    /* 新增搜索和筛选样式 */
     .search-container { margin-top: 20px; }
-    .search-box { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; background: var(--surface); box-shadow: var(--shadow-sm); }
+    .search-box { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; background: var(--surface); }
     .search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,179,136,0.15); }
-    
     .filter-container { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
     .filter-tag { padding: 8px 16px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; font-size: 0.9rem; cursor: pointer; transition: all 0.25s ease; }
     .filter-tag:hover { background: rgba(0,179,136,0.2); }
     .filter-tag.active { background: var(--accent); color: white; }
-    
-    .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-bottom: 34px; }
-    .card { position: relative; overflow: hidden; border-radius: 24px; min-height: 450px; display: flex; flex-direction: column; background: #fff; box-shadow: 0 12px 30px rgba(15, 32, 88, 0.08); border: 1px solid rgba(223, 230, 244, 0.92); }
-    .card-thumb { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .card-thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15, 22, 42, 0.03), rgba(15, 22, 42, 0.18)); pointer-events: none; }
-    .thumb-gradient-1 { background: linear-gradient(135deg, #ff7a99 0%, #ffcd66 48%, #a15bff 100%); }
-    .thumb-gradient-2 { background: linear-gradient(135deg, #6b8cff 0%, #8a5fff 45%, #ff88c6 100%); }
-    .thumb-gradient-3 { background: linear-gradient(135deg, #ffa75c 0%, #ff6bae 35%, #8762ff 100%); }
-    .card-body { padding: 24px 26px 20px; display: flex; flex-direction: column; gap: 18px; }
-    .card-meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .badge, .episode { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; }
-    .badge { background: var(--accent-soft); color: var(--accent); }
-    .episode { background: rgba(15, 22, 42, 0.05); color: #2d3b55; }
-    .card h3 { margin: 0; font-size: 1.5rem; line-height: 1.25; }
-    .card p { margin: 0; color: var(--text-muted); line-height: 1.75; }
-    .card-foot { padding: 20px 26px 26px; border-top: 1px solid rgba(223, 230, 244, 0.9); display: flex; justify-content: space-between; align-items: center; gap: 14px; }
-    .info-row { display: flex; flex-wrap: wrap; gap: 12px; color: var(--text-muted); font-size: 0.95rem; }
 
-    
+    .gallery { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; margin-bottom: 34px; }
+    .card { border-radius: 24px; min-height: 450px; display: flex; flex-direction: column; background: #fff; box-shadow: 0 12px 30px rgba(15,32,88,0.08); border: 1px solid rgba(223,230,244,0.92); transition: all 0.3s ease; cursor: pointer; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(15,32,88,0.12); }
+    .card-thumb { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.08); display: block; }
+    .card-body { padding: 24px 26px 20px; flex-grow: 1; }
+    .card-meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .badge, .episode { display: inline-flex; align-items: center; border-radius: 999px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; }
+    .badge { background: var(--accent-soft); color: var(--accent); }
+    .episode { background: rgba(15,22,42,0.05); color: #2d3b55; }
+    .card h3 { margin: 0; font-size: 1.4rem; line-height: 1.25; }
+    .card p { margin: 0; color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+    .card-foot { padding: 20px 26px 26px; border-top: 1px solid rgba(223,230,244,0.9); display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+    .info-row { display: flex; flex-wrap: wrap; gap: 12px; color: var(--text-muted); font-size: 0.95rem; }
     .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.25s ease; }
     .button { background: var(--accent); color: #fff; font-weight: 600; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
     .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,179,136,0.40); }
-    .button-secondary { background: transparent; color: var(--text); border: 1px solid rgba(0, 179, 136, 0.25); }
-    .button-secondary:hover { background: rgba(0,179,136,0.05); border-color: rgba(0,179,136,0.40); }
 
-    @media (max-width: 1120px) {
-      .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .hero { grid-template-columns: 1fr; }
-    }
-
+    @media (max-width: 1120px) { .gallery { grid-template-columns: repeat(2, minmax(0,1fr)); } }
     @media (max-width: 760px) {
       .app-shell { padding: 20px 16px 32px; }
-      .nav-links { width: 100%; justify-content: center; }
+      .featured-wrapper { margin-top: -68px; padding-top: 68px; }
+      .featured-section { padding: 0 16px; min-height: 500px; }
       .gallery { grid-template-columns: 1fr; }
       .card-foot { flex-direction: column; align-items: flex-start; }
       .card { min-height: auto; }
-    }
-    
-    /* 优化后的竖版封面样式 */
-    .card { 
-      position: relative; 
-      overflow: hidden; 
-      border-radius: 24px; 
-      min-height: 450px; 
-      display: flex; 
-      flex-direction: column; 
-      background: #fff; 
-      box-shadow: 0 12px 30px rgba(15, 32, 88, 0.08); 
-      border: 1px solid rgba(223, 230, 244, 0.92); 
-      transition: all 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 16px 40px rgba(15, 32, 88, 0.12);
-    }
-    
-    .card-thumb { 
-      width: 100%; 
-      height: 320px; 
-      object-fit: cover; 
-      border-bottom: 1px solid rgba(255,255,255,0.08); 
-      transition: all 0.3s ease;
-    }
-    
-    .card-thumb:hover {
-      transform: scale(1.03);
-    }
-    
-    /* 改进的渐变效果 */
-    .thumb-gradient-1 { 
-      background: linear-gradient(135deg, #ff7a99 0%, #ffcd66 48%, #a15bff 100%); 
-      filter: blur(0.5px);
-    }
-    .thumb-gradient-2 { 
-      background: linear-gradient(135deg, #6b8cff 0%, #8a5fff 45%, #ff88c6 100%); 
-      filter: blur(0.5px);
-    }
-    .thumb-gradient-3 { 
-      background: linear-gradient(135deg, #ffa75c 0%, #ff6bae 35%, #8762ff 100%); 
-      filter: blur(0.5px);
-    }
-    
-    /* 卡片内容优化 */
-    .card-body { 
-      padding: 24px 26px 20px; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 18px; 
-      flex-grow: 1;
-    }
-    
-    .card h3 { 
-      margin: 0; 
-      font-size: 1.4rem; 
-      line-height: 1.25; 
-      font-weight: 600;
-    }
-    
-    .card p { 
-      margin: 0; 
-      color: var(--text-muted); 
-      line-height: 1.6; 
-      font-size: 0.95rem;
-    }
-    
-    .card-foot { 
-      padding: 20px 26px 26px; 
-      border-top: 1px solid rgba(223, 230, 244, 0.9); 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      gap: 14px; 
-    }
-    
-    .info-row { 
-      display: flex; 
-      flex-wrap: wrap; 
-      gap: 12px; 
-      color: var(--text-muted); 
-      font-size: 0.95rem; 
+      .featured-content h2 { font-size: 2rem; }
+      .featured-content p { font-size: 0.95rem; }
+      .featured-content .button { padding: 12px 28px; font-size: 0.95rem; }
+      .featured-thumb-item { width: 110px; height: 62px; }
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <div id="header-placeholder"></div>
 
+  <!-- ===== Header 完全保持与其他页面一致的位置和宽度 ===== -->
+  <div id="header-placeholder"></div>
+
+  <!-- ===== 编辑精选 Banner（全宽背景，延伸到 Header 背后） ===== -->
+  <div class="featured-wrapper">
+    <div class="featured-banner-bg" id="featured-bg"></div>
+    <div class="featured-overlay"></div>
+
+    <div class="featured-section">
+      <div class="featured-content">
+        <div class="featured-content-inner">
+          <span class="featured-badge">🌟 编辑精选</span>
+          <h2 id="featured-title">重生之我在币圈当大佬</h2>
+          <div class="featured-meta" id="featured-meta">
+            <span class="badge" id="featured-category">金融</span>
+            <span class="episode" id="featured-episodes">全44集</span>
+            <span class="meta-text" id="featured-creator">JACK</span>
+            <span class="meta-text" id="featured-views">1.2k 观看</span>
+            <span class="meta-text" id="featured-rating">4.9 ★</span>
+          </div>
+          <p id="featured-desc">加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。</p>
+          <button class="button" onclick="event.stopPropagation(); location.href='drama-detail.html'">立即观看 ▸</button>
+        </div>
+      </div>
+      <div class="featured-thumbnails" id="featured-thumbnails"></div>
+    </div>
+  </div>
+
+  <div class="app-shell">
     <section class="hero">
       <div class="hero-panel">
-        <h1>剧场</h1>
+        <h2>全部短剧</h2>
         <p>精选AI短剧，开启叙事新体验</p>
-        
         <div class="search-container">
           <input type="text" id="searchInput" class="search-box" placeholder="搜索短剧名称..." />
         </div>
-        
         <div class="filter-container">
           <span class="filter-tag active" data-filter="all">全部</span>
           <span class="filter-tag" data-filter="金融">金融</span>
@@ -234,168 +346,127 @@
           <span class="filter-tag" data-filter="喜剧">喜剧</span>
           <span class="filter-tag" data-filter="动作">动作</span>
         </div>
-        
-        <div class="filter-container" style="margin-top: 15px;">
+        <div class="filter-container" style="margin-top:15px;">
           <span class="filter-tag active" data-filter="recommended">全部推荐</span>
           <span class="filter-tag" data-filter="newest">最新上架</span>
           <span class="filter-tag" data-filter="hot">最高热度</span>
           <span class="filter-tag" data-filter="favorites">最高收藏</span>
         </div>
       </div>
-
-      
     </section>
 
-    <div id="noResults" class="no-results" style="display: none; text-align: center; padding: 60px 20px; margin-bottom: 34px; background: rgba(255,255,255,0.7); border-radius: var(--radius-lg); border: 2px dashed var(--border);">
-      <div style="font-size: 3rem; margin-bottom: 16px;">🔍</div>
-      <h3 style="margin: 0 0 8px; color: var(--text); font-size: 1.3rem;">没有找到结果</h3>
-      <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">试试更换搜索关键词或筛选条件</p>
+    <div id="noResults" class="no-results" style="display:none; text-align:center; padding:60px 20px; margin-bottom:34px; background:rgba(255,255,255,0.7); border-radius:32px; border:2px dashed var(--border);">
+      <div style="font-size:3rem; margin-bottom:16px;">🔍</div>
+      <h3 style="margin:0 0 8px; color:var(--text); font-size:1.3rem;">没有找到结果</h3>
+      <p style="margin:0; color:var(--text-muted); font-size:0.95rem;">试试更换搜索关键词或筛选条件</p>
     </div>
 
-    <section class="gallery" aria-label="热门剧场卡片">
+    <section class="gallery">
       <article class="card" data-category="金融" data-sort="recommended" onclick="location.href='drama-detail.html'">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1618044733300-9472054094ee?auto=format&fit=crop&w=800&q=80" alt="重生之我在币圈当大佬" />
         <div class="card-body">
-          <div class="card-meta">
-            <span class="badge">金融</span>
-            <span class="episode">全44集</span>
-          </div>
+          <div class="card-meta"><span class="badge">金融</span><span class="episode">全44集</span></div>
           <h3>重生之我在币圈当大佬</h3>
           <p>加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。</p>
         </div>
-        <div class="card-foot">
-          <div class="info-row">
-            <span>JACK</span>
-            <span>1.2k</span>
-            <span>4.9★</span>
-          </div>
-        </div>
+        <div class="card-foot"><div class="info-row"><span>JACK</span><span>1.2k</span><span>4.9★</span></div></div>
       </article>
-
       <article class="card" data-category="悬疑" data-sort="newest" onclick="location.href='drama-detail.html'">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=800&q=80" alt="深渊回响" />
         <div class="card-body">
-          <div class="card-meta">
-            <span class="badge">悬疑</span>
-            <span class="episode">全12集</span>
-          </div>
+          <div class="card-meta"><span class="badge">悬疑</span><span class="episode">全12集</span></div>
           <h3>深渊回响</h3>
           <p>每一条线索都指向过去的真相，AI角色与观众共同推演悬疑谜题。</p>
         </div>
-        <div class="card-foot">
-          <div class="info-row">
-            <span>EVA</span>
-            <span>2.4k</span>
-            <span>4.8★</span>
-          </div>
-        </div>
+        <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4k</span><span>4.8★</span></div></div>
       </article>
-
       <article class="card" data-category="真实改编" data-sort="hot" onclick="location.href='drama-detail.html'">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=800&q=80" alt="暗流涌动" />
         <div class="card-body">
-          <div class="card-meta">
-            <span class="badge">真实改编</span>
-            <span class="episode">全24集</span>
-          </div>
+          <div class="card-meta"><span class="badge">真实改编</span><span class="episode">全24集</span></div>
           <h3>暗流涌动</h3>
           <p>真实事件改编，AI短剧在商业谍战与人性抉择间构建深度剧情张力。</p>
         </div>
-        <div class="card-foot">
-          <div class="info-row">
-            <span>LENS</span>
-            <span>1.8k</span>
-            <span>4.7★</span>
-          </div>
-        </div>
+        <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8k</span><span>4.7★</span></div></div>
       </article>
     </section>
-
-    <script>
-      // 搜索和筛选功能
-      // 检查并更新"无结果"提示的显示状态
-      function updateNoResults() {
-        const noResults = document.getElementById('noResults');
-        const cards = document.querySelectorAll('.card');
-        let visibleCount = 0;
-        cards.forEach(card => {
-          if (card.style.display !== 'none') {
-            visibleCount++;
-          }
-        });
-        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
-      }
-
-      document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const filterTags = document.querySelectorAll('.filter-tag');
-        const cards = document.querySelectorAll('.card');
-        
-        // 搜索功能
-        searchInput.addEventListener('input', function() {
-          const searchTerm = this.value.toLowerCase();
-          
-          cards.forEach(card => {
-            const title = card.querySelector('h3').textContent.toLowerCase();
-            const description = card.querySelector('p').textContent.toLowerCase();
-            
-            if (title.includes(searchTerm) || description.includes(searchTerm)) {
-              card.style.display = 'flex';
-            } else {
-              card.style.display = 'none';
-            }
-          });
-          
-          updateNoResults();
-        });
-        
-        // 筛选功能
-        filterTags.forEach(tag => {
-          tag.addEventListener('click', function() {
-            // 移除所有标签的激活状态
-            filterTags.forEach(t => t.classList.remove('active'));
-            
-            // 添加当前标签的激活状态
-            this.classList.add('active');
-            
-            const filterValue = this.getAttribute('data-filter');
-            
-            // 处理分类筛选
-            if (filterValue === 'all') {
-              cards.forEach(card => {
-                card.style.display = 'flex';
-              });
-            } else if (filterValue === 'recommended' || filterValue === 'newest' || filterValue === 'hot' || filterValue === 'favorites') {
-              // 处理排序筛选
-              cards.forEach(card => {
-                const sortValue = card.getAttribute('data-sort');
-                if (sortValue === filterValue) {
-                  card.style.display = 'flex';
-                } else {
-                  card.style.display = 'none';
-                }
-              });
-            } else {
-              // 处理类别筛选
-              cards.forEach(card => {
-                const category = card.getAttribute('data-category');
-                if (category === filterValue) {
-                  card.style.display = 'flex';
-                } else {
-                  card.style.display = 'none';
-                }
-            });
-            }
-            
-            updateNoResults();
-          });
-        });
-      });
-    </script>
   </div>
+
   <div id="bottom-nav-placeholder"></div>
+
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
   <script src="load-bottom-nav.js"></script>
+
+  <script>
+    const featuredDramas = [
+      { id: 1, title: '重生之我在币圈当大佬', category: '金融', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。', img: 'https://images.unsplash.com/photo-1618044733300-9472054094ee?auto=format&fit=crop&w=1200&q=80' },
+      { id: 2, title: '深渊回响', category: '悬疑', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', rating: '4.8 ★', desc: '每一条线索都指向过去的真相，AI角色与观众共同推演悬疑谜题。', img: 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=1200&q=80' },
+      { id: 3, title: '暗流涌动', category: '真实改编', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '真实事件改编，AI短剧在商业谍战与人性抉择间构建深度剧情张力。', img: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=1200&q=80' },
+      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1509248961158-c54c693626f5?auto=format&fit=crop&w=1200&q=80' },
+      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', rating: '4.8 ★', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80' }
+    ];
+
+    function switchFeatured(index) {
+      const drama = featuredDramas[index];
+      if (!drama) return;
+      const bg = document.getElementById('featured-bg');
+      bg.classList.add('old');
+      setTimeout(() => { bg.style.backgroundImage = 'url(' + drama.img + ')'; bg.classList.remove('old'); }, 300);
+      document.getElementById('featured-title').textContent = drama.title;
+      document.getElementById('featured-category').textContent = drama.category;
+      document.getElementById('featured-episodes').textContent = drama.episodes;
+      document.getElementById('featured-creator').textContent = drama.creator;
+      document.getElementById('featured-views').textContent = drama.views;
+      document.getElementById('featured-rating').textContent = drama.rating;
+      document.getElementById('featured-desc').textContent = drama.desc;
+      document.querySelectorAll('.featured-thumb-item').forEach((item, i) => item.classList.toggle('active', i === index));
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const tc = document.getElementById('featured-thumbnails');
+      document.getElementById('featured-bg').style.backgroundImage = 'url(' + featuredDramas[0].img + ')';
+      featuredDramas.forEach((d, i) => {
+        const el = document.createElement('div');
+        el.className = 'featured-thumb-item' + (i === 0 ? ' active' : '');
+        el.setAttribute('onclick', 'switchFeatured(' + i + ')');
+        el.innerHTML = '<img src="' + d.img + '" alt="' + d.title + '" loading="lazy" /><div class="thumb-label">' + d.title + '</div>';
+        tc.appendChild(el);
+      });
+
+      function updateNoResults() {
+        const cards = document.querySelectorAll('.card');
+        let c = 0;
+        cards.forEach(card => { if (card.style.display !== 'none') c++; });
+        document.getElementById('noResults').style.display = c === 0 ? 'block' : 'none';
+      }
+
+      document.getElementById('searchInput').addEventListener('input', function() {
+        const term = this.value.toLowerCase();
+        document.querySelectorAll('.card').forEach(card => {
+          const t = card.querySelector('h3').textContent.toLowerCase();
+          const d = card.querySelector('p').textContent.toLowerCase();
+          card.style.display = (t.includes(term) || d.includes(term)) ? 'flex' : 'none';
+        });
+        updateNoResults();
+      });
+
+      document.querySelectorAll('.filter-tag').forEach(tag => {
+        tag.addEventListener('click', function() {
+          document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          const val = this.getAttribute('data-filter');
+          document.querySelectorAll('.card').forEach(card => {
+            if (val === 'all') card.style.display = 'flex';
+            else if (['recommended','newest','hot','favorites'].includes(val))
+              card.style.display = card.getAttribute('data-sort') === val ? 'flex' : 'none';
+            else
+              card.style.display = card.getAttribute('data-category') === val ? 'flex' : 'none';
+          });
+          updateNoResults();
+        });
+      });
+    });
+  </script>
 </body>
 </html>
