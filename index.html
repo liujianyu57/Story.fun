@@ -6,13 +6,13 @@
   <title>Story.fun | 剧场</title>
   <style>
     :root {
-      --bg: #f5faff;
-      --surface: #ffffff;
-      --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.12);
-      --text: #13202e;
-      --text-muted: #5e6f83;
-      --border: #deeaf7;
+      --bg: #0a1428;
+      --surface: #141f33;
+      --accent: #00d4a3;
+      --accent-soft: rgba(0, 212, 163, 0.12);
+      --text: #e8edf5;
+      --text-muted: #8896a8;
+      --border: #1e2d42;
       font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
@@ -185,7 +185,7 @@
       max-width: 1440px;
       margin: 0 auto;
       padding: 0 24px;
-      min-height: 700px;
+      min-height: 800px;
       display: flex;
       flex-direction: column;
     }
@@ -196,7 +196,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 48px 0 40px;
+      padding: 64px 0 56px;
       color: #fff;
     }
     .featured-content-inner { max-width: 680px; }
@@ -269,9 +269,9 @@
     .featured-thumbnails::-webkit-scrollbar { display: none; }
     .featured-thumb-item {
       flex-shrink: 0;
-      width: 160px;
-      height: 90px;
-      border-radius: 12px;
+      width: 200px;
+      height: 112px;
+      border-radius: 14px;
       overflow: hidden;
       cursor: pointer;
       position: relative;
@@ -308,17 +308,17 @@
     .filter-tag.active { background: var(--accent); color: white; }
 
     .gallery { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; margin-bottom: 34px; }
-    .card { border-radius: 24px; min-height: 450px; display: flex; flex-direction: column; background: #fff; box-shadow: 0 12px 30px rgba(15,32,88,0.08); border: 1px solid rgba(223,230,244,0.92); transition: all 0.3s ease; cursor: pointer; }
-    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(15,32,88,0.12); }
-    .card-thumb { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.08); display: block; }
+    .card { border-radius: 24px; min-height: 450px; display: flex; flex-direction: column; background: var(--surface); box-shadow: 0 12px 30px rgba(0,0,0,0.25); border: 1px solid var(--border); transition: all 0.3s ease; cursor: pointer; overflow: hidden; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+    .card-thumb { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid var(--border); display: block; }
     .card-body { padding: 24px 26px 20px; flex-grow: 1; }
     .card-meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .badge, .episode { display: inline-flex; align-items: center; border-radius: 999px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; }
     .badge { background: var(--accent-soft); color: var(--accent); }
-    .episode { background: rgba(15,22,42,0.05); color: #2d3b55; }
+    .episode { background: rgba(255,255,255,0.06); color: var(--text-muted); }
     .card h3 { margin: 0; font-size: 1.4rem; line-height: 1.25; }
     .card p { margin: 0; color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
-    .card-foot { padding: 20px 26px 26px; border-top: 1px solid rgba(223,230,244,0.9); display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+    .card-foot { padding: 20px 26px 26px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 14px; }
     .info-row { display: flex; flex-wrap: wrap; gap: 12px; color: var(--text-muted); font-size: 0.95rem; }
     .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.25s ease; }
     .button { background: var(--accent); color: #fff; font-weight: 600; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
@@ -410,7 +410,7 @@
       </div>
     </section>
 
-    <div id="noResults" class="no-results" style="display:none; text-align:center; padding:60px 20px; margin-bottom:34px; background:rgba(255,255,255,0.7); border-radius:32px; border:2px dashed var(--border);">
+    <div id="noResults" class="no-results" style="display:none; text-align:center; padding:60px 20px; margin-bottom:34px; background:rgba(20,31,51,0.8); border-radius:32px; border:2px dashed var(--border);">
       <div style="font-size:3rem; margin-bottom:16px;">🔍</div>
       <h3 style="margin:0 0 8px; color:var(--text); font-size:1.3rem;">没有找到结果</h3>
       <p style="margin:0; color:var(--text-muted); font-size:0.95rem;">试试更换搜索关键词或筛选条件</p>
@@ -455,7 +455,7 @@
 
   <script>
     const featuredDramas = [
-      { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80' },
+      { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'image/fenggu_cover.jpg' },
       { id: 2, title: '深渊回响', category: '悬疑', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', rating: '4.8 ★', desc: '每一条线索都指向过去的真相，AI角色与观众共同推演悬疑谜题。', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80' },
       { id: 3, title: '暗流涌动', category: '真实改编', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '真实事件改编，AI短剧在商业谍战与人性抉择间构建深度剧情张力。', img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=1200&q=80' },
       { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1516575334481-f85287c2c82d?auto=format&fit=crop&w=1200&q=80' },
