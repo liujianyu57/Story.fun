@@ -347,7 +347,7 @@
   <!-- ===== 编辑精选 Banner（全宽背景，延伸到 Header 背后） ===== -->
   <div class="featured-wrapper">
     <div class="featured-banner-bg" id="featured-bg"></div>
-    <video class="featured-video-bg hidden" id="featured-video" src="video/凤骨琉璃.mp4" loop playsinline preload="metadata"></video>
+    <video class="featured-video-bg hidden" id="featured-video" src="video/凤骨琉璃.mp4" loop playsinline preload="metadata" poster="image/fenggu_cover.jpg"></video>
     <button class="featured-video-btn" id="featured-video-btn" aria-label="切换声音">
       <svg id="vol-icon-off" class="vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
@@ -366,15 +366,15 @@
       <div class="featured-content">
         <div class="featured-content-inner">
           <span class="featured-badge">🌟 编辑精选</span>
-          <h2 id="featured-title">重生之我在币圈当大佬</h2>
+          <h2 id="featured-title">凤骨琉璃</h2>
           <div class="featured-meta" id="featured-meta">
-            <span class="badge" id="featured-category">金融</span>
+            <span class="badge" id="featured-category">古风</span>
             <span class="episode" id="featured-episodes">全44集</span>
             <span class="meta-text" id="featured-creator">JACK</span>
             <span class="meta-text" id="featured-views">1.2k 观看</span>
             <span class="meta-text" id="featured-rating">4.9 ★</span>
           </div>
-          <p id="featured-desc">加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。</p>
+          <p id="featured-desc">一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
           <button class="button" onclick="event.stopPropagation(); location.href='drama-detail.html'">立即观看 ▸</button>
         </div>
       </div>
@@ -417,12 +417,12 @@
     </div>
 
     <section class="gallery">
-      <article class="card" data-category="金融" data-sort="recommended" onclick="location.href='drama-detail.html'">
-        <img class="card-thumb" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="重生之我在币圈当大佬" />
+      <article class="card" data-category="古风" data-sort="recommended" onclick="location.href='drama-detail.html'">
+        <img class="card-thumb" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="凤骨琉璃" />
         <div class="card-body">
-          <div class="card-meta"><span class="badge">金融</span><span class="episode">全44集</span></div>
-          <h3>重生之我在币圈当大佬</h3>
-          <p>加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。</p>
+          <div class="card-meta"><span class="badge">古风</span><span class="episode">全44集</span></div>
+          <h3>凤骨琉璃</h3>
+          <p>一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
         </div>
         <div class="card-foot"><div class="info-row"><span>JACK</span><span>1.2k</span><span>4.9★</span></div></div>
       </article>
@@ -455,7 +455,7 @@
 
   <script>
     const featuredDramas = [
-      { id: 1, title: '重生之我在币圈当大佬', category: '金融', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80' },
+      { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80' },
       { id: 2, title: '深渊回响', category: '悬疑', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', rating: '4.8 ★', desc: '每一条线索都指向过去的真相，AI角色与观众共同推演悬疑谜题。', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80' },
       { id: 3, title: '暗流涌动', category: '真实改编', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '真实事件改编，AI短剧在商业谍战与人性抉择间构建深度剧情张力。', img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=1200&q=80' },
       { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1516575334481-f85287c2c82d?auto=format&fit=crop&w=1200&q=80' },
