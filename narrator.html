@@ -1047,8 +1047,11 @@
             </div>
             <div class="card-divider"></div>
             <div class="card-action">
-              <button class="button">
+              <button class="button" style="flex:0.7;">
                 <span class="btn-icon">🔨</span> 铸造短剧NFT
+              </button>
+              <button class="button" style="flex:0.3;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)">
+                <span class="btn-icon">✏️</span> 编辑
               </button>
             </div>
           </article>
@@ -1092,8 +1095,11 @@
             </div>
             <div class="card-divider"></div>
             <div class="card-action">
-              <button class="button">
+              <button class="button" style="flex:0.7;">
                 <span class="btn-icon">🔨</span> 铸造短剧NFT
+              </button>
+              <button class="button" style="flex:0.3;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)">
+                <span class="btn-icon">✏️</span> 编辑
               </button>
             </div>
           </article>
@@ -1137,8 +1143,11 @@
             </div>
             <div class="card-divider"></div>
             <div class="card-action">
-              <button class="button button-danger" onclick="confirmDelete('迷雾之城')">
+              <button class="button button-danger" style="flex:0.5;" onclick="confirmDelete('迷雾之城')">
                 <span class="btn-icon">🗑️</span> 删除短剧
+              </button>
+              <button class="button" style="flex:0.5;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)">
+                <span class="btn-icon">✏️</span> 编辑
               </button>
             </div>
           </article>
@@ -1785,6 +1794,36 @@
       </div>
     </section>
 
+
+    <!-- Modal: 编辑短剧（已迁移到独立编辑页面） -->
+    <div class="modal-overlay" id="editDramaModal">
+      <div class="modal" style="max-width: 640px;">
+        <div class="modal-header">
+          <h3>✏️ 编辑短剧</h3>
+          <button class="modal-close" onclick="closeEditDramaModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">短剧编辑功能已升级到独立编辑页面，可设置完整的信息。</p>
+
+          <div style="display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:18px;border:1px solid var(--border);background:#fafcff;margin-bottom:20px;">
+            <img id="editDramaCover" src="" alt="" style="width:64px;height:64px;border-radius:14px;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
+            <div>
+              <h4 id="editDramaTitleDisplay" style="margin:0 0 3px;font-size:1.1rem;">—</h4>
+              <p id="editDramaStatus" style="margin:0;color:var(--text-muted);font-size:0.85rem;">—</p>
+            </div>
+          </div>
+
+          <div style="text-align:center;padding:24px 0;">
+            <p style="color:var(--text-muted);font-size:1rem;margin-bottom:20px;">使用全新编辑页面，支持完整的4步编辑流程</p>
+            <button class="button" onclick="openEditDramaPage()">打开编辑页面 ▸</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="button-secondary" onclick="closeEditDramaModal()">取消</button>
+          <button class="button" onclick="openEditDramaPage()">打开编辑页面</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Modal: 铸造短剧NFT -->
     <div class="modal-overlay" id="mintModal">
@@ -2980,6 +3019,40 @@
   // 点击弹窗外部关闭
   actorDramaModal.addEventListener('click', function(e) {
     if (e.target === this) closeActorDramaModal();
+  });
+
+  // === 编辑短剧 - 跳转到独立编辑页面 ===
+  function openEditDramaModal(btn) {
+    const card = btn.closest('.card-list-item');
+    if (!card) return;
+    const title = card.querySelector('.card-body h3').textContent.trim();
+    const cover = card.querySelector('.card-header img').src;
+
+    // 弹窗只显示预览和跳转按钮
+    document.getElementById('editDramaCover').src = cover;
+    document.getElementById('editDramaCover').alt = title;
+    document.getElementById('editDramaTitleDisplay').textContent = title;
+    document.getElementById('editDramaStatus').textContent = card.dataset.status === 'approved' ? '已通过' : card.dataset.status === 'rejected' ? '未通过' : '审核中';
+
+    editDramaModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEditDramaModal() {
+    editDramaModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openEditDramaPage() {
+    const title = document.getElementById('editDramaTitleDisplay').textContent;
+    // 跳转到独立编辑页面，带标题参数
+    closeEditDramaModal();
+    window.location.href = 'edit-drama.html?title=' + encodeURIComponent(title);
+  }
+
+  // 点击弹窗外部关闭
+  document.getElementById('editDramaModal').addEventListener('click', function(e) {
+    if (e.target === this) closeEditDramaModal();
   });
 
   // === 页面加载完成后初始化 ===
