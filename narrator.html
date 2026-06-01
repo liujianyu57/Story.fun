@@ -1201,14 +1201,23 @@
                 </div>
               </div>
             </div>
-            <div class="nft-footer centered">
-              <button class="button">
-                <span class="btn-icon">🔒</span> 质押NFT
-              </button>
+            <div class="nft-footer" style="flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;width:100%;">
+                <button class="button" style="flex:1;">
+                  <span class="btn-icon">🔒</span> 质押NFT
+                </button>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;width:100%;">
+                <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('江南烟雨')">
+                  <span class="btn-icon">✏️</span> 编辑
+                </button>
+              </div>
             </div>
           </div>
 
           <!-- NFT-002: 已质押 -->
+
+
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=80" alt="星际迷航 NFT" />
@@ -1248,17 +1257,26 @@
                 </div>
               </div>
             </div>
-            <div class="nft-footer">
-              <button class="button button-amber">
-                <span class="btn-icon">🔓</span> 解质押
-              </button>
-              <button class="button" onclick="handleBindActorClick(this)">
-                <span class="btn-icon">🎬</span> 绑定演员
-              </button>
+            <div class="nft-footer" style="flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;width:100%;">
+                <button class="button button-amber" style="flex:1;">
+                  <span class="btn-icon">🔓</span> 解质押
+                </button>
+                <button class="button" style="flex:1;" onclick="handleBindActorClick(this)">
+                  <span class="btn-icon">🎬</span> 绑定演员
+                </button>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;width:100%;">
+                <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('星际迷航')">
+                  <span class="btn-icon">✏️</span> 编辑
+                </button>
+              </div>
             </div>
           </div>
 
           <!-- NFT-003: 已质押 -->
+
+
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="长安如梦 NFT" />
@@ -1298,17 +1316,26 @@
                 </div>
               </div>
             </div>
-            <div class="nft-footer">
-              <button class="button button-amber">
-                <span class="btn-icon">🔓</span> 解质押
-              </button>
-              <button class="button" onclick="handleBindActorClick(this)">
-                <span class="btn-icon">🎬</span> 绑定演员
-              </button>
+            <div class="nft-footer" style="flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;width:100%;">
+                <button class="button button-amber" style="flex:1;">
+                  <span class="btn-icon">🔓</span> 解质押
+                </button>
+                <button class="button" style="flex:1;" onclick="handleBindActorClick(this)">
+                  <span class="btn-icon">🎬</span> 绑定演员
+                </button>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;width:100%;">
+                <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('长安如梦')">
+                  <span class="btn-icon">✏️</span> 编辑
+                </button>
+              </div>
             </div>
           </div>
 
           <!-- NFT-005: 未质押 -->
+
+
           <div class="nft-card" data-staked="false">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80" alt="迷雾之城 NFT" />
@@ -1345,10 +1372,17 @@
                 </div>
               </div>
             </div>
-            <div class="nft-footer centered">
-              <button class="button">
-                <span class="btn-icon">🔒</span> 质押NFT
-              </button>
+            <div class="nft-footer" style="flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;width:100%;">
+                <button class="button" style="flex:1;">
+                  <span class="btn-icon">🔒</span> 质押NFT
+                </button>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;width:100%;">
+                <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('迷雾之城')">
+                  <span class="btn-icon">✏️</span> 编辑
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1356,6 +1390,8 @@
       </div>
 
       <!-- Tab 3: 演员管理 -->
+
+
       <div class="tab-content" id="tab3">
         <div class="actor-grid">
 
@@ -2312,13 +2348,21 @@
 
         const footer = card.querySelector('.nft-footer');
         if (footer) {
-          footer.className = 'nft-footer';
-          footer.style.gap = '';
+          footer.style.flexDirection = 'column';
+          footer.style.gap = '6px';
           footer.innerHTML = `
-            <button class="button button-amber"><span class="btn-icon">🔓</span> 解质押</button>
-            <button class="button" onclick="handleBindActorClick(this)"><span class="btn-icon">🎬</span> 绑定演员</button>
+            <div style="display:flex;align-items:center;gap:8px;width:100%;">
+              <button class="button button-amber" style="flex:1;"><span class="btn-icon">🔓</span> 解质押</button>
+              <button class="button" style="flex:1;" onclick="handleBindActorClick(this)"><span class="btn-icon">🎬</span> 绑定演员</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;width:100%;">
+              <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('${currentStakeNft.name}')">
+                <span class="btn-icon">✏️</span> 编辑
+              </button>
+            </div>
           `;
         }
+
 
         alert(`✅ 「${currentStakeNft.name}」质押成功！\n\n从此刻起，「${currentStakeNft.name}」短剧每笔销售的 70% 分润将自动累计至您的账户。\n\n可在「短剧NFT」标签页查看质押状态。`);
         closeStakeModal();
@@ -2341,13 +2385,23 @@
         const statusEl = card.querySelector('.nft-stake-status');
         if (statusEl) statusEl.remove();
 
-        // 恢复为单个「质押NFT」按钮
+        // 恢复为两行布局
         const footer = card.querySelector('.nft-footer');
         if (footer) {
-          footer.className = 'nft-footer centered';
-          footer.style.gap = '';
-          footer.innerHTML = `<button class="button"><span class="btn-icon">🔒</span> 质押NFT</button>`;
+          footer.style.flexDirection = 'column';
+          footer.style.gap = '6px';
+          footer.innerHTML = `
+            <div style="display:flex;align-items:center;gap:8px;width:100%;">
+              <button class="button" style="flex:1;"><span class="btn-icon">🔒</span> 质押NFT</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;width:100%;">
+              <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('${currentStakeNft.name}')">
+                <span class="btn-icon">✏️</span> 编辑
+              </button>
+            </div>
+          `;
         }
+
 
         alert(`✅ 「${currentStakeNft.name}」解质押成功！\n\n已累计分润：${document.getElementById('stakePendingEarned').textContent}\n\n可在收益页中领取累计的分润。`);
         closeStakeModal();
