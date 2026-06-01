@@ -125,13 +125,14 @@
     }
     .featured-banner-bg.old { opacity: 0; }
 
-    /* 视频背景 — 与背景图切换 */
+    /* 视频背景 — 保留原始画面比例（含黑边） */
     .featured-video-bg {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      background: #000;
       transition: opacity 0.6s ease;
     }
     .featured-video-bg.hidden { opacity: 0; pointer-events: none; }
@@ -436,12 +437,12 @@
         </div>
         <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4k</span><span>4.8★</span></div></div>
       </article>
-      <article class="card" data-category="真实改编" data-sort="hot" onclick="location.href='drama-detail.html'">
-        <img class="card-thumb" src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80" alt="暗流涌动" />
+      <article class="card" data-category="喜剧" data-sort="hot" onclick="location.href='drama-detail.html'">
+        <img class="card-thumb" src="image/chengxiangfu_cover.jpg" alt="丞相府今日开饭" />
         <div class="card-body">
-          <div class="card-meta"><span class="badge">真实改编</span><span class="episode">全24集</span></div>
-          <h3>暗流涌动</h3>
-          <p>真实事件改编，AI短剧在商业谍战与人性抉择间构建深度剧情张力。</p>
+          <div class="card-meta"><span class="badge">喜剧</span><span class="episode">全24集</span></div>
+          <h3>丞相府今日开饭</h3>
+          <p>丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。</p>
         </div>
         <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8k</span><span>4.7★</span></div></div>
       </article>
@@ -458,7 +459,7 @@
     const featuredDramas = [
       { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'image/fenggu_cover.jpg' },
       { id: 2, title: '我卸甲后天下大乱了', category: '古风', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', rating: '4.8 ★', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', img: 'image/xiejia_cover.jpg', video: 'video/我卸甲后天下大乱了.mp4' },
-      { id: 3, title: '暗流涌动', category: '真实改编', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '真实事件改编，AI短剧在商业谍战与人性抉择间构建深度剧情张力。', img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=1200&q=80' },
+      { id: 3, title: '丞相府今日开饭', category: '喜剧', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', img: 'image/chengxiangfu_cover.jpg', video: 'video/丞相府今日开饭.mp4' },
       { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1516575334481-f85287c2c82d?auto=format&fit=crop&w=1200&q=80' },
       { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', rating: '4.8 ★', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=1200&q=80' }
     ];
