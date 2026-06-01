@@ -301,13 +301,12 @@
   // ============================================================
   function buildMobileDrawerHtml() {
     const navItems = [
-      { href: 'index.html', label: '首页' },
-      { href: 'theater.html', label: '剧场' },
-      { href: 'actors.html', label: '演员' },
-      { href: 'narrator.html', label: '叙事者中心' },
+      { href: 'index.html', label: '剧场' },
+      { href: 'actors.html', label: 'NFT' },
+      { href: 'narrator.html', label: '创作' },
       { href: 'rewards.html', label: '收益' },
       { href: 'mining.html', label: '挖矿' },
-      { href: 'whitepaper.html', label: '白皮书' },
+      { href: 'about.html', label: '关于我们' },
     ];
 
     const navLinksHtml = navItems.map(item => {
@@ -420,13 +419,12 @@
     </div>
 
     <nav class="nav-links">
-      <a class="nav-link" href="index.html">首页</a>
-      <a class="nav-link" href="theater.html">剧场</a>
-      <a class="nav-link" href="actors.html">演员</a>
-      <a class="nav-link" href="narrator.html">叙事者中心</a>
+      <a class="nav-link" href="index.html">剧场</a>
+      <a class="nav-link" href="actors.html">NFT</a>
+      <a class="nav-link" href="narrator.html">创作</a>
       <a class="nav-link" href="rewards.html">收益</a>
       <a class="nav-link" href="mining.html">挖矿</a>
-      <a class="nav-link" href="whitepaper.html">白皮书</a>
+      <a class="nav-link" href="about.html">关于我们</a>
     </nav>
     <div class="header-actions">
       <button class="lang-btn" aria-label="Language">
